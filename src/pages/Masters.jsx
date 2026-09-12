@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getSession, logout } from '../auth';
+import Navbar from '../components/Navbar';
+import { MASTER_STEPS } from '../masterConfig';
 
 const seed = {
   buyers: [
@@ -19,6 +21,47 @@ const seed = {
     { code: 'ST-1001', category: 'T-Shirt', desc: 'Ladies Polo Shirt' },
     { code: 'ST-1002', category: 'Bottom', desc: 'Mens Cargo Pant' },
   ],
+  company: [
+    { name: 'Frontier Knitters Pvt Ltd', address: 'Port Qasim, Karachi', contact: 'info@frontierknitters.com' },
+  ],
+  party: [
+    { name: 'H&M', type: 'Buyer', contact: 'hm@buyer.com' },
+    { name: 'Karachi Dyeing Works', type: 'Job Work', contact: 'kdw@dyeing.pk' },
+  ],
+  employee: [
+    { name: 'Ahmed Raza', department: 'Stitching', designation: 'Line Supervisor' },
+    { name: 'Sana Malik', department: 'Merchandising', designation: 'Merchandiser' },
+  ],
+  territory: [
+    { name: 'Karachi Central', region: 'Sindh', rep: 'AR-01' },
+  ],
+  statutory: [
+    { name: 'GST Registration', code: 'GST-24-00123', type: 'GST' },
+    { name: 'PF Account', code: 'PKPF-88912', type: 'PF' },
+  ],
+  product: [
+    { name: 'Ladies Polo Shirt', category: 'T-Shirt', desc: 'Pima cotton polo' },
+  ],
+  item: [
+    { name: 'Zipper RW-08', category: 'Trims', unit: 'Pcs' },
+    { name: 'Main Label', category: 'Trims', unit: 'Pcs' },
+  ],
+  workflow: [
+    { name: 'Order Entry', department: 'Merchandising', sequence: '01' },
+    { name: 'Fabric Cutting', department: 'Cutting', sequence: '03' },
+  ],
+  commercials: [
+    { name: 'Buying Commission', value: '5%', type: 'Commission' },
+  ],
+  quality: [
+    { name: 'Stitch Density', standard: '10-12 SPI', method: 'Visual / Gauge' },
+  ],
+  orderElements: [
+    { name: 'Size Ratio', type: 'Size', unit: 'S-M-L-XL' },
+  ],
+  warehouse: [
+    { name: 'Main Garment Store', location: 'Unit 1, 2nd Floor', incharge: 'Store Team' },
+  ],
 };
 
 function loadMaster() {
@@ -26,7 +69,10 @@ function loadMaster() {
     const raw = localStorage.getItem('fk_masters');
     if (!raw) return JSON.parse(JSON.stringify(seed));
     const saved = JSON.parse(raw);
-    if (saved && saved.buyers && saved.fabrics && saved.styles) return saved;
+    if (saved && typeof saved === 'object') {
+      // Merge with seed so any NEW tab missing from old saved data still gets defaults
+      return { ...JSON.parse(JSON.stringify(seed)), ...saved };
+    }
     return JSON.parse(JSON.stringify(seed));
   } catch {
     return JSON.parse(JSON.stringify(seed));
@@ -36,7 +82,8 @@ function loadMaster() {
 export default function Masters() {
   const nav = useNavigate();
   const [session, setSession] = useState(null);
-  const [tab, setTab] = useState('buyers');
+  const { sub } = useParams();
+  const tab = MASTER_STEPS[sub] ? sub : 'buyers';
   const [data, setData] = useState(loadMaster);
   const [a, setA] = useState(''); // field 1
   const [b, setB] = useState(''); // field 2
@@ -60,46 +107,26 @@ export default function Masters() {
 
   const add = (e) => {
     e.preventDefault();
-    const key = tab;
-    const obj = key === 'buyers' ? { name: a, country: b, contact: c }
-      : key === 'fabrics' ? { name: a, type: b, unit: c }
-      : { code: a, category: b, desc: c };
-    if (!a) { setMsg('Please fill the required field'); return; }
-    save({ ...data, [key]: [...data[key], obj] });
+    const st = steps[tab];
+    const obj = {};
+    st.fields.forEach((f, i) => { obj[f] = [a, b, c][i]; });
+    if (!a) { setMsg(`Please fill the required field: ${st.labels[0]}`); return; }
+    save({ ...data, [tab]: [...data[tab], obj] });
     setMsg('Saved ✅');
     setA(''); setB(''); setC('');
   };
 
   const del = (kind, i) => save({ ...data, [kind]: data[kind].filter((_, x) => x !== i) });
 
-  const steps = {
-    buyers: { icon: '🏢', title: 'Buyer', labels: ['Buyer Name *', 'Country', 'Contact / Email'], place: ['Buyer name', 'Country', 'Email'], head: ['#', 'Buyer Name', 'Country', 'Contact / Email'], fields: ['name', 'country', 'contact'] },
-    fabrics: { icon: '🧶', title: 'Fabric', labels: ['Fabric Name *', 'Type', 'Unit'], place: ['Fabric name'], head: ['#', 'Fabric Name', 'Type', 'Unit'], fields: ['name', 'type', 'unit'], opts: [null, ['Knitted', 'Woven'], ['Kg', 'Meter', 'Yard']] },
-    styles: { icon: '👕', title: 'Style', labels: ['Style Code *', 'Category', 'Description'], place: ['ST-1003'], head: ['#', 'Style Code', 'Category', 'Description'], fields: ['code', 'category', 'desc'], opts: [null, ['T-Shirt', 'Polo', 'Shirt', 'Bottom', 'Hoodie', 'Jacket'], null] },
-  };
+  const steps = MASTER_STEPS;
   const st = steps[tab];
   const vals = [a, b, c];
 return (
     <div className="wrap">
-      <header className="top">
-        <div className="top-left">
-          <h1>🧵 Frontier Knitters Pvt Ltd</h1>
-          <h2>🗂️ Module 1: Masters</h2>
-        </div>
-        <div className="userbox">
-          <div className="avatar">{session.username.charAt(0).toUpperCase()}</div>
-          <span className="badge role">{session.username} · {session.role}</span>
-          <button className="btn-outline" onClick={() => nav('/home')}>📋 Modules</button>
-          <button className="btn-outline" onClick={() => { logout(); nav('/login'); }}>Logout</button>
-        </div>
-      </header>
+      <Navbar session={session} />
 
-      <div className="tabs">
-        {Object.keys(steps).map((k) => (
-          <button key={k} className={tab === k ? 'tab on' : 'tab'} onClick={() => { setTab(k); setA(''); setB(''); setC(''); }}>
-            {steps[k].icon} {steps[k].title}s
-          </button>
-        ))}
+      <div className="pagehead">
+        <h2>{st.icon} Masters ▸ {st.plural} <span className="count">{data[tab].length} rows</span></h2>
       </div>
 
       <div className="body">
@@ -127,7 +154,7 @@ return (
 
         <div className="tblbox">
           <div className="tblhead">
-            <h3>📄 {st.title}s List <span className="count">{data[tab].length} rows</span></h3>
+            <h3>📄 {(st.plural || st.title + 's')} List <span className="count">{data[tab].length} rows</span></h3>
           </div>
           <table className="tbl">
             <thead>
@@ -141,7 +168,7 @@ return (
                   <td><button className="del" onClick={() => del(tab, i)}>🗑️</button></td>
                 </tr>
               ))}
-              {!data[tab].length && <tr><td colSpan={6} className="empty">No {st.title}s yet — add above ⬆️</td></tr>}
+              {!data[tab].length && <tr><td colSpan={6} className="empty">No {(st.plural || st.title + 's')} yet — add above ⬆️</td></tr>}
             </tbody>
           </table>
         </div>

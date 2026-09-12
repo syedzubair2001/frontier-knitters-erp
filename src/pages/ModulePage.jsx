@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getSession, logout } from '../auth';
+import Navbar from '../components/Navbar';
 import { MODULE_LIST } from '../roles';
 
 export default function ModulePage() {
@@ -21,18 +22,11 @@ export default function ModulePage() {
 
   return (
     <div className="wrap">
-      <header className="top">
-        <div className="top-left">
-          <h1>🧵 Frontier Knitters Pvt Ltd</h1>
-          <h2>{mod.icon} {mod.label}</h2>
-        </div>
-        <div className="userbox">
-          <div className="avatar">{session.username.charAt(0).toUpperCase()}</div>
-          <span className="badge role">{session.username} · {session.role}</span>
-          <button className="btn-outline" onClick={() => nav('/home')}>📋 Modules</button>
-          <button className="btn-outline" onClick={() => { logout(); nav('/login'); }}>Logout</button>
-        </div>
-      </header>
+      <Navbar session={session} />
+
+      <div className="pagehead">
+        <h2>{mod.icon} {mod.label}</h2>
+      </div>
 
       <div className="content">
         <div className="hero">

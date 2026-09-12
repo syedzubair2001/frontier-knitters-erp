@@ -82,7 +82,29 @@ body { margin: 0; background: #eef2f7; }
 .stat-box span { font-size: 18px; font-weight: 800; color: #164b9e; }
 
 /* MASTERS TABS */
-.tabs { display: flex; gap: 8px; padding: 16px 22px 0; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 22px 0; }
 .tab { border: 1.5px solid #d3dce8; background: #fff; color: #334e68; padding: 9px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13.5px; }
 .tab.on { background: linear-gradient(90deg, #164b9e, #1e6fe0); color: #fff; border-color: #164b9e; }
 .empty { text-align: center; padding: 30px; color: #627d98; }
+
+/* TOP NAVBAR WITH MASTERS DROPDOWN */
+.navbar { display: flex; justify-content: space-between; align-items: center; gap: 6px; background: #0b2a5b; color: #fff; padding: 13px 22px; position: sticky; top: 0; z-index: 60; }
+.nav-left { display: flex; align-items: center; gap: 4px; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.brand { color: #fff; font-weight: 800; font-size: 16px; text-decoration: none; letter-spacing: .2px; }
+.nav-sep { color: #7db1ff; opacity: .55; }
+.nav-link, .dd-btn { padding: 7px 12px; border-radius: 8px; color: #cfe0ff; background: transparent; font-size: 13.5px; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; }
+.nav-link:hover, .dd-btn:hover { background: #164b9e; color: #fff; }
+.nav-link.on, .dd-btn.on { background: linear-gradient(90deg, #1e6fe0, #3d8bf3); color: #fff; }
+.caret { font-size: 10px; margin-left: 4px; opacity: .8; }
+.dd { position: relative; }
+.dd-menu { position: absolute; top: 100%; left: 0; margin-top: 6px; min-width: 260px; background: #fff; border: 1px solid #d3dce8; border-radius: 12px; box-shadow: 0 14px 34px rgba(11,42,91,.28); padding: 10px; z-index: 100; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; max-height: 420px; overflow: auto; }
+.dd-item { display: flex; align-items: center; gap: 7px; padding: 7px 10px; border-radius: 8px; color: #102a43; text-decoration: none; font-size: 12.5px; white-space: nowrap; }
+.dd-item:hover { background: #eef4ff; color: #164b9e; }
+.dd-item.on { background: #164b9e; color: #fff; }
+.dd-ic { font-size: 14px; }
+
+/* PAGE TITLE BAND UNDER THE NAVBAR */
+.pagehead { background: linear-gradient(120deg, #0b2a5b, #164b9e); color: #fff; padding: 12px 22px; border-radius: 12px; margin: 14px 22px 0; }
+.pagehead h2 { margin: 0; font-size: 17px; display: flex; align-items: center; gap: 8px; }
+.pagehead .count { background: rgba(255,255,255,.16); color: #fff; border-radius: 20px; padding: 3px 10px; font-size: 12px; }

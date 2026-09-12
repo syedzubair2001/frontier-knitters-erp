@@ -20,7 +20,8 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/masters" element={<Masters />} />
+          <Route path="/masters" element={<Navigate to="/masters/buyers" />} />
+          <Route path="/masters/:sub" element={<Masters />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/module/:key" element={<ModulePage />} />
         </Routes>

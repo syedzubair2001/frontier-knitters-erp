@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { getSession, logout } from '../auth';
+import Navbar from '../components/Navbar';
 import { MODULE_LIST } from '../roles';
 
 export default function Home() {
@@ -19,17 +20,11 @@ export default function Home() {
 
   return (
     <div className="wrap">
-      <header className="top">
-        <div className="top-left">
-          <h1>🧵 Frontier Knitters Pvt Ltd</h1>
-          <h2>🏠 Modules</h2>
-        </div>
-        <div className="userbox">
-          <div className="avatar">{session.username.charAt(0).toUpperCase()}</div>
-          <span className="badge role">{session.username} · {session.role}</span>
-          <button className="btn-outline" onClick={() => { logout(); nav('/login'); }}>Logout</button>
-        </div>
-      </header>
+      <Navbar session={session} />
+
+      <div className="pagehead">
+        <h2>🏠 Modules</h2>
+      </div>
 
       <div className="content">
         <div className="hero">

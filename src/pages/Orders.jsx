@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSession, logout } from '../auth';
+import Navbar from '../components/Navbar';
 
 const defaultRows = [
   { buyer: 'H&M', style: 'ST-1001', desc: 'Ladies Polo Shirt', fabric: 'Cotton 100%', qty: 5000, rate: 4.5, date: '2026-09-01', delivery: '2026-10-15', status: 'New' },
@@ -82,21 +83,13 @@ export default function Orders() {
   };
 
   const total = rows.reduce((s, r) => s + (Number(r.qty) || 0) * (Number(r.rate) || 0), 0);
-  const initial = session.username.charAt(0).toUpperCase();
-return (
+  return (
     <div className="wrap">
-      <header className="top">
-        <div className="top-left">
-          <h1>🧵 Frontier Knitters Pvt Ltd</h1>
-          <h2>📦 Module 2: Orders</h2>
-        </div>
-        <div className="userbox">
-          <div className="avatar">{initial}</div>
-          <span className="badge role">{session.username} · {session.role}</span>
-          <button className="btn-outline" onClick={() => nav('/home')}>📋 Modules</button>
-          <button className="btn-outline" onClick={() => { logout(); nav('/login'); }}>Logout</button>
-        </div>
-      </header>
+      <Navbar session={session} />
+
+      <div className="pagehead">
+        <h2>📦 Orders</h2>
+      </div>
 
       <div className="body">
         <form className="frm" onSubmit={addRow}>
