@@ -57,7 +57,7 @@ export default function Login() {
           {msg && <p className={'msg' + (err ? ' err' : ' ok')}>{msg}</p>}
 
           <div className="demo">
-            <b>Demo account:</b> superadmin &nbsp;/&nbsp; admin123 &nbsp;/&nbsp; Super Admin
+            <b>Demo account:</b> superadmin &nbsp;/&nbsp; admin123 &nbsp;·&nbsp; Select <b>DOCUMENT</b> role for Indent-only access
           </div>
           <p className="muted center">No account? <Link to="/signup">Create an account</Link></p>
         </form>

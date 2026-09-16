@@ -11,6 +11,8 @@ export const ROLES = {
   PACKING_STAFF: 'Packing Staff',
   ACCOUNTS: 'Accounts',
   HR: 'HR',
+  DOCUMENT: 'DOCUMENT',
+
 };
 
 export const ROLE_LIST = Object.values(ROLES);
