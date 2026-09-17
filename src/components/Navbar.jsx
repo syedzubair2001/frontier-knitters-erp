@@ -6,6 +6,7 @@ import { PURCHASE_STORES_MENU } from '../purchaseConfig';
 import { SALES_SHIPMENT_MENU } from '../salesConfig';
 import { ACCOUNTS_MENU } from '../accountsConfig';
 import { DOCUMENTS_TEAM_MENU } from '../documentsTeamConfig';
+import { MISQUERY_MENU } from '../misqueryConfig';
 import { ROLES } from '../roles';
 import { canUseRole, docKeyFor } from '../roleDocsService';
 
@@ -107,6 +108,7 @@ export default function Navbar({ session }) {
   const purchaseMenu = isSuper ? PURCHASE_STORES_MENU : permitMenu(PURCHASE_STORES_MENU);
   const salesMenu = isSuper ? SALES_SHIPMENT_MENU : permitMenu(SALES_SHIPMENT_MENU);
   const accountsMenu = isSuper ? ACCOUNTS_MENU : permitMenu(ACCOUNTS_MENU);
+  const misqueryMenu = isSuper ? MISQUERY_MENU[0].children : permitMenu(MISQUERY_MENU[0].children);
   const docTeamMenu = isSuper ? DOCUMENTS_TEAM_MENU[0].children : permitMenu(DOCUMENTS_TEAM_MENU[0].children);
   const showOrders = isSuper || canUseRole(role, 'orders');
   const showRoleDocs = isAdmin || canUseRole(role, 'role-docs');
@@ -122,6 +124,7 @@ export default function Navbar({ session }) {
         {purchaseMenu.length > 0 && <MenuDropdown icon="🛒" label="Purchase & Stores" menu={purchaseMenu} path={path} />}
         {salesMenu.length > 0 && <MenuDropdown icon="🚢" label="Sales & Shipment" menu={salesMenu} path={path} />}
         {accountsMenu.length > 0 && <MenuDropdown icon="💰" label="Accounts" menu={accountsMenu} path={path} />}
+        {misqueryMenu.length > 0 && <MenuDropdown icon="🔍" label="Misquery" menu={misqueryMenu} path={path} />}
         {docTeamMenu.length > 0 && <MenuDropdown icon="📄" label="Documents Team" menu={docTeamMenu} path={path} />}
         {showOrders && <Link to="/orders" className={'nav-link' + (path === '/orders' ? ' on' : '')}>📦 Orders</Link>}
         {showRoleDocs && <Link to="/admin/role-documents" className={'nav-link' + (path === '/admin/role-documents' ? ' on' : '')}>🔐 Role Docs</Link>}

@@ -41,6 +41,11 @@ export const ROLE_DOCUMENTS = [
   { key: 'internal', label: 'Stores — Internal' },
   { key: 'external', label: 'Stores — External' },
   { key: 'invoice-gate', label: 'Stores — Invoice & Gate' },
+  { key: 'misquery', label: 'Misquery', group: true },
+  { key: 'tracking', label: 'Misquery — Tracking' },
+  { key: 'stores-indent', label: 'Misquery — Stores Indent' },
+  { key: 'stores-issue', label: 'Misquery — Stores Issue' },
+  { key: 'stock', label: 'Misquery — Stock' },
   { key: 'documents-team', label: 'Documents Team', group: true },
   { key: 'order-booking', label: 'Documents Team — Order & Booking' },
   { key: 'invoice-shipment', label: 'Documents Team — Invoice & Shipment' },
@@ -88,6 +93,11 @@ function defaults() {
           d.key === 'collection' ||
           d.key === 'payment' ||
           d.key === 'passing' ||
+          d.key === 'misquery' ||
+          d.key === 'tracking' ||
+          d.key === 'stores-indent' ||
+          d.key === 'stores-issue' ||
+          d.key === 'stock' ||
           docTeamKeys.includes(d.key)
         );
       } else if (r === ROLES.STORE_KEEPER) {
@@ -151,6 +161,10 @@ export function canUseRole(role, docKey) {
     }
     return true;
   }
+  
+  if ((role === 'DOCUMENT' || role === ROLES.DOCUMENT) && (docKey === 'misquery' || docKey === 'tracking' || docKey === 'stores-indent' || docKey === 'stores-issue' || docKey === 'stock')) {
+    return true;
+  }
 
   const data = loadRoleDocs();
   return !!(data[role] && data[role][docKey]);
@@ -180,6 +194,13 @@ export function docKeyFor(menuKey) {
     'brc': 'brc',
     'documents-reports': 'documents-reports',
     'documents-team': 'documents-team',
+    'misquery': 'misquery',
+    'analysis': 'misquery',
+    'inventory': 'misquery',
+    'tracking': 'tracking',
+    'stores-indent': 'stores-indent',
+    'stores-issue': 'stores-issue',
+    'stock': 'stock',
   };
   return map[menuKey] || null;
 }

@@ -22,6 +22,10 @@ import Collection from './pages/Collection';
 import Payment from './pages/Payment';
 import Passing from './pages/Passing';
 import DocumentsTeam from './pages/DocumentsTeam';
+import MisqueryOrderSummary from './pages/MisqueryOrderSummary';
+import MisqueryStoresIndent from './pages/MisqueryStoresIndent';
+import MisqueryStoresIssue from './pages/MisqueryStoresIssue';
+import MisqueryStock from './pages/MisqueryStock';
 import { seedDefaultAdmin } from './auth';
 import './index.css';
 
@@ -36,6 +40,10 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/home" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/misquery/tracking" element={<MisqueryOrderSummary />} />
+          <Route path="/misquery/stores-indent" element={<MisqueryStoresIndent />} />
+          <Route path="/misquery/stores-issue" element={<MisqueryStoresIssue />} />
+          <Route path="/misquery/stock" element={<MisqueryStock />} />
           <Route path="/documents-team" element={<DocumentsTeam />} />
           <Route path="/documents-team/:section" element={<DocumentsTeam />} />
           <Route path="/admin/role-documents" element={<RoleDocuments />} />
