@@ -25,6 +25,7 @@ export const MISQUERY_MENU = [
         children: [
           { key: 'workflow-order-summary', label: 'ORDER SUMMARY', icon: '📝', route: '/misquery/workflow-order-summary' },
           { key: 'workflow-summary', label: 'SUMMARY', icon: '📊', route: '/misquery/workflow-summary' },
+          { key: 'workflow-pending-orders', label: 'PENDING ORDERS', icon: '⏳', route: '/misquery/workflow-pending-orders' },
         ],
       },
     ],
