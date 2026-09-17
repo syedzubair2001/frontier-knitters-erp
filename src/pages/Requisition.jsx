@@ -117,7 +117,7 @@ export default function Requisition() {
         <span className="crumb">PURCHASE</span><span className="crumb-sep">&gt;</span>
         <span className="crumb on">REQUISITION</span>
         <div className="crumb-right">
-          <button className="btn-outline sm" onClick={() => nav('/home')}>🏠 Home</button>
+          <button className="btn-outline sm" onClick={() => nav('/dashboard')}>📊 Dashboard</button>
         </div>
       </div>
 

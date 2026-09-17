@@ -10,7 +10,7 @@ export const TEAMS = ['Purchase', 'Merchandising', 'Production', 'QC', 'Store', 
 
 /** Every document in the ERP that can be shown/hidden per role */
 export const ROLE_DOCUMENTS = [
-  { key: 'home', label: 'Home / Dashboard' },
+  { key: 'dashboard', label: 'Dashboard Overview' },
   { key: 'masters', label: 'Masters', group: true },
   { key: 'customer', label: 'Party — Customer (BUY)' },
   { key: 'consignee', label: 'Party — Consignee (CNE)' },
@@ -41,6 +41,18 @@ export const ROLE_DOCUMENTS = [
   { key: 'internal', label: 'Stores — Internal' },
   { key: 'external', label: 'Stores — External' },
   { key: 'invoice-gate', label: 'Stores — Invoice & Gate' },
+  { key: 'documents-team', label: 'Documents Team', group: true },
+  { key: 'order-booking', label: 'Documents Team — Order & Booking' },
+  { key: 'invoice-shipment', label: 'Documents Team — Invoice & Shipment' },
+  { key: 'shipping-bill', label: 'Documents Team — Shipping Bill' },
+  { key: 'forwarding', label: 'Documents Team — Forwarding' },
+  { key: 'clearing', label: 'Documents Team — Clearing' },
+  { key: 'transport', label: 'Documents Team — Transport' },
+  { key: 'fob-cost', label: 'Documents Team — FOB Cost' },
+  { key: 'payment-realisation', label: 'Documents Team — Payment & Realisation' },
+  { key: 'foreign-currency', label: 'Documents Team — Foreign Currency' },
+  { key: 'brc', label: 'Documents Team — BRC' },
+  { key: 'documents-reports', label: 'Documents Team — Documents Reports' },
 ];
 
 const KEY = 'fk_role_docs';
@@ -52,14 +64,32 @@ export function roleOptions() {
 /** Default role permissions if not customized in Role Documents */
 function defaults() {
   const map = {};
+  const docTeamKeys = [
+    'documents-team', 'order-booking', 'invoice-shipment', 'shipping-bill',
+    'forwarding', 'clearing', 'transport', 'fob-cost', 'payment-realisation',
+    'foreign-currency', 'brc', 'documents-reports',
+  ];
   roleOptions().forEach((r) => {
     map[r] = {};
     ROLE_DOCUMENTS.forEach((d) => {
       if (r === ROLES.SUPER_ADMIN || r === ROLES.ADMIN) {
         map[r][d.key] = true;
       } else if (r === 'DOCUMENT' || r === ROLES.DOCUMENT || r === ROLES.Document) {
-        // DOCUMENT role gets Home, Stores -> Indent, Bill Inward, General Invoice, Export Despatch, Export Invoice, Finish Warehouse Transfer, Adjustment, Collection, Payment, Passing
-        map[r][d.key] = (d.key === 'home' || d.key === 'indent' || d.key === 'bill-inward' || d.key === 'general-invoice' || d.key === 'export-despatch' || d.key === 'export-invoice' || d.key === 'finish-warehouse-transfer' || d.key === 'adjustment' || d.key === 'collection' || d.key === 'payment' || d.key === 'passing');
+        // DOCUMENT role gets Home, Stores -> Indent, Bill Inward, General Invoice, Export Despatch, Export Invoice, Finish Warehouse Transfer, Adjustment, Collection, Payment, Passing, AND Documents Team
+        map[r][d.key] = (
+          d.key === 'home' ||
+          d.key === 'indent' ||
+          d.key === 'bill-inward' ||
+          d.key === 'general-invoice' ||
+          d.key === 'export-despatch' ||
+          d.key === 'export-invoice' ||
+          d.key === 'finish-warehouse-transfer' ||
+          d.key === 'adjustment' ||
+          d.key === 'collection' ||
+          d.key === 'payment' ||
+          d.key === 'passing' ||
+          docTeamKeys.includes(d.key)
+        );
       } else if (r === ROLES.STORE_KEEPER) {
         map[r][d.key] = ['home', 'stock', 'store', 'indent', 'internal', 'external', 'invoice-gate', 'finish-warehouse-transfer'].includes(d.key);
       } else if (r === ROLES.MERCHANDISER) {
@@ -82,7 +112,11 @@ export function loadRoleDocs() {
     // Deep-merge so every role always exists and new documents default to allowed
     Object.keys(def).forEach((r) => {
       if (!obj[r] || typeof obj[r] !== 'object') obj[r] = { ...def[r] };
-      else Object.keys(def[r]).forEach((k) => { if (!(k in obj[r])) obj[r][k] = def[r][k]; });
+      else {
+        Object.keys(def[r]).forEach((k) => {
+          if (!(k in obj[r])) obj[r][k] = def[r][k];
+        });
+      }
     });
     return obj;
   } catch {
@@ -102,8 +136,22 @@ export function saveRoleDocs(data) {
 
 /** Does the given role have access to the document key? */
 export function canUseRole(role, docKey) {
-  if (role === ROLES.SUPER_ADMIN) return true;
-  if (docKey === 'home') return true; // Dashboard is common for all roles
+  if (role === ROLES.SUPER_ADMIN || role === ROLES.ADMIN) return true;
+  if (docKey === 'home' || docKey === 'dashboard') return true; // Dashboard is common for all roles
+  
+  const docTeamKeys = [
+    'documents-team', 'order-booking', 'invoice-shipment', 'shipping-bill',
+    'forwarding', 'clearing', 'transport', 'fob-cost', 'payment-realisation',
+    'foreign-currency', 'brc', 'documents-reports',
+  ];
+  if ((role === 'DOCUMENT' || role === ROLES.DOCUMENT) && docTeamKeys.includes(docKey)) {
+    const data = loadRoleDocs();
+    if (data[role] && data[role][docKey] !== undefined) {
+      return !!data[role][docKey];
+    }
+    return true;
+  }
+
   const data = loadRoleDocs();
   return !!(data[role] && data[role][docKey]);
 }
@@ -120,6 +168,18 @@ export function docKeyFor(menuKey) {
     vendorQuotation: 'vendor-quotation', poAllocation: 'po-allocation',
     stock: 'stock', store: 'store', indent: 'indent', billInward: 'bill-inward', invoiceGeneral: 'general-invoice', generalInvoice: 'general-invoice', despatch: 'export-despatch', exportDespatch: 'export-despatch', exportInvoice: 'export-invoice', finishWarehouseTransfer: 'finish-warehouse-transfer', 'finish-warehouse-transfer': 'finish-warehouse-transfer', adjustment: 'adjustment', collection: 'collection', payment: 'payment', passing: 'passing', internal: 'internal', external: 'external', invoiceAndGate: 'invoice-gate',
     orders: 'orders',
+    'order-booking': 'order-booking',
+    'invoice-shipment': 'invoice-shipment',
+    'shipping-bill': 'shipping-bill',
+    'forwarding': 'forwarding',
+    'clearing': 'clearing',
+    'transport': 'transport',
+    'fob-cost': 'fob-cost',
+    'payment-realisation': 'payment-realisation',
+    'foreign-currency': 'foreign-currency',
+    'brc': 'brc',
+    'documents-reports': 'documents-reports',
+    'documents-team': 'documents-team',
   };
   return map[menuKey] || null;
 }

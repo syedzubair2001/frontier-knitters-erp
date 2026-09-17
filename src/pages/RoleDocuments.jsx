@@ -67,7 +67,7 @@ export default function RoleDocuments() {
         <span className="crumb">ADMIN</span><span className="crumb-sep">&gt;</span>
         <span className="crumb on">ROLE DOCUMENTS</span>
         <div className="crumb-right">
-          <button className="btn-outline sm" onClick={() => nav('/home')}>🏠 Home</button>
+          <button className="btn-outline sm" onClick={() => nav('/dashboard')}>📊 Dashboard</button>
         </div>
       </div>
 

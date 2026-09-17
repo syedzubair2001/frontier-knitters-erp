@@ -96,16 +96,17 @@ body { margin: 0; background: #eef2f7; font-family: 'Inter', sans-serif; }
 .empty { text-align: center; padding: 30px; color: #627d98; }
 
 /* TOP NAVBAR WITH MASTERS DROPDOWN */
-.navbar { display: flex; justify-content: space-between; align-items: center; gap: 6px; background: #0b2a5b; color: #fff; padding: 13px 22px; position: sticky; top: 0; z-index: 60; }
-.nav-left { display: flex; align-items: center; gap: 4px; }
-.nav-right { display: flex; align-items: center; gap: 10px; }
-.brand { color: #fff; font-weight: 800; font-size: 16px; text-decoration: none; letter-spacing: .2px; }
-.nav-sep { color: #7db1ff; opacity: .55; }
-.nav-link, .dd-btn { padding: 7px 12px; border-radius: 8px; color: #cfe0ff; background: transparent; font-size: 13.5px; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; }
+.navbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: #0b2a5b; color: #fff; padding: 10px 18px; position: sticky; top: 0; z-index: 60; flex-wrap: nowrap; white-space: nowrap; }
+.nav-left { display: flex; align-items: center; gap: 4px; flex-wrap: nowrap; flex-shrink: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.nav-left::-webkit-scrollbar { display: none; }
+.nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+.brand { color: #fff; font-weight: 800; font-size: 15px; text-decoration: none; letter-spacing: .2px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
+.nav-sep { color: #7db1ff; opacity: .55; flex-shrink: 0; }
+.nav-link, .dd-btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; padding: 6px 9px; border-radius: 6px; color: #cfe0ff; background: transparent; font-size: 13px; font-weight: 600; text-decoration: none; border: 0; cursor: pointer; line-height: 1.2; flex-shrink: 0; }
 .nav-link:hover, .dd-btn:hover { background: #164b9e; color: #fff; }
 .nav-link.on, .dd-btn.on { background: linear-gradient(90deg, #1e6fe0, #3d8bf3); color: #fff; }
-.caret { font-size: 10px; margin-left: 4px; opacity: .8; }
-.dd { position: relative; }
+.caret { font-size: 10px; margin-left: 2px; opacity: .8; display: inline-block; vertical-align: middle; }
+.dd { position: relative; display: inline-block; }
 .dd-menu { position: absolute; top: 100%; left: 0; margin-top: 6px; min-width: 230px; background: #fff; border: 1px solid #d3dce8; border-radius: 12px; box-shadow: 0 14px 34px rgba(11,42,91,.28); padding: 8px; z-index: 100; display: flex; flex-direction: column; gap: 4px; overflow: visible !important; }
 .dd-item { display: flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: 8px; color: #102a43; text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap; }
 .dd-item:hover { background: #eef4ff; color: #164b9e; }

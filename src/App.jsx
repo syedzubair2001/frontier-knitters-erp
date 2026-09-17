@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import Masters from './pages/Masters';
 import Orders from './pages/Orders';
 import ModulePage from './pages/ModulePage';
@@ -21,6 +21,7 @@ import Adjustment from './pages/Adjustment';
 import Collection from './pages/Collection';
 import Payment from './pages/Payment';
 import Passing from './pages/Passing';
+import DocumentsTeam from './pages/DocumentsTeam';
 import { seedDefaultAdmin } from './auth';
 import './index.css';
 
@@ -33,7 +34,10 @@ export default function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/home" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/documents-team" element={<DocumentsTeam />} />
+          <Route path="/documents-team/:section" element={<DocumentsTeam />} />
           <Route path="/admin/role-documents" element={<RoleDocuments />} />
           <Route path="/purchase/requisition" element={<Requisition />} />
           <Route path="/store/indent" element={<Indent />} />
@@ -69,7 +73,7 @@ export default function App() {
           <Route path="/masters/:sub" element={<Masters />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/module/:key" element={<ModulePage />} />
-          <Route path="*" element={<Home />} />
+          <Route path="*" element={<Dashboard />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>

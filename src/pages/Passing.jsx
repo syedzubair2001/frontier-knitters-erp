@@ -77,7 +77,7 @@ export default function Passing() {
     process: 'Yarn Dyeing',
     supInvNo: 'All',
     invoiceNo: 'All',
-    fromDate: new Date().toISOString().split('T')[0],
+    fromDate: '',
     remarks: '',
     invoiceDetails: DEFAULT_INVOICE_DETAILS,
     poDetails: DEFAULT_PO_DETAILS,
@@ -187,7 +187,7 @@ export default function Passing() {
       process: 'Yarn Dyeing',
       supInvNo: 'All',
       invoiceNo: 'All',
-      fromDate: new Date().toISOString().split('T')[0],
+      fromDate: '',
       remarks: '',
       invoiceDetails: JSON.parse(JSON.stringify(DEFAULT_INVOICE_DETAILS)),
       poDetails: JSON.parse(JSON.stringify(DEFAULT_PO_DETAILS)),
@@ -852,7 +852,7 @@ export default function Passing() {
 
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>
-                  {formData.partyType} Dropdown *
+                  {formData.partyType} *
                 </label>
                 <select
                   value={formData.party}
@@ -869,10 +869,10 @@ export default function Passing() {
               </div>
             </div>
 
-            {/* Header Row 2: Invoice Type, Entered By, Item Type, Process */}
+            {/* Header Row 2: Invoice Type, Entered By, Item Type, Process, Sup Inv No, Invoice No, From Date */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 24, backgroundColor: '#ffffff', padding: 16, borderRadius: 6, border: '1px solid #e2e8f0' }}>
               <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Invoice Type Dropdown</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Invoice Type</label>
                 <select
                   value={formData.invoiceType}
                   disabled={viewMode === 'view'}
@@ -886,7 +886,7 @@ export default function Passing() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Entered By Dropdown</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Entered By</label>
                 <select
                   value={formData.enteredBy}
                   disabled={viewMode === 'view'}
@@ -900,7 +900,7 @@ export default function Passing() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Item Type Dropdown</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Item Type</label>
                 <select
                   value={formData.itemType}
                   disabled={viewMode === 'view'}
@@ -914,7 +914,7 @@ export default function Passing() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Process Dropdown</label>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Process</label>
                 <select
                   value={formData.process}
                   disabled={viewMode === 'view'}
@@ -925,6 +925,46 @@ export default function Passing() {
                     <option key={p} value={p}>{p}</option>
                   ))}
                 </select>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Sup Inv No</label>
+                <select
+                  value={formData.supInvNo}
+                  disabled={viewMode === 'view'}
+                  onChange={(e) => handleFormChange('supInvNo', e.target.value)}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
+                >
+                  {PASSING_SUP_INV_NOS.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Invoice No</label>
+                <select
+                  value={formData.invoiceNo}
+                  disabled={viewMode === 'view'}
+                  onChange={(e) => handleFormChange('invoiceNo', e.target.value)}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
+                >
+                  {PASSING_INVOICE_NOS.map((inv) => (
+                    <option key={inv} value={inv}>{inv}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>From</label>
+                <input
+                  type="text"
+                  placeholder="Enter From"
+                  value={formData.fromDate}
+                  disabled={viewMode === 'view'}
+                  onChange={(e) => handleFormChange('fromDate', e.target.value)}
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
+                />
               </div>
             </div>
 

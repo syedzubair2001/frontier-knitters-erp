@@ -17,7 +17,7 @@ export default function Login() {
     const res = login(username, password, role);
     setMsg(res.msg);
     setErr(!res.ok);
-    if (res.ok) setTimeout(() => nav('/home'), 900);
+    if (res.ok) setTimeout(() => nav('/dashboard'), 900);
   };
 
   return (
