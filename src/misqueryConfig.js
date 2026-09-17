@@ -16,6 +16,8 @@ export const MISQUERY_MENU = [
           { key: 'stores-indent', label: 'STORES INDENT', icon: '📋', route: '/misquery/stores-indent' },
           { key: 'stores-issue', label: 'STORES ISSUE', icon: '📤', route: '/misquery/stores-issue' },
           { key: 'stock', label: 'STOCK', icon: '📦', route: '/misquery/stock' },
+          { key: 'work-in-progress', label: 'WORK IN PROGRESS', icon: '⏳', route: '/misquery/work-in-progress' },
+          { key: 'day-book', label: 'DAY BOOK', icon: '📖', route: '/misquery/day-book' },
         ],
       },
     ],
@@ -50,6 +52,9 @@ export const ITEM_CATEGORY_LIST = ['--Select--', 'Category 1', 'Category 2'];
 export const PROCESS_LIST = ['--Select--', 'Knitting', 'Dyeing', 'Printing'];
 export const SUB_GROUP_LIST = ['--Select--', 'Sub Group A', 'Sub Group B'];
 export const STOCK_TYPE_LIST = ['--Select--', 'Fresh', 'Damage', 'Scrap'];
+export const ORDER_CATEGORY_LIST = ['--Select--', 'Category A', 'Category B'];
+export const PROCESSOR_LIST = ['--Select--', 'Processor 1', 'Processor 2'];
+export const COORDINATOR_LIST = ['--Select--', 'Coord A', 'Coord B'];
 
 // Dummy data for the Order Summary table
 export const INITIAL_ORDER_SUMMARY = [

@@ -26,6 +26,8 @@ import MisqueryOrderSummary from './pages/MisqueryOrderSummary';
 import MisqueryStoresIndent from './pages/MisqueryStoresIndent';
 import MisqueryStoresIssue from './pages/MisqueryStoresIssue';
 import MisqueryStock from './pages/MisqueryStock';
+import MisqueryWip from './pages/MisqueryWip';
+import MisqueryDayBook from './pages/MisqueryDayBook';
 import { seedDefaultAdmin } from './auth';
 import './index.css';
 
@@ -44,6 +46,8 @@ export default function App() {
           <Route path="/misquery/stores-indent" element={<MisqueryStoresIndent />} />
           <Route path="/misquery/stores-issue" element={<MisqueryStoresIssue />} />
           <Route path="/misquery/stock" element={<MisqueryStock />} />
+          <Route path="/misquery/work-in-progress" element={<MisqueryWip />} />
+          <Route path="/misquery/day-book" element={<MisqueryDayBook />} />
           <Route path="/documents-team" element={<DocumentsTeam />} />
           <Route path="/documents-team/:section" element={<DocumentsTeam />} />
           <Route path="/admin/role-documents" element={<RoleDocuments />} />
