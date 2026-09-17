@@ -50,6 +50,7 @@ export const ROLE_DOCUMENTS = [
   { key: 'day-book', label: 'Misquery — Day Book' },
   { key: 'work-flow', label: 'Misquery — Work Flow', group: true },
   { key: 'workflow-order-summary', label: 'Misquery — Work Flow — Order Summary' },
+  { key: 'workflow-summary', label: 'Misquery — Work Flow — Summary' },
   { key: 'documents-team', label: 'Documents Team', group: true },
   { key: 'order-booking', label: 'Documents Team — Order & Booking' },
   { key: 'invoice-shipment', label: 'Documents Team — Invoice & Shipment' },
@@ -106,6 +107,7 @@ function defaults() {
           d.key === 'day-book' ||
           d.key === 'work-flow' ||
           d.key === 'workflow-order-summary' ||
+          d.key === 'workflow-summary' ||
           docTeamKeys.includes(d.key)
         );
       } else if (r === ROLES.STORE_KEEPER) {
@@ -170,7 +172,7 @@ export function canUseRole(role, docKey) {
     return true;
   }
   
-  if ((role === 'DOCUMENT' || role === ROLES.DOCUMENT) && (docKey === 'misquery' || docKey === 'tracking' || docKey === 'stores-indent' || docKey === 'stores-issue' || docKey === 'stock' || docKey === 'work-in-progress' || docKey === 'day-book' || docKey === 'work-flow' || docKey === 'workflow-order-summary')) {
+  if ((role === 'DOCUMENT' || role === ROLES.DOCUMENT) && (docKey === 'misquery' || docKey === 'tracking' || docKey === 'stores-indent' || docKey === 'stores-issue' || docKey === 'stock' || docKey === 'work-in-progress' || docKey === 'day-book' || docKey === 'work-flow' || docKey === 'workflow-order-summary' || docKey === 'workflow-summary')) {
     return true;
   }
 
@@ -213,6 +215,7 @@ export function docKeyFor(menuKey) {
     'day-book': 'day-book',
     'work-flow': 'misquery',
     'workflow-order-summary': 'workflow-order-summary',
+    'workflow-summary': 'workflow-summary',
   };
   return map[menuKey] || null;
 }
