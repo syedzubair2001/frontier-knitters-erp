@@ -28,6 +28,7 @@ import MisqueryStoresIssue from './pages/MisqueryStoresIssue';
 import MisqueryStock from './pages/MisqueryStock';
 import MisqueryWip from './pages/MisqueryWip';
 import MisqueryDayBook from './pages/MisqueryDayBook';
+import MisqueryWorkflowOrderSummary from './pages/MisqueryWorkflowOrderSummary';
 import { seedDefaultAdmin } from './auth';
 import './index.css';
 
@@ -48,6 +49,7 @@ export default function App() {
           <Route path="/misquery/stock" element={<MisqueryStock />} />
           <Route path="/misquery/work-in-progress" element={<MisqueryWip />} />
           <Route path="/misquery/day-book" element={<MisqueryDayBook />} />
+          <Route path="/misquery/workflow-order-summary" element={<MisqueryWorkflowOrderSummary />} />
           <Route path="/documents-team" element={<DocumentsTeam />} />
           <Route path="/documents-team/:section" element={<DocumentsTeam />} />
           <Route path="/admin/role-documents" element={<RoleDocuments />} />

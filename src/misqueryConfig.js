@@ -20,6 +20,12 @@ export const MISQUERY_MENU = [
           { key: 'day-book', label: 'DAY BOOK', icon: '📖', route: '/misquery/day-book' },
         ],
       },
+      {
+        group: true, key: 'work-flow', label: 'WORK FLOW', icon: '🔄',
+        children: [
+          { key: 'workflow-order-summary', label: 'ORDER SUMMARY', icon: '📝', route: '/misquery/workflow-order-summary' },
+        ],
+      },
     ],
   },
 ];
@@ -55,6 +61,7 @@ export const STOCK_TYPE_LIST = ['--Select--', 'Fresh', 'Damage', 'Scrap'];
 export const ORDER_CATEGORY_LIST = ['--Select--', 'Category A', 'Category B'];
 export const PROCESSOR_LIST = ['--Select--', 'Processor 1', 'Processor 2'];
 export const COORDINATOR_LIST = ['--Select--', 'Coord A', 'Coord B'];
+
 
 // Dummy data for the Order Summary table
 export const INITIAL_ORDER_SUMMARY = [
