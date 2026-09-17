@@ -517,7 +517,7 @@ export default function DocumentsTeam() {
             )}
 
             {/* TAB 6: Transport */}
-            {activeSection === 'transport' && (
+            {activeSection === 'doc-transport' && (
               <table style={{ width: '100%', minWidth: 1300, borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead>
                   <tr style={{ backgroundColor: '#f1f5f9', borderBottom: '1px solid #cbd5e1' }}>

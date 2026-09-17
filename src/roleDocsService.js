@@ -47,7 +47,7 @@ export const ROLE_DOCUMENTS = [
   { key: 'shipping-bill', label: 'Documents Team — Shipping Bill' },
   { key: 'forwarding', label: 'Documents Team — Forwarding' },
   { key: 'clearing', label: 'Documents Team — Clearing' },
-  { key: 'transport', label: 'Documents Team — Transport' },
+  { key: 'doc-transport', label: 'Documents Team — Transport' },
   { key: 'fob-cost', label: 'Documents Team — FOB Cost' },
   { key: 'payment-realisation', label: 'Documents Team — Payment & Realisation' },
   { key: 'foreign-currency', label: 'Documents Team — Foreign Currency' },
@@ -66,7 +66,7 @@ function defaults() {
   const map = {};
   const docTeamKeys = [
     'documents-team', 'order-booking', 'invoice-shipment', 'shipping-bill',
-    'forwarding', 'clearing', 'transport', 'fob-cost', 'payment-realisation',
+    'forwarding', 'clearing', 'doc-transport', 'fob-cost', 'payment-realisation',
     'foreign-currency', 'brc', 'documents-reports',
   ];
   roleOptions().forEach((r) => {
@@ -141,7 +141,7 @@ export function canUseRole(role, docKey) {
   
   const docTeamKeys = [
     'documents-team', 'order-booking', 'invoice-shipment', 'shipping-bill',
-    'forwarding', 'clearing', 'transport', 'fob-cost', 'payment-realisation',
+    'forwarding', 'clearing', 'doc-transport', 'fob-cost', 'payment-realisation',
     'foreign-currency', 'brc', 'documents-reports',
   ];
   if ((role === 'DOCUMENT' || role === ROLES.DOCUMENT) && docTeamKeys.includes(docKey)) {
@@ -173,7 +173,7 @@ export function docKeyFor(menuKey) {
     'shipping-bill': 'shipping-bill',
     'forwarding': 'forwarding',
     'clearing': 'clearing',
-    'transport': 'transport',
+    'doc-transport': 'doc-transport',
     'fob-cost': 'fob-cost',
     'payment-realisation': 'payment-realisation',
     'foreign-currency': 'foreign-currency',

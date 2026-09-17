@@ -8,7 +8,7 @@ export const DOCUMENTS_TEAM_SECTIONS = [
   { key: 'shipping-bill', label: 'Shipping Bill', icon: '📄' },
   { key: 'forwarding', label: 'Forwarding', icon: '🚢' },
   { key: 'clearing', label: 'Clearing', icon: '🚚' },
-  { key: 'transport', label: 'Transport', icon: '🚛' },
+  { key: 'doc-transport', label: 'Transport', icon: '🚛' },
   { key: 'fob-cost', label: 'FOB Cost', icon: '📊' },
   { key: 'payment-realisation', label: 'Payment & Realisation', icon: '💰' },
   { key: 'foreign-currency', label: 'Foreign Currency', icon: '💱' },
