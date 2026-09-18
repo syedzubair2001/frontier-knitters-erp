@@ -26,6 +26,8 @@ export const MISQUERY_MENU = [
           { key: 'workflow-order-summary', label: 'ORDER SUMMARY', icon: '📝', route: '/misquery/workflow-order-summary' },
           { key: 'workflow-summary', label: 'SUMMARY', icon: '📊', route: '/misquery/workflow-summary' },
           { key: 'workflow-pending-orders', label: 'PENDING ORDERS', icon: '⏳', route: '/misquery/workflow-pending-orders' },
+          { key: 'workflow-process-iss-rec', label: 'PROCESS/ISS/REC', icon: '🔁', route: '/misquery/workflow-process-iss-rec' },
+          { key: 'workflow-receipt-status', label: 'RECEIPT STATUS', icon: '🧾', route: '/misquery/workflow-receipt-status' },
         ],
       },
     ],
@@ -63,6 +65,9 @@ export const STOCK_TYPE_LIST = ['--Select--', 'Fresh', 'Damage', 'Scrap'];
 export const ORDER_CATEGORY_LIST = ['--Select--', 'Category A', 'Category B'];
 export const PROCESSOR_LIST = ['--Select--', 'Processor 1', 'Processor 2'];
 export const COORDINATOR_LIST = ['--Select--', 'Coord A', 'Coord B'];
+export const SEASON_LIST = ['-- All --', 'Spring 2026', 'Summer 2026', 'Autumn 2026', 'Winter 2026'];
+export const STYLE_GROUP_LIST = ['-- All --', 'Knits', 'Woven', 'Denim', 'Jersey'];
+export const BUYER_LIST = ['-- All --', 'Nike Global', 'Adidas', 'Puma', 'H&M', 'Zara'];
 
 
 // Dummy data for the Order Summary table
