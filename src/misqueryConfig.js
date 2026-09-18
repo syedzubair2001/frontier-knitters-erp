@@ -37,6 +37,7 @@ export const MISQUERY_MENU = [
         children: [
           { key: 'logistics-order-summary', label: 'ORDER SUMMARY', icon: '📝', route: '/misquery/logistics-order-summary' },
           { key: 'logistics-invoice-summary', label: 'INVOICE SUMMARY', icon: '🧾', route: '/misquery/logistics-invoice-summary' },
+          { key: 'register-invoice-register', label: 'INVOICE REGISTER', icon: '📓', route: '/misquery/register-invoice-register' },
         ],
       },
     ],
@@ -85,9 +86,86 @@ export const SYSTEM_LIST = ['-- All --', 'System A', 'System B', 'System C'];
 export const PORT_OF_LOADING_LIST = ['-- All --', 'Nhava Sheva', 'Mundra', 'Chennai', 'Kolkata', 'Cochin'];
 export const PORT_OF_DISCHARGE_LIST = ['-- All --', 'New York', 'Rotterdam', 'Hamburg', 'Singapore', 'Dubai'];
 export const DESTINATION_LIST = ['-- All --', 'USA', 'UK', 'Germany', 'Netherlands', 'Australia', 'Canada'];
+export const COUNTRY_LIST = ['-- All --', 'USA', 'UK', 'Germany', 'Bangladesh', 'Sri Lanka', 'China', 'India', 'UAE', 'Turkey'];
 
 
 // Dummy data for the Order Summary table
+// Dummy data for the Invoice Register table (Misquery > Register > Invoice Register)
+export const INITIAL_INVOICE_REGISTER = [
+  {
+    id: 'invreg-1',
+    sNo: '1',
+    invoiceNo: 'EXP-INV-2026-101',
+    orderNo: 'ORD-2026-4401',
+    refNo: 'REF-9901',
+    company: 'FRONTIER KNITTERS (P) LTD',
+    customer: 'Nike Global',
+    country: 'USA',
+    despatchDate: '2026-09-10',
+    status: 'Active',
+  },
+  {
+    id: 'invreg-2',
+    sNo: '2',
+    invoiceNo: 'EXP-INV-2026-102',
+    orderNo: 'ORD-2026-4402',
+    refNo: 'REF-9902',
+    company: 'FRONTIER FASHIONS',
+    customer: 'Adidas',
+    country: 'Germany',
+    despatchDate: '2026-09-12',
+    status: 'Active',
+  },
+  {
+    id: 'invreg-3',
+    sNo: '3',
+    invoiceNo: 'EXP-INV-2026-103',
+    orderNo: 'ORD-2026-4403',
+    refNo: 'REF-9903',
+    company: 'FRONTIER KNITTERS (P) LTD',
+    customer: 'Puma',
+    country: 'UK',
+    despatchDate: '2026-09-14',
+    status: 'Closed',
+  },
+  {
+    id: 'invreg-4',
+    sNo: '4',
+    invoiceNo: 'EXP-INV-2026-104',
+    orderNo: 'ORD-2026-4404',
+    refNo: 'REF-9904',
+    company: 'FRONTIER PRINTING',
+    customer: 'H&M',
+    country: 'China',
+    despatchDate: '2026-09-16',
+    status: 'Valid',
+  },
+  {
+    id: 'invreg-5',
+    sNo: '5',
+    invoiceNo: 'EXP-INV-2026-105',
+    orderNo: 'ORD-2026-4405',
+    refNo: 'REF-9905',
+    company: 'FRONTIER FASHIONS',
+    customer: 'Zara',
+    country: 'India',
+    despatchDate: '2026-09-18',
+    status: 'Cancel',
+  },
+  {
+    id: 'invreg-6',
+    sNo: '6',
+    invoiceNo: 'EXP-INV-2026-106',
+    orderNo: 'ORD-2026-4406',
+    refNo: 'REF-9906',
+    company: 'FRONTIER KNITTERS (P) LTD',
+    customer: 'Nike Global',
+    country: 'UAE',
+    despatchDate: '2026-09-20',
+    status: 'Active',
+  },
+];
+
 export const INITIAL_ORDER_SUMMARY = [
   {
     id: 'os-1',
