@@ -32,6 +32,12 @@ export const MISQUERY_MENU = [
           { key: 'workflow-production-summary', label: 'PRODUCTION SUMMARY', icon: '🏭', route: '/misquery/workflow-production-summary' },
         ],
       },
+      {
+        group: true, key: 'logistics', label: 'LOGISTICS', icon: '🚢',
+        children: [
+          { key: 'logistics-order-summary', label: 'ORDER SUMMARY', icon: '📝', route: '/misquery/logistics-order-summary' },
+        ],
+      },
     ],
   },
 ];
@@ -70,6 +76,11 @@ export const COORDINATOR_LIST = ['--Select--', 'Coord A', 'Coord B'];
 export const SEASON_LIST = ['-- All --', 'Spring 2026', 'Summer 2026', 'Autumn 2026', 'Winter 2026'];
 export const STYLE_GROUP_LIST = ['-- All --', 'Knits', 'Woven', 'Denim', 'Jersey'];
 export const BUYER_LIST = ['-- All --', 'Nike Global', 'Adidas', 'Puma', 'H&M', 'Zara'];
+export const CONSIGNEE_LIST = ['-- All --', 'Consignee A', 'Consignee B', 'Consignee C'];
+export const AGENT_LIST = ['-- All --', 'Agent 1', 'Agent 2', 'Agent 3'];
+export const SHIPMENT_MODE_LIST = ['-- All --', 'Sea', 'Air', 'Courier', 'Road', 'Rail'];
+export const CURRENCY_LIST = ['-- All --', 'USD', 'EUR', 'GBP', 'INR', 'AED'];
+export const SYSTEM_LIST = ['-- All --', 'System A', 'System B', 'System C'];
 
 
 // Dummy data for the Order Summary table
