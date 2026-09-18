@@ -41,6 +41,7 @@ import MisqueryInvoiceRegister from './pages/MisqueryInvoiceRegister';
 import MisqueryLogisticsInvoiceDetail from './pages/MisqueryLogisticsInvoiceDetail';
 import MisqueryLogisticsDespatchStatement from './pages/MisqueryLogisticsDespatchStatement';
 import MisqueryLogisticsCommissionRegister from './pages/MisqueryLogisticsCommissionRegister';
+import MisqueryLogisticsInvProfitStatement from './pages/MisqueryLogisticsInvProfitStatement';
 import { seedDefaultAdmin } from './auth';
 import './index.css';
 
@@ -74,6 +75,7 @@ export default function App() {
           <Route path="/misquery/logistics-invoice-detail" element={<MisqueryLogisticsInvoiceDetail />} />
           <Route path="/misquery/logistics-despatch-statement" element={<MisqueryLogisticsDespatchStatement />} />
           <Route path="/misquery/logistics-commission-register" element={<MisqueryLogisticsCommissionRegister />} />
+          <Route path="/misquery/logistics-inv-profit-statement" element={<MisqueryLogisticsInvProfitStatement />} />
           <Route path="/documents-team" element={<DocumentsTeam />} />
           <Route path="/documents-team/:section" element={<DocumentsTeam />} />
           <Route path="/admin/role-documents" element={<RoleDocuments />} />
