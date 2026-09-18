@@ -28,6 +28,8 @@ export const MISQUERY_MENU = [
           { key: 'workflow-pending-orders', label: 'PENDING ORDERS', icon: '⏳', route: '/misquery/workflow-pending-orders' },
           { key: 'workflow-process-iss-rec', label: 'PROCESS/ISS/REC', icon: '🔁', route: '/misquery/workflow-process-iss-rec' },
           { key: 'workflow-receipt-status', label: 'RECEIPT STATUS', icon: '🧾', route: '/misquery/workflow-receipt-status' },
+          { key: 'workflow-issue-summary', label: 'ISSUE SUMMARY', icon: '📌', route: '/misquery/workflow-issue-summary' },
+          { key: 'workflow-production-summary', label: 'PRODUCTION SUMMARY', icon: '🏭', route: '/misquery/workflow-production-summary' },
         ],
       },
     ],

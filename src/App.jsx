@@ -33,6 +33,8 @@ import MisqueryWorkflowSummary from './pages/MisqueryWorkflowSummary';
 import MisqueryWorkflowPendingOrders from './pages/MisqueryWorkflowPendingOrders';
 import MisqueryWorkflowProcessIssRec from './pages/MisqueryWorkflowProcessIssRec';
 import MisqueryWorkflowReceiptStatus from './pages/MisqueryWorkflowReceiptStatus';
+import MisqueryWorkflowIssueSummary from './pages/MisqueryWorkflowIssueSummary';
+import MisqueryWorkflowProductionSummary from './pages/MisqueryWorkflowProductionSummary';
 import { seedDefaultAdmin } from './auth';
 import './index.css';
 
@@ -58,6 +60,8 @@ export default function App() {
           <Route path="/misquery/workflow-pending-orders" element={<MisqueryWorkflowPendingOrders />} />
           <Route path="/misquery/workflow-process-iss-rec" element={<MisqueryWorkflowProcessIssRec />} />
           <Route path="/misquery/workflow-receipt-status" element={<MisqueryWorkflowReceiptStatus />} />
+          <Route path="/misquery/workflow-issue-summary" element={<MisqueryWorkflowIssueSummary />} />
+          <Route path="/misquery/workflow-production-summary" element={<MisqueryWorkflowProductionSummary />} />
           <Route path="/documents-team" element={<DocumentsTeam />} />
           <Route path="/documents-team/:section" element={<DocumentsTeam />} />
           <Route path="/admin/role-documents" element={<RoleDocuments />} />

@@ -54,6 +54,8 @@ export const ROLE_DOCUMENTS = [
   { key: 'workflow-pending-orders', label: 'Misquery — Work Flow — Pending Orders' },
   { key: 'workflow-process-iss-rec', label: 'Misquery — Work Flow — Process/Iss/Rec' },
   { key: 'workflow-receipt-status', label: 'Misquery — Work Flow — Receipt Status' },
+  { key: 'workflow-issue-summary', label: 'Misquery — Work Flow — Issue Summary' },
+  { key: 'workflow-production-summary', label: 'Misquery — Work Flow — Production Summary' },
   { key: 'documents-team', label: 'Documents Team', group: true },
   { key: 'order-booking', label: 'Documents Team — Order & Booking' },
   { key: 'invoice-shipment', label: 'Documents Team — Invoice & Shipment' },
@@ -114,6 +116,8 @@ function defaults() {
           d.key === 'workflow-pending-orders' ||
           d.key === 'workflow-process-iss-rec' ||
           d.key === 'workflow-receipt-status' ||
+          d.key === 'workflow-issue-summary' ||
+          d.key === 'workflow-production-summary' ||
           docTeamKeys.includes(d.key)
         );
       } else if (r === ROLES.STORE_KEEPER) {
@@ -178,7 +182,7 @@ export function canUseRole(role, docKey) {
     return true;
   }
   
-  if ((role === 'DOCUMENT' || role === ROLES.DOCUMENT) && (docKey === 'misquery' || docKey === 'tracking' || docKey === 'stores-indent' || docKey === 'stores-issue' || docKey === 'stock' || docKey === 'work-in-progress' || docKey === 'day-book' || docKey === 'work-flow' || docKey === 'workflow-order-summary' || docKey === 'workflow-summary' || docKey === 'workflow-pending-orders' || docKey === 'workflow-process-iss-rec' || docKey === 'workflow-receipt-status')) {
+  if ((role === 'DOCUMENT' || role === ROLES.DOCUMENT) && (docKey === 'misquery' || docKey === 'tracking' || docKey === 'stores-indent' || docKey === 'stores-issue' || docKey === 'stock' || docKey === 'work-in-progress' || docKey === 'day-book' || docKey === 'work-flow' || docKey === 'workflow-order-summary' || docKey === 'workflow-summary' || docKey === 'workflow-pending-orders' || docKey === 'workflow-process-iss-rec' || docKey === 'workflow-receipt-status' || docKey === 'workflow-issue-summary' || docKey === 'workflow-production-summary')) {
     return true;
   }
 
@@ -225,6 +229,8 @@ export function docKeyFor(menuKey) {
     'workflow-pending-orders': 'workflow-pending-orders',
     'workflow-process-iss-rec': 'workflow-process-iss-rec',
     'workflow-receipt-status': 'workflow-receipt-status',
+    'workflow-issue-summary': 'workflow-issue-summary',
+    'workflow-production-summary': 'workflow-production-summary',
   };
   return map[menuKey] || null;
 }
