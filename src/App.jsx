@@ -39,6 +39,7 @@ import MisqueryLogisticsOrderSummary from './pages/MisqueryLogisticsOrderSummary
 import MisqueryLogisticsInvoiceSummary from './pages/MisqueryLogisticsInvoiceSummary';
 import MisqueryInvoiceRegister from './pages/MisqueryInvoiceRegister';
 import MisqueryLogisticsInvoiceDetail from './pages/MisqueryLogisticsInvoiceDetail';
+import MisqueryLogisticsDespatchStatement from './pages/MisqueryLogisticsDespatchStatement';
 import { seedDefaultAdmin } from './auth';
 import './index.css';
 
@@ -70,6 +71,7 @@ export default function App() {
           <Route path="/misquery/logistics-invoice-summary" element={<MisqueryLogisticsInvoiceSummary />} />
           <Route path="/misquery/register-invoice-register" element={<MisqueryInvoiceRegister />} />
           <Route path="/misquery/logistics-invoice-detail" element={<MisqueryLogisticsInvoiceDetail />} />
+          <Route path="/misquery/logistics-despatch-statement" element={<MisqueryLogisticsDespatchStatement />} />
           <Route path="/documents-team" element={<DocumentsTeam />} />
           <Route path="/documents-team/:section" element={<DocumentsTeam />} />
           <Route path="/admin/role-documents" element={<RoleDocuments />} />
