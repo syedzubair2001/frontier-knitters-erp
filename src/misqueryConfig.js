@@ -36,6 +36,7 @@ export const MISQUERY_MENU = [
         group: true, key: 'logistics', label: 'LOGISTICS', icon: '🚢',
         children: [
           { key: 'logistics-order-summary', label: 'ORDER SUMMARY', icon: '📝', route: '/misquery/logistics-order-summary' },
+          { key: 'logistics-invoice-summary', label: 'INVOICE SUMMARY', icon: '🧾', route: '/misquery/logistics-invoice-summary' },
         ],
       },
     ],
@@ -81,6 +82,9 @@ export const AGENT_LIST = ['-- All --', 'Agent 1', 'Agent 2', 'Agent 3'];
 export const SHIPMENT_MODE_LIST = ['-- All --', 'Sea', 'Air', 'Courier', 'Road', 'Rail'];
 export const CURRENCY_LIST = ['-- All --', 'USD', 'EUR', 'GBP', 'INR', 'AED'];
 export const SYSTEM_LIST = ['-- All --', 'System A', 'System B', 'System C'];
+export const PORT_OF_LOADING_LIST = ['-- All --', 'Nhava Sheva', 'Mundra', 'Chennai', 'Kolkata', 'Cochin'];
+export const PORT_OF_DISCHARGE_LIST = ['-- All --', 'New York', 'Rotterdam', 'Hamburg', 'Singapore', 'Dubai'];
+export const DESTINATION_LIST = ['-- All --', 'USA', 'UK', 'Germany', 'Netherlands', 'Australia', 'Canada'];
 
 
 // Dummy data for the Order Summary table
