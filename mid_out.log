@@ -1,0 +1,47 @@
+TOTAL_LINES=184
+89|   };
+90| 
+91|   const radioDropdown = (label, active, setActive, value, setValue, options) => (
+92|     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+93|       <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#334155', cursor: 'pointer', minWidth: 90 }}>
+94|         <input type="radio" checked={active} onChange={() => setActive(!active)} onClick={() => setActive(!active)} />
+95|         {label}
+96|       </label>
+97|       <select className="inp" value={value} onChange={(e) => setValue(e.target.value)} style={{ flex: 1 }}>
+98|         {options.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+99|       </select>
+100|     </div>
+101|   );
+102| 
+103|   return (
+104|     <div style={{ fontFamily: 'Inter, sans-serif', color: '#1e293b', backgroundColor: '#f8fafc', minHeight: '100vh' }}>
+105|       <Navbar session={session} />
+106| 
+107|       <main style={{ maxWidth: 1500, margin: '0 auto', padding: '24px 20px 60px' }}>
+108|         <h1 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', margin: '0 0 20px 0', display: 'flex', alignItems: 'center', gap: 10 }}>
+109|           🧾 Invoice/Summary
+110|         </h1>
+111| {/* QUERY OPTIONS FORM */}
+112|         {!submitted && (
+113|           <form onSubmit={handleSubmit} style={{ backgroundColor: '#ffffff', borderRadius: 8, padding: '20px 24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', border: '1px solid #e2e8f0', marginBottom: 24 }}>
+114|             <h2 style={{ fontSize: 16, fontWeight: 700, color: '#1e3a8a', margin: '0 0 16px 0', borderBottom: '1px solid #e2e8f0', paddingBottom: 10 }}>
+115|               Query Options <span style={{ fontSize: 13, color: '#64748b', fontWeight: 500, marginLeft: 10 }}>Fields ➔</span>
+116|             </h2>
+117| 
+118|             {/* Row 1 — Radio + Dropdown combos */}
+119|             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px 24px', marginBottom: 20, backgroundColor: '#f1f5f9', padding: 16, borderRadius: 8 }}>
+120|               {radioDropdown('Company', activeCompany, setActiveCompany, company, setCompany, INVOICE_DETAIL_COMPANY_LIST)}
+121|               {radioDropdown('Customer', activeCustomer, setActiveCustomer, customer, setCustomer, INVOICE_DETAIL_CUSTOMER_LIST)}
+122|             </div>
+123| 
+124|             {/* Row 2 — Wildcard text inputs */}
+125|             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
+126|               <div className="field">
+127|                 <label>Order No (%)</label>
+128|                 <input type="text" className="inp" placeholder="e.g. ORD-2026-4501" value={orderNo} onChange={(e) => setOrderNo(e.target.value)} />
+129|               </div>
+130|               <div className="field">
+131|                 <label>Ref No (%)</label>
+132|                 <input type="text" className="inp" placeholder="e.g. REF-2101" value={refNo} onChange={(e) => setRefNo(e.target.value)} />
+133|               </div>
+134|               <div className="field">

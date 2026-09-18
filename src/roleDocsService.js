@@ -60,6 +60,7 @@ export const ROLE_DOCUMENTS = [
   { key: 'logistics-order-summary', label: 'Misquery — Logistics — Order Summary' },
   { key: 'logistics-invoice-summary', label: 'Misquery — Logistics — Invoice Summary' },
   { key: 'register-invoice-register', label: 'Misquery — Logistics — Invoice Register' },
+  { key: 'logistics-invoice-detail', label: 'Misquery — Logistics — Invoice Detail' },
   { key: 'documents-team', label: 'Documents Team', group: true },
   { key: 'order-booking', label: 'Documents Team — Order & Booking' },
   { key: 'invoice-shipment', label: 'Documents Team — Invoice & Shipment' },
@@ -126,6 +127,7 @@ function defaults() {
           d.key === 'logistics-order-summary' ||
           d.key === 'logistics-invoice-summary' ||
           d.key === 'register-invoice-register' ||
+          d.key === 'logistics-invoice-detail' ||
           docTeamKeys.includes(d.key)
         );
       } else if (r === ROLES.STORE_KEEPER) {
@@ -190,7 +192,7 @@ export function canUseRole(role, docKey) {
     return true;
   }
   
-  if ((role === 'DOCUMENT' || role === ROLES.DOCUMENT) && (docKey === 'misquery' || docKey === 'tracking' || docKey === 'stores-indent' || docKey === 'stores-issue' || docKey === 'stock' || docKey === 'work-in-progress' || docKey === 'day-book' || docKey === 'work-flow' || docKey === 'workflow-order-summary' || docKey === 'workflow-summary' || docKey === 'workflow-pending-orders' || docKey === 'workflow-process-iss-rec' || docKey === 'workflow-receipt-status' || docKey === 'workflow-issue-summary' || docKey === 'workflow-production-summary' || docKey === 'logistics' || docKey === 'logistics-order-summary' || docKey === 'logistics-invoice-summary' || docKey === 'register-invoice-register')) {
+  if ((role === 'DOCUMENT' || role === ROLES.DOCUMENT) && (docKey === 'misquery' || docKey === 'tracking' || docKey === 'stores-indent' || docKey === 'stores-issue' || docKey === 'stock' || docKey === 'work-in-progress' || docKey === 'day-book' || docKey === 'work-flow' || docKey === 'workflow-order-summary' || docKey === 'workflow-summary' || docKey === 'workflow-pending-orders' || docKey === 'workflow-process-iss-rec' || docKey === 'workflow-receipt-status' || docKey === 'workflow-issue-summary' || docKey === 'workflow-production-summary' || docKey === 'logistics' || docKey === 'logistics-order-summary' || docKey === 'logistics-invoice-summary' || docKey === 'register-invoice-register' || docKey === 'logistics-invoice-detail')) {
     return true;
   }
 
@@ -243,6 +245,7 @@ export function docKeyFor(menuKey) {
     'logistics-order-summary': 'logistics-order-summary',
     'logistics-invoice-summary': 'logistics-invoice-summary',
     'register-invoice-register': 'register-invoice-register',
+    'logistics-invoice-detail': 'logistics-invoice-detail',
   };
   return map[menuKey] || null;
 }
