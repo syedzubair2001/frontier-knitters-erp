@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ROLE_LIST } from '../roles';
 import { login } from '../auth';
 import AuthArt from '../components/AuthArt';
+import FrontierLogo from '../components/FrontierLogo';
+import { showLoading, hideLoading } from '../loading';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -14,10 +16,16 @@ export default function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    showLoading(); // loading animation while signing in + moving to the dashboard
     const res = login(username, password, role);
     setMsg(res.msg);
     setErr(!res.ok);
-    if (res.ok) setTimeout(() => nav('/dashboard'), 900);
+    if (res.ok) {
+      // stays spinning until the Dashboard screen has rendered
+      setTimeout(() => nav('/dashboard'), 900);
+    } else {
+      hideLoading(); // wrong credentials → stop the animation right away
+    }
   };
 
   return (
@@ -26,7 +34,7 @@ export default function Login() {
         <div className="auth-artwrap">
           <AuthArt />
           <div className="auth-artoverlay">
-            <div className="auth-logo">🧵</div>
+            <div className="auth-logo"><span className="logo-plate auth-logo-plate"><FrontierLogo height={30} /></span></div>
             <h1>Frontier Knitters Pvt Ltd</h1>
             <p>Garment Manufacturing & Export ERP System</p>
           </div>

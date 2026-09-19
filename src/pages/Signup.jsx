@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ROLE_LIST } from '../roles';
 import { signup } from '../auth';
 import AuthArt from '../components/AuthArt';
+import FrontierLogo from '../components/FrontierLogo';
+import { showLoading, hideLoading } from '../loading';
 
 export default function Signup() {
   const [username, setUsername] = useState('');
@@ -13,9 +15,15 @@ export default function Signup() {
 
   const handleSignup = (e) => {
     e.preventDefault();
+    showLoading(); // loading animation while creating the account
     const res = signup(username, password, role);
     setMsg(res.msg);
-    if (res.ok) setTimeout(() => nav('/login'), 1000);
+    if (res.ok) {
+      // stays spinning until the Login screen has rendered
+      setTimeout(() => nav('/login'), 1000);
+    } else {
+      hideLoading(); // e.g. username already taken → stop the animation
+    }
   };
 
   return (
@@ -24,7 +32,7 @@ export default function Signup() {
         <div className="auth-artwrap">
           <AuthArt />
           <div className="auth-artoverlay">
-            <div className="auth-logo">🧵</div>
+            <div className="auth-logo"><span className="logo-plate auth-logo-plate"><FrontierLogo height={30} /></span></div>
             <h1>Frontier Knitters Pvt Ltd</h1>
             <p>Create your account to enter the ERP system</p>
           </div>

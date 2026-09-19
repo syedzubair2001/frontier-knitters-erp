@@ -1,47 +1,51 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Masters from './pages/Masters';
-import Orders from './pages/Orders';
-import ModulePage from './pages/ModulePage';
-import CustomerList from './pages/CustomerList';
-import CustomerForm from './pages/CustomerForm';
-import Requisition from './pages/Requisition';
-import RoleDocuments from './pages/RoleDocuments';
-import Indent from './pages/Indent';
-import BillInward from './pages/BillInward';
-import GeneralInvoice from './pages/GeneralInvoice';
-import Despatch from './pages/Despatch';
-import ExportInvoice from './pages/ExportInvoice';
-import FinishWarehouseTransfer from './pages/FinishWarehouseTransfer';
-import Adjustment from './pages/Adjustment';
-import Collection from './pages/Collection';
-import Payment from './pages/Payment';
-import Passing from './pages/Passing';
-import DocumentsTeam from './pages/DocumentsTeam';
-import MisqueryOrderSummary from './pages/MisqueryOrderSummary';
-import MisqueryStoresIndent from './pages/MisqueryStoresIndent';
-import MisqueryStoresIssue from './pages/MisqueryStoresIssue';
-import MisqueryStock from './pages/MisqueryStock';
-import MisqueryWip from './pages/MisqueryWip';
-import MisqueryDayBook from './pages/MisqueryDayBook';
-import MisqueryWorkflowOrderSummary from './pages/MisqueryWorkflowOrderSummary';
-import MisqueryWorkflowSummary from './pages/MisqueryWorkflowSummary';
-import MisqueryWorkflowPendingOrders from './pages/MisqueryWorkflowPendingOrders';
-import MisqueryWorkflowProcessIssRec from './pages/MisqueryWorkflowProcessIssRec';
-import MisqueryWorkflowReceiptStatus from './pages/MisqueryWorkflowReceiptStatus';
-import MisqueryWorkflowIssueSummary from './pages/MisqueryWorkflowIssueSummary';
-import MisqueryWorkflowProductionSummary from './pages/MisqueryWorkflowProductionSummary';
-import MisqueryLogisticsOrderSummary from './pages/MisqueryLogisticsOrderSummary';
-import MisqueryLogisticsInvoiceSummary from './pages/MisqueryLogisticsInvoiceSummary';
-import MisqueryInvoiceRegister from './pages/MisqueryInvoiceRegister';
-import MisqueryLogisticsInvoiceDetail from './pages/MisqueryLogisticsInvoiceDetail';
-import MisqueryLogisticsDespatchStatement from './pages/MisqueryLogisticsDespatchStatement';
-import MisqueryLogisticsCommissionRegister from './pages/MisqueryLogisticsCommissionRegister';
-import MisqueryLogisticsInvProfitStatement from './pages/MisqueryLogisticsInvProfitStatement';
+import LoadingOverlay, { LoadingFallback } from './components/LoadingOverlay';
+
+// Screens are code-split: each one downloads on first visit, so the loading
+// animation covers the real load time (and shows clearly on a slow network).
+const Signup = lazy(() => import('./pages/Signup'));
+const Login = lazy(() => import('./pages/Login'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Masters = lazy(() => import('./pages/Masters'));
+const Orders = lazy(() => import('./pages/Orders'));
+const ModulePage = lazy(() => import('./pages/ModulePage'));
+const CustomerList = lazy(() => import('./pages/CustomerList'));
+const CustomerForm = lazy(() => import('./pages/CustomerForm'));
+const Requisition = lazy(() => import('./pages/Requisition'));
+const RoleDocuments = lazy(() => import('./pages/RoleDocuments'));
+const Indent = lazy(() => import('./pages/Indent'));
+const BillInward = lazy(() => import('./pages/BillInward'));
+const GeneralInvoice = lazy(() => import('./pages/GeneralInvoice'));
+const Despatch = lazy(() => import('./pages/Despatch'));
+const ExportInvoice = lazy(() => import('./pages/ExportInvoice'));
+const FinishWarehouseTransfer = lazy(() => import('./pages/FinishWarehouseTransfer'));
+const Adjustment = lazy(() => import('./pages/Adjustment'));
+const Collection = lazy(() => import('./pages/Collection'));
+const Payment = lazy(() => import('./pages/Payment'));
+const Passing = lazy(() => import('./pages/Passing'));
+const DocumentsTeam = lazy(() => import('./pages/DocumentsTeam'));
+const MisqueryOrderSummary = lazy(() => import('./pages/MisqueryOrderSummary'));
+const MisqueryStoresIndent = lazy(() => import('./pages/MisqueryStoresIndent'));
+const MisqueryStoresIssue = lazy(() => import('./pages/MisqueryStoresIssue'));
+const MisqueryStock = lazy(() => import('./pages/MisqueryStock'));
+const MisqueryWip = lazy(() => import('./pages/MisqueryWip'));
+const MisqueryDayBook = lazy(() => import('./pages/MisqueryDayBook'));
+const MisqueryWorkflowOrderSummary = lazy(() => import('./pages/MisqueryWorkflowOrderSummary'));
+const MisqueryWorkflowSummary = lazy(() => import('./pages/MisqueryWorkflowSummary'));
+const MisqueryWorkflowPendingOrders = lazy(() => import('./pages/MisqueryWorkflowPendingOrders'));
+const MisqueryWorkflowProcessIssRec = lazy(() => import('./pages/MisqueryWorkflowProcessIssRec'));
+const MisqueryWorkflowReceiptStatus = lazy(() => import('./pages/MisqueryWorkflowReceiptStatus'));
+const MisqueryWorkflowIssueSummary = lazy(() => import('./pages/MisqueryWorkflowIssueSummary'));
+const MisqueryWorkflowProductionSummary = lazy(() => import('./pages/MisqueryWorkflowProductionSummary'));
+const MisqueryLogisticsOrderSummary = lazy(() => import('./pages/MisqueryLogisticsOrderSummary'));
+const MisqueryLogisticsInvoiceSummary = lazy(() => import('./pages/MisqueryLogisticsInvoiceSummary'));
+const MisqueryInvoiceRegister = lazy(() => import('./pages/MisqueryInvoiceRegister'));
+const MisqueryLogisticsInvoiceDetail = lazy(() => import('./pages/MisqueryLogisticsInvoiceDetail'));
+const MisqueryLogisticsDespatchStatement = lazy(() => import('./pages/MisqueryLogisticsDespatchStatement'));
+const MisqueryLogisticsCommissionRegister = lazy(() => import('./pages/MisqueryLogisticsCommissionRegister'));
+const MisqueryLogisticsInvProfitStatement = lazy(() => import('./pages/MisqueryLogisticsInvProfitStatement'));
 import { seedDefaultAdmin } from './auth';
 import './index.css';
 
@@ -50,7 +54,9 @@ export default function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
-        <Routes>
+        <LoadingOverlay />
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
@@ -115,6 +121,7 @@ export default function App() {
           <Route path="/module/:key" element={<ModulePage />} />
           <Route path="*" element={<Dashboard />} />
         </Routes>
+        </Suspense>
       </BrowserRouter>
     </ErrorBoundary>
   );

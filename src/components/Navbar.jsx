@@ -9,6 +9,8 @@ import { DOCUMENTS_TEAM_MENU } from '../documentsTeamConfig';
 import { MISQUERY_MENU } from '../misqueryConfig';
 import { ROLES } from '../roles';
 import { canUseRole, docKeyFor } from '../roleDocsService';
+import { withLoading } from '../loading';
+import FrontierLogo from './FrontierLogo';
 
 // Nested sub-menu (e.g. MASTER > PARTY ⇢ CUSTOMER / CONSIGNEE / SUPPLIER / BANK / TRANSPORT)
 function MasterGroup({ item, onNav }) {
@@ -116,7 +118,10 @@ export default function Navbar({ session }) {
   return (
     <header className="navbar">
       <div className="nav-left">
-        <Link to="/dashboard" className="brand">🧵 Frontier Knitters</Link>
+        <Link to="/dashboard" className="brand">
+          <span className="logo-plate brand-logo"><FrontierLogo height={19} /></span>
+          Frontier Knitters
+        </Link>
         <span className="nav-sep">|</span>
         <Link to="/dashboard" className={'nav-link' + (path === '/dashboard' ? ' on' : '')}>📊 Dashboard</Link>
 
@@ -132,7 +137,7 @@ export default function Navbar({ session }) {
       <div className="nav-right">
         <div className="avatar">{session ? session.username.charAt(0).toUpperCase() : '?'}</div>
         <span className="badge role">{session ? `${session.username} · ${session.role}` : ''}</span>
-        <button className="btn-outline" onClick={() => { logout(); nav('/login'); }}>Logout</button>
+        <button className="btn-outline" onClick={withLoading(() => { logout(); nav('/login'); })}>Logout</button>
       </div>
     </header>
   );
