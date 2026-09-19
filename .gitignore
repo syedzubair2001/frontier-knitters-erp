@@ -2,7 +2,8 @@ node_modules
 dist
 dist-ssr
 *.local
-build-check.log
+*.log
+logs/
 codemod-blueselect.mjs
 .vite
 .vscode/*
