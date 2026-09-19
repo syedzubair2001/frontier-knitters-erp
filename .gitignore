@@ -5,6 +5,7 @@ dist-ssr
 *.log
 logs/
 codemod-blueselect.mjs
+package-lock.json
 .vite
 .vscode/*
 !.vscode/extensions.json
