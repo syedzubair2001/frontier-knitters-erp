@@ -8,6 +8,7 @@ import {
   REQUISITION_COLUMNS, ORDER_LOOKUP_COLUMNS,
 } from '../purchaseConfig';
 import { listRequisitions, saveRequisitions, loadOrderLookup } from '../requisitionService';
+import BlueSelect from '../components/BlueSelect';
 
 const PAGE_SIZE = 10;
 
@@ -128,24 +129,24 @@ export default function Requisition() {
             <div className="fpanel-row">
               <div className="field">
                 <label>Order Type</label>
-                <select value={orderTypeF} onChange={(e) => { setOrderTypeF(e.target.value); setPage(1); }}>
+                <BlueSelect value={orderTypeF} onChange={(e) => { setOrderTypeF(e.target.value); setPage(1); }}>
                   <option value="">— All —</option>
                   {ORDER_TYPES.map((o) => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Req Type</label>
-                <select value={reqTypeF} onChange={(e) => { setReqTypeF(e.target.value); setPage(1); }}>
+                <BlueSelect value={reqTypeF} onChange={(e) => { setReqTypeF(e.target.value); setPage(1); }}>
                   <option value="">— All —</option>
                   {REQ_TYPES.map((o) => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Unit</label>
-                <select value={unit} onChange={(e) => setUnit(e.target.value)}>
+                <BlueSelect value={unit} onChange={(e) => setUnit(e.target.value)}>
                   <option value="">— Select —</option>
                   {UNIT_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field"><label>From Date</label><input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} /></div>
               <div className="field"><label>To Date</label><input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} /></div>
@@ -191,9 +192,9 @@ export default function Requisition() {
 
           <div className="toolbar">
             <span className="icon-btn" title="Download">⬇️</span>
-            <select className="dsel" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
+            <BlueSelect className="dsel" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
               {PURCHASE_DOWNLOAD_TYPES.map((d) => <option key={d} value={d}>{d}</option>)}
-            </select>
+            </BlueSelect>
             <button className="btn-outline sm" onClick={exportRows}>Export</button>
             <button className="btn-outline sm" title="Print view" onClick={() => window.print()}>🖨️ Print View</button>
             <button className="btn-outline sm" onClick={mailAll}>📧 Mail Approval</button>

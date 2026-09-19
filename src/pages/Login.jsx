@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ROLE_LIST } from '../roles';
 import { login } from '../auth';
 import AuthArt from '../components/AuthArt';
+import BlueSelect from '../components/BlueSelect';
 import FrontierLogo from '../components/FrontierLogo';
 import { showLoading, hideLoading } from '../loading';
 
@@ -55,11 +56,7 @@ export default function Login() {
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter password" />
 
           <label>ROLE</label>
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            {ROLE_LIST.map((r) => (
-              <option key={r} value={r}>{r}</option>
-            ))}
-          </select>
+          <BlueSelect value={role} onChange={(e) => setRole(e.target ? e.target.value : e)} options={ROLE_LIST} placeholder="Select role" />
 
           <button type="submit" className="btn-primary">LOGIN ➜</button>
           {msg && <p className={'msg' + (err ? ' err' : ' ok')}>{msg}</p>}

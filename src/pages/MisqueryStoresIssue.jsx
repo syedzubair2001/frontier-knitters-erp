@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   ORDER_TYPES,
   STYLE_TYPES,
@@ -138,21 +139,21 @@ export default function MisqueryStoresIssue() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
               <div className="field">
                 <label>Order Type</label>
-                <select className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
+                <BlueSelect className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
                   {ORDER_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Style Type</label>
-                <select className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
+                <BlueSelect className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
                   {STYLE_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Order</label>
-                <select className="inp" value={orderOpt} onChange={e => setOrderOpt(e.target.value)}>
+                <BlueSelect className="inp" value={orderOpt} onChange={e => setOrderOpt(e.target.value)}>
                   {ORDER_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -164,81 +165,81 @@ export default function MisqueryStoresIssue() {
                   <input type="radio" checked={activeCompany} onChange={() => setActiveCompany(!activeCompany)} onClick={() => setActiveCompany(!activeCompany)} />
                   Company
                 </label>
-                <select className="inp" value={company} onChange={e => setCompany(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={company} onChange={e => setCompany(e.target.value)} style={{ flex: 1 }}>
                   {COMPANY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#334155', minWidth: 100 }}>
                   Unit
                 </label>
-                <select className="inp" value={unit} onChange={e => setUnit(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={unit} onChange={e => setUnit(e.target.value)} style={{ flex: 1 }}>
                   {UNIT_SUPPLIER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#334155', minWidth: 100 }}>
                   Supplier
                 </label>
-                <select className="inp" value={supplier} onChange={e => setSupplier(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={supplier} onChange={e => setSupplier(e.target.value)} style={{ flex: 1 }}>
                   {UNIT_SUPPLIER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#334155', minWidth: 100 }}>
                   Work Division
                 </label>
-                <select className="inp" value={workDivision} onChange={e => setWorkDivision(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={workDivision} onChange={e => setWorkDivision(e.target.value)} style={{ flex: 1 }}>
                   {WORK_DIVISION_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#334155', minWidth: 100 }}>
                   Department
                 </label>
-                <select className="inp" value={department} onChange={e => setDepartment(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={department} onChange={e => setDepartment(e.target.value)} style={{ flex: 1 }}>
                   {DEPARTMENT_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#334155', minWidth: 100 }}>
                   Employee
                 </label>
-                <select className="inp" value={employee} onChange={e => setEmployee(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={employee} onChange={e => setEmployee(e.target.value)} style={{ flex: 1 }}>
                   {EMPLOYEE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#334155', minWidth: 100 }}>
                   Item Type
                 </label>
-                <select className="inp" value={itemType} onChange={e => setItemType(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={itemType} onChange={e => setItemType(e.target.value)} style={{ flex: 1 }}>
                   {ITEM_TYPE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#334155', minWidth: 100 }}>
                   Item Group
                 </label>
-                <select className="inp" value={itemGroup} onChange={e => setItemGroup(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={itemGroup} onChange={e => setItemGroup(e.target.value)} style={{ flex: 1 }}>
                   {ITEM_GROUP_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 600, color: '#334155', minWidth: 100 }}>
                   From Store
                 </label>
-                <select className="inp" value={fromStore} onChange={e => setFromStore(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={fromStore} onChange={e => setFromStore(e.target.value)} style={{ flex: 1 }}>
                   {STORE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -246,9 +247,9 @@ export default function MisqueryStoresIssue() {
                   <input type="radio" checked={activeToStore} onChange={() => setActiveToStore(!activeToStore)} onClick={() => setActiveToStore(!activeToStore)} />
                   To Store
                 </label>
-                <select className="inp" value={toStore} onChange={e => setToStore(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={toStore} onChange={e => setToStore(e.target.value)} style={{ flex: 1 }}>
                   {STORE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 

@@ -8,6 +8,7 @@ import {
   BILL_INWARD_PER_PAGE_OPTIONS, BILL_INWARD_DOWNLOAD_TYPES, BILL_INWARD_COLUMNS,
 } from '../billInwardConfig';
 import { listBillInwards, saveBillInward, deleteBillInward } from '../billInwardService';
+import BlueSelect from '../components/BlueSelect';
 
 function generateBillInwNo() {
   const num = Math.floor(100 + Math.random() * 900);
@@ -350,7 +351,7 @@ export default function BillInward() {
                 </div>
                 <div className="field">
                   <label>Supplier / Party Name <span className="req">*</span></label>
-                  <select
+                  <BlueSelect
                     className="inp"
                     value={form.supplier}
                     onChange={(e) => setForm({ ...form, supplier: e.target.value })}
@@ -358,7 +359,7 @@ export default function BillInward() {
                     {SUPPLIER_LIST.map((s) => (
                       <option key={s} value={s}>{s}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
               </div>
 
@@ -367,7 +368,7 @@ export default function BillInward() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
                   <div className="field">
                     <label>Inward Type <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.inwType}
                       onChange={(e) => setForm({ ...form, inwType: e.target.value })}
@@ -375,12 +376,12 @@ export default function BillInward() {
                       {INWARD_TYPES.map((t) => (
                         <option key={t} value={t}>{t}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
                     <label>Unit <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.unit}
                       onChange={(e) => setForm({ ...form, unit: e.target.value })}
@@ -388,12 +389,12 @@ export default function BillInward() {
                       {BILL_INWARD_UNITS.map((u) => (
                         <option key={u} value={u}>{u}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
                     <label>Department <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.department}
                       onChange={(e) => setForm({ ...form, department: e.target.value })}
@@ -401,7 +402,7 @@ export default function BillInward() {
                       {DEPARTMENTS.map((d) => (
                         <option key={d} value={d}>{d}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
@@ -487,32 +488,32 @@ export default function BillInward() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12 }}>
                 <div className="field">
                   <label>Inward Type</label>
-                  <select className="inp" value={filterInwType} onChange={(e) => { setFilterInwType(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterInwType} onChange={(e) => { setFilterInwType(e.target.value); setPage(1); }}>
                     <option value="">-- All Inward Types --</option>
                     {INWARD_TYPES.map((t) => (
                       <option key={t} value={t}>{t}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Unit</label>
-                  <select className="inp" value={filterUnit} onChange={(e) => { setFilterUnit(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterUnit} onChange={(e) => { setFilterUnit(e.target.value); setPage(1); }}>
                     <option value="">-- All Units --</option>
                     {BILL_INWARD_UNITS.map((u) => (
                       <option key={u} value={u}>{u}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Department</label>
-                  <select className="inp" value={filterDept} onChange={(e) => { setFilterDept(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterDept} onChange={(e) => { setFilterDept(e.target.value); setPage(1); }}>
                     <option value="">-- All Departments --</option>
                     {DEPARTMENTS.map((d) => (
                       <option key={d} value={d}>{d}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
@@ -531,11 +532,11 @@ export default function BillInward() {
             <div className="toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Download Format:</span>
-                <select className="inp inline-select" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
+                <BlueSelect className="inp inline-select" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
                   {BILL_INWARD_DOWNLOAD_TYPES.map((d) => (
                     <option key={d} value={d}>{d.toUpperCase()}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <button type="button" className="btn-secondary" onClick={handleExport}>
                   📥 Download
                 </button>
@@ -621,11 +622,11 @@ export default function BillInward() {
             <div className="pager" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Per Page:</span>
-                <select className="inp inline-select" value={perPage} onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}>
+                <BlueSelect className="inp inline-select" value={perPage} onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}>
                   {BILL_INWARD_PER_PAGE_OPTIONS.map((opt) => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
                   Showing {sorted.length ? (safePage - 1) * perPage + 1 : 0} - {Math.min(safePage * perPage, sorted.length)} of {sorted.length} entries
                 </span>

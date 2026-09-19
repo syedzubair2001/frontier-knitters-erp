@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getSession, logout } from '../auth';
 import Navbar from '../components/Navbar';
 import { MASTER_STEPS } from '../masterConfig';
+import BlueSelect from '../components/BlueSelect';
 
 const seed = {
   buyers: [
@@ -139,9 +140,9 @@ return (
               <div key={f}>
                 <label>{st.labels[i]}</label>
                 {opts ? (
-                  <select value={vals[i]} onChange={(e) => setter(e.target.value)}>
+                  <BlueSelect value={vals[i]} onChange={(e) => setter(e.target.value)}>
                     {opts.map((o) => <option key={o} value={o}>{o}</option>)}
-                  </select>
+                  </BlueSelect>
                 ) : (
                   <input value={vals[i]} onChange={(e) => setter(e.target.value)} placeholder={st.place[i]} />
                 )}

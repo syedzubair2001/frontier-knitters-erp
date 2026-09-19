@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSession, logout } from '../auth';
 import Navbar from '../components/Navbar';
+import BlueSelect from '../components/BlueSelect';
 import { ROLES } from '../roles';
 import {
   TEAMS, ROLE_DOCUMENTS, roleOptions, loadRoleDocs, saveRoleDocs,
@@ -78,15 +79,15 @@ export default function RoleDocuments() {
             <div className="fpanel-row">
               <div className="field">
                 <label>Role — choose type</label>
-                <select value={role} onChange={(e) => setRole(e.target.value)}>
+                <BlueSelect value={role} onChange={(e) => setRole(e.target.value)}>
                   {roles.map((r) => <option key={r} value={r}>{r}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Team (department)</label>
-                <select value={team} onChange={(e) => setTeam(e.target.value)}>
+                <BlueSelect value={team} onChange={(e) => setTeam(e.target.value)}>
                   {TEAMS.map((t) => <option key={t} value={t}>{t}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
             <div className="role-chips">

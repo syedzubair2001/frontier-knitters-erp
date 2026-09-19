@@ -16,6 +16,7 @@ import {
   TRANSPORTERS_LIST,
   DOC_TEAM_DOWNLOAD_TYPES,
 } from '../documentsTeamConfig';
+import BlueSelect from '../components/BlueSelect';
 import {
   listDocTeamSection,
   saveDocTeamRecord,
@@ -250,7 +251,7 @@ export default function DocumentsTeam() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 13, color: '#475569', fontWeight: 500 }}>Download Format:</span>
-            <select
+            <BlueSelect
               value={downloadFormat}
               onChange={(e) => setDownloadFormat(e.target.value)}
               style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, color: '#0f172a' }}
@@ -258,7 +259,7 @@ export default function DocumentsTeam() {
               {DOC_TEAM_DOWNLOAD_TYPES.map((fmt) => (
                 <option key={fmt} value={fmt}>{fmt}</option>
               ))}
-            </select>
+            </BlueSelect>
             <button
               onClick={handleDownload}
               style={{ padding: '6px 14px', borderRadius: 6, border: '1px solid #0284c7', backgroundColor: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
@@ -784,27 +785,27 @@ export default function DocumentsTeam() {
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>SEASON</label><input type="text" value={formData.season || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('season', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>BUYER</label>
-                      <select value={formData.buyer || BUYERS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('buyer', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.buyer || BUYERS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('buyer', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {BUYERS_LIST.map((b) => <option key={b} value={b}>{b}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>MERCHANT</label>
-                      <select value={formData.merchant || MERCHANTS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('merchant', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.merchant || MERCHANTS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('merchant', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {MERCHANTS_LIST.map((m) => <option key={m} value={m}>{m}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>TEAM</label>
-                      <select value={formData.team || TEAMS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('team', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.team || TEAMS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('team', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {TEAMS_LIST.map((t) => <option key={t} value={t}>{t}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>UNIT</label>
-                      <select value={formData.unit || UNITS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('unit', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.unit || UNITS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('unit', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {UNITS_LIST.map((u) => <option key={u} value={u}>{u}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>DC NO</label><input type="text" value={formData.dcNo || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('dcNo', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>ORDER NO</label><input type="text" value={formData.orderNo || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('orderNo', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
@@ -816,9 +817,9 @@ export default function DocumentsTeam() {
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>PCS / PACKS / SETS</label><input type="text" value={formData.pcsPacksSets || 'Pcs'} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('pcsPacksSets', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>CUR</label>
-                      <select value={formData.cur || CURRENCIES[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('cur', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.cur || CURRENCIES[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('cur', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>Per Pcs/Pks/Sets - Currency</label><input type="text" value={formData.perPcsCur || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('perPcsCur', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>VALUE IN Currency</label><input type="text" value={formData.valueInCur || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('valueInCur', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
@@ -829,15 +830,15 @@ export default function DocumentsTeam() {
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>Online Booking No</label><input type="text" value={formData.onlineBookingNo || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('onlineBookingNo', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>SHPT TERMS</label>
-                      <select value={formData.shptTerms || SHPT_TERMS[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('shptTerms', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.shptTerms || SHPT_TERMS[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('shptTerms', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {SHPT_TERMS.map((t) => <option key={t} value={t}>{t}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>SHPT MODE</label>
-                      <select value={formData.shptMode || SHPT_MODES[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('shptMode', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.shptMode || SHPT_MODES[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('shptMode', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {SHPT_MODES.map((m) => <option key={m} value={m}>{m}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                   </div>
                 )}
@@ -909,9 +910,9 @@ export default function DocumentsTeam() {
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>BILL HOD TO IA-FIT Inward # &amp; Date</label><input type="text" value={formData.billHodToIaFit || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('billHodToIaFit', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>FORWARDER NAME</label>
-                      <select value={formData.forwarderName || FORWARDERS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('forwarderName', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.forwarderName || FORWARDERS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('forwarderName', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {FORWARDERS_LIST.map((f) => <option key={f} value={f}>{f}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>BLL NO</label><input type="text" value={formData.bllNo || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('bllNo', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>DATE</label><input type="date" value={formData.date || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('date', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
@@ -928,9 +929,9 @@ export default function DocumentsTeam() {
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>BILL HOD TO IA-FIT Inward # &amp; Date</label><input type="text" value={formData.billHodToIaFit || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('billHodToIaFit', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>CHA NAME</label>
-                      <select value={formData.chaName || CHA_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('chaName', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.chaName || CHA_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('chaName', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {CHA_LIST.map((c) => <option key={c} value={c}>{c}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>BILL NO</label><input type="text" value={formData.billNo || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('billNo', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>DATE</label><input type="date" value={formData.date || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('date', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
@@ -951,9 +952,9 @@ export default function DocumentsTeam() {
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>BILL HOD TO IA-FIT Inward # &amp; Date</label><input type="text" value={formData.billHodToIaFit || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('billHodToIaFit', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div>
                       <label style={{ fontSize: 13, fontWeight: 600 }}>TRANSPORTER</label>
-                      <select value={formData.transporter || TRANSPORTERS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('transporter', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
+                      <BlueSelect value={formData.transporter || TRANSPORTERS_LIST[0]} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('transporter', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }}>
                         {TRANSPORTERS_LIST.map((t) => <option key={t} value={t}>{t}</option>)}
-                      </select>
+                      </BlueSelect>
                     </div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>BILL NO</label><input type="text" value={formData.billNo || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('billNo', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>
                     <div><label style={{ fontSize: 13, fontWeight: 600 }}>DATE</label><input type="date" value={formData.date || ''} disabled={modalMode === 'view'} onChange={(e) => handleFormChange('date', e.target.value)} style={{ width: '100%', padding: '8px', borderRadius: 6, border: '1px solid #cbd5e1' }} /></div>

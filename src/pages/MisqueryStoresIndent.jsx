@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   ORDER_TYPES,
   STYLE_TYPES,
@@ -113,21 +114,21 @@ export default function MisqueryStoresIndent() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
               <div className="field">
                 <label>Order Type</label>
-                <select className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
+                <BlueSelect className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
                   {ORDER_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Style Type</label>
-                <select className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
+                <BlueSelect className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
                   {STYLE_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Order</label>
-                <select className="inp" value={orderOpt} onChange={e => setOrderOpt(e.target.value)}>
+                <BlueSelect className="inp" value={orderOpt} onChange={e => setOrderOpt(e.target.value)}>
                   {ORDER_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -140,9 +141,9 @@ export default function MisqueryStoresIndent() {
                   <input type="radio" checked={activeCompany} onChange={() => setActiveCompany(!activeCompany)} onClick={() => setActiveCompany(!activeCompany)} />
                   Company
                 </label>
-                <select className="inp" value={company} onChange={e => setCompany(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={company} onChange={e => setCompany(e.target.value)} style={{ flex: 1 }}>
                   {COMPANY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Unit */}
@@ -151,9 +152,9 @@ export default function MisqueryStoresIndent() {
                   <input type="radio" checked={activeUnit} onChange={() => setActiveUnit(!activeUnit)} onClick={() => setActiveUnit(!activeUnit)} />
                   Unit
                 </label>
-                <select className="inp" value={unit} onChange={e => setUnit(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={unit} onChange={e => setUnit(e.target.value)} style={{ flex: 1 }}>
                   {UNIT_SUPPLIER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Customer */}
@@ -162,9 +163,9 @@ export default function MisqueryStoresIndent() {
                   <input type="radio" checked={activeCustomer} onChange={() => setActiveCustomer(!activeCustomer)} onClick={() => setActiveCustomer(!activeCustomer)} />
                   Customer
                 </label>
-                <select className="inp" value={customer} onChange={e => setCustomer(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={customer} onChange={e => setCustomer(e.target.value)} style={{ flex: 1 }}>
                   {CUSTOMER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Item Group */}
@@ -173,9 +174,9 @@ export default function MisqueryStoresIndent() {
                   <input type="radio" checked={activeItemGroup} onChange={() => setActiveItemGroup(!activeItemGroup)} onClick={() => setActiveItemGroup(!activeItemGroup)} />
                   Item Group
                 </label>
-                <select className="inp" value={itemGroup} onChange={e => setItemGroup(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={itemGroup} onChange={e => setItemGroup(e.target.value)} style={{ flex: 1 }}>
                   {ITEM_GROUP_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Indent by */}
@@ -184,9 +185,9 @@ export default function MisqueryStoresIndent() {
                   <input type="radio" checked={activeIndentBy} onChange={() => setActiveIndentBy(!activeIndentBy)} onClick={() => setActiveIndentBy(!activeIndentBy)} />
                   Indent By
                 </label>
-                <select className="inp" value={indentBy} onChange={e => setIndentBy(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={indentBy} onChange={e => setIndentBy(e.target.value)} style={{ flex: 1 }}>
                   {INDENT_BY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 

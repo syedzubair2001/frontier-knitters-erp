@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSession, logout } from '../auth';
 import Navbar from '../components/Navbar';
+import BlueSelect from '../components/BlueSelect';
 import {
   ACCOUNTS_DOWNLOAD_TYPES, PARTY_TYPE_OPTIONS, CUSTOMER_OPTIONS,
   VOUCHER_TYPE_OPTIONS, VOUCHER_NO_OPTIONS, RECEIPT_TYPE_OPTIONS
@@ -241,53 +242,53 @@ export default function Collection() {
 
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Type</label>
-              <select value={filterPartyType} onChange={e => setFilterPartyType(e.target.value)}
+              <BlueSelect value={filterPartyType} onChange={e => setFilterPartyType(e.target.value)}
                 style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none' }}>
                 <option value="">All Types</option>
                 {PARTY_TYPE_OPTIONS.map(o => <option key={o}>{o}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Customer</label>
-              <select value={filterCustomer} onChange={e => setFilterCustomer(e.target.value)}
+              <BlueSelect value={filterCustomer} onChange={e => setFilterCustomer(e.target.value)}
                 style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none' }}>
                 {CUSTOMER_OPTIONS.map(o => <option key={o} value={o === 'All Customers' ? '' : o}>{o}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Voucher Type</label>
-              <select value={filterType} onChange={e => setFilterType(e.target.value)}
+              <BlueSelect value={filterType} onChange={e => setFilterType(e.target.value)}
                 style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none' }}>
                 <option value="">All</option>
                 {VOUCHER_TYPE_OPTIONS.map(o => <option key={o}>{o}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Receipt No</label>
-              <select value={filterReceiptNo} onChange={e => setFilterReceiptNo(e.target.value)}
+              <BlueSelect value={filterReceiptNo} onChange={e => setFilterReceiptNo(e.target.value)}
                 style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none' }}>
                 {VOUCHER_NO_OPTIONS.map(o => <option key={o} value={o === 'All Vouchers' ? '' : o}>{o}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Receipt Type</label>
-              <select value={filterReceiptType} onChange={e => setFilterReceiptType(e.target.value)}
+              <BlueSelect value={filterReceiptType} onChange={e => setFilterReceiptType(e.target.value)}
                 style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none' }}>
                 <option value="">All</option>
                 {RECEIPT_TYPE_OPTIONS.map(o => <option key={o}>{o}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Approval</label>
-              <select value={filterApproval} onChange={e => setFilterApproval(e.target.value)}
+              <BlueSelect value={filterApproval} onChange={e => setFilterApproval(e.target.value)}
                 style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none' }}>
                 {APPROVAL_OPTIONS.map(o => <option key={o}>{o}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             <div>
@@ -321,10 +322,10 @@ export default function Collection() {
         {/* Toolbar */}
         <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 14, gap: 10 }}>
           <span style={{ fontSize: 13, color: '#475569', fontWeight: 500 }}>Excel Format:</span>
-          <select value={downloadFmt} onChange={e => setDownloadFmt(e.target.value)}
+          <BlueSelect value={downloadFmt} onChange={e => setDownloadFmt(e.target.value)}
             style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, color: '#0f172a' }}>
             {EXCEL_FORMAT_OPTIONS.map(f => <option key={f}>{f}</option>)}
-          </select>
+          </BlueSelect>
           <button onClick={handleDownload}
             style={{ padding: '6px 14px', borderRadius: 6, border: '1px solid #0284c7', backgroundColor: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
             📥 Download

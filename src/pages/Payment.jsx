@@ -10,6 +10,7 @@ import {
   CURRENCY_OPTIONS, BANK_OPTIONS, ACCOUNT_HEAD_OPTIONS,
   INVOICE_NO_OPTIONS
 } from '../accountsConfig';
+import BlueSelect from '../components/BlueSelect';
 import {
   listPayments, savePayment, deletePayment, toggleReleasePayment
 } from '../accountsService';
@@ -512,18 +513,18 @@ export default function Payment() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14, alignItems: 'end' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Party / Supplier</label>
-                  <select
+                  <BlueSelect
                     value={filterSupplier}
                     onChange={(e) => { setFilterSupplier(e.target.value); setPage(1); }}
                     style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     {SUPPLIER_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Type</label>
-                  <select
+                  <BlueSelect
                     value={filterType}
                     onChange={(e) => { setFilterType(e.target.value); setPage(1); }}
                     style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
@@ -531,23 +532,23 @@ export default function Payment() {
                     <option value="All">All</option>
                     <option value="Payment">Payment</option>
                     <option value="Debit Note">Debit Note</option>
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Payment No</label>
-                  <select
+                  <BlueSelect
                     value={filterPaymentNo}
                     onChange={(e) => { setFilterPaymentNo(e.target.value); setPage(1); }}
                     style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     {paymentNoOptions.map(no => <option key={no} value={no}>{no}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Payment Type</label>
-                  <select
+                  <BlueSelect
                     value={filterPaymode}
                     onChange={(e) => { setFilterPaymode(e.target.value); setPage(1); }}
                     style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
@@ -558,18 +559,18 @@ export default function Payment() {
                     <option value="DD">DD</option>
                     <option value="Transfer">Transfer</option>
                     <option value="Not Applicable">Not Applicable</option>
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Status</label>
-                  <select
+                  <BlueSelect
                     value={filterStatus}
                     onChange={(e) => { setFilterStatus(e.target.value); setPage(1); }}
                     style={{ width: '100%', padding: '8px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     {PAYMENT_STATUS_OPTIONS.map(st => <option key={st} value={st}>{st}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
@@ -627,13 +628,13 @@ export default function Payment() {
             {/* ── Toolbar: Download format ── */}
             <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 14, gap: 10 }}>
               <span style={{ fontSize: 13, color: '#475569', fontWeight: 500 }}>Download Format:</span>
-              <select
+              <BlueSelect
                 value={downloadFmt}
                 onChange={e => setDownloadFmt(e.target.value)}
                 style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, color: '#0f172a', backgroundColor: '#fff' }}
               >
                 {ACCOUNTS_DOWNLOAD_TYPES.map(f => <option key={f} value={f}>{f}</option>)}
-              </select>
+              </BlueSelect>
               <button
                 type="button"
                 onClick={handleExport}
@@ -991,13 +992,13 @@ export default function Payment() {
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Supplier *</label>
-                  <select
+                  <BlueSelect
                     value={form.supplier}
                     onChange={e => setForm({ ...form, supplier: e.target.value })}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     {SUPPLIER_OPTIONS.filter(s => s !== 'All Suppliers').map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
               </div>
 
@@ -1005,59 +1006,59 @@ export default function Payment() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 14, marginBottom: 20 }}>
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Type</label>
-                  <select
+                  <BlueSelect
                     value={form.paymentType}
                     onChange={e => setForm({ ...form, paymentType: e.target.value })}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     {PAYMENT_TYPE_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Invoice Type</label>
-                  <select
+                  <BlueSelect
                     value={form.invoiceType}
                     onChange={e => setForm({ ...form, invoiceType: e.target.value })}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     {PAYMENT_INVOICE_TYPE_OPTIONS.map(it => <option key={it} value={it}>{it}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Invoice No</label>
-                  <select
+                  <BlueSelect
                     value={form.invoiceNo}
                     onChange={e => setForm({ ...form, invoiceNo: e.target.value })}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     {INVOICE_NO_OPTIONS.map(ino => <option key={ino} value={ino}>{ino}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Currency Type</label>
-                  <select
+                  <BlueSelect
                     value={form.currencyType}
                     onChange={e => handleCurrencyTypeChange(e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     <option value="Base">Base (INR)</option>
                     <option value="Other">Other (USD / EUR / GBP)</option>
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {form.currencyType === 'Other' && (
                   <div>
                     <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Currency</label>
-                    <select
+                    <BlueSelect
                       value={form.currency}
                       onChange={e => handleCurrencySelect(e.target.value)}
                       style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                     >
                       {CURRENCY_OPTIONS.filter(c => c.code !== 'INR').map(c => <option key={c.code} value={c.code}>{c.name}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
                 )}
 
@@ -1078,24 +1079,24 @@ export default function Payment() {
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Payment Type (Paymode)</label>
-                  <select
+                  <BlueSelect
                     value={form.paymode}
                     onChange={e => setForm({ ...form, paymode: e.target.value })}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     {PAYMENT_PAYMODE_OPTIONS.map(pm => <option key={pm} value={pm}>{pm}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 5 }}>Bank</label>
-                  <select
+                  <BlueSelect
                     value={form.bank}
                     onChange={e => setForm({ ...form, bank: e.target.value })}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none', backgroundColor: '#fff' }}
                   >
                     {BANK_OPTIONS.map(b => <option key={b} value={b}>{b}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div>
@@ -1350,7 +1351,7 @@ export default function Payment() {
                             <tr key={al.id || idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
                               <td style={{ padding: '8px 12px', textAlign: 'center', color: '#64748b' }}>{idx + 1}</td>
                               <td style={{ padding: '8px 12px' }}>
-                                <select
+                                <BlueSelect
                                   value={al.accountHead}
                                   onChange={(e) => {
                                     const updated = [...form.addLessItems];
@@ -1360,7 +1361,7 @@ export default function Payment() {
                                   style={{ width: '100%', padding: '6px 8px', borderRadius: 4, border: '1px solid #cbd5e1', fontSize: 13, outline: 'none' }}
                                 >
                                   {ACCOUNT_HEAD_OPTIONS.map(ah => <option key={ah} value={ah}>{ah}</option>)}
-                                </select>
+                                </BlueSelect>
                               </td>
                               <td style={{ padding: '8px 12px', textAlign: 'right' }}>
                                 <input

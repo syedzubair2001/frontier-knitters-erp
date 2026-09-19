@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
 import { CUSTOMER_LIST, INITIAL_INVOICE_DETAIL } from '../misqueryConfig';
+import BlueSelect from '../components/BlueSelect';
 
 // Logistics companies per the Invoice Detail spec
 const INVOICE_DETAIL_COMPANY_LIST = ['-- All --', 'FRONTIER FASHIONS', 'FRONTIER KNITTERS (P) LTD', 'FRONTIER PRINTING'];
@@ -94,9 +95,9 @@ export default function MisqueryLogisticsInvoiceDetail() {
         <input type="radio" checked={active} onChange={() => setActive(!active)} onClick={() => setActive(!active)} />
         {label}
       </label>
-      <select className="inp" value={value} onChange={(e) => setValue(e.target.value)} style={{ flex: 1 }}>
+      <BlueSelect className="inp" value={value} onChange={(e) => setValue(e.target.value)} style={{ flex: 1 }}>
         {options.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-      </select>
+      </BlueSelect>
     </div>
   );
 

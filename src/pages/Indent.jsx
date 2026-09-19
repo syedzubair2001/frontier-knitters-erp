@@ -10,6 +10,7 @@ import {
 } from '../indentConfig';
 import { listIndents, saveIndent, deleteIndent } from '../indentService';
 import { loadOrderLookup } from '../requisitionService';
+import BlueSelect from '../components/BlueSelect';
 
 function generateIndentNo() {
   const num = Math.floor(100 + Math.random() * 900);
@@ -404,13 +405,13 @@ export default function Indent() {
                 <div className="inline-field">
                   <label>Unit</label>
                   <div style={{ display: 'flex', gap: 4 }}>
-                    <select
+                    <BlueSelect
                       style={{ width: 160 }}
                       value={form.unit}
                       onChange={(e) => setForm({ ...form, unit: e.target.value })}
                     >
                       {INDENT_UNITS.map((u) => <option key={u} value={u}>{u}</option>)}
-                    </select>
+                    </BlueSelect>
                     <button type="button" className="btn-outline sm" style={{ padding: '2px 6px', fontSize: 12 }}>+</button>
                   </div>
                 </div>
@@ -421,17 +422,17 @@ export default function Indent() {
                 <div className="legacy-mid-grid">
                   <div className="legacy-field">
                     <label><span className="req-star">*</span> Type</label>
-                    <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}>
+                    <BlueSelect value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}>
                       {INDENT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="legacy-field">
                     <label><span className="req-star">*</span> Order No</label>
-                    <select value={form.orderNo} onChange={(e) => setForm({ ...form, orderNo: e.target.value })}>
+                    <BlueSelect value={form.orderNo} onChange={(e) => setForm({ ...form, orderNo: e.target.value })}>
                       {ORDER_NO_LIST.map((o) => <option key={o} value={o}>{o}</option>)}
                       {orders.map((o) => <option key={o.orderNo} value={o.orderNo}>{o.orderNo} · {o.customer}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="legacy-field">
@@ -445,16 +446,16 @@ export default function Indent() {
 
                   <div className="legacy-field">
                     <label><span className="req-star">*</span> Indent By</label>
-                    <select value={form.indentBy} onChange={(e) => setForm({ ...form, indentBy: e.target.value })}>
+                    <BlueSelect value={form.indentBy} onChange={(e) => setForm({ ...form, indentBy: e.target.value })}>
                       {INDENT_BY_OPTIONS.map((p) => <option key={p} value={p}>{p}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="legacy-field">
                     <label>Item Group</label>
-                    <select value={form.itemGroup} onChange={(e) => setForm({ ...form, itemGroup: e.target.value })}>
+                    <BlueSelect value={form.itemGroup} onChange={(e) => setForm({ ...form, itemGroup: e.target.value })}>
                       {ITEM_GROUPS.map((g) => <option key={g} value={g}>{g}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
                 </div>
               </div>
@@ -464,17 +465,17 @@ export default function Indent() {
                 <div className="legacy-item-inputs">
                   <div className="legacy-item-col">
                     <label>Product Type</label>
-                    <select
+                    <BlueSelect
                       value={itemInput.productType}
                       onChange={(e) => setItemInput({ ...itemInput, productType: e.target.value })}
                     >
                       {PRODUCT_TYPES.map((pt) => <option key={pt} value={pt}>{pt}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="legacy-item-col" style={{ gridColumn: 'span 2' }}>
                     <label>Product No / Product Name</label>
-                    <select
+                    <BlueSelect
                       value={itemInput.productNo}
                       onChange={(e) => handleProductNoChange(e.target.value)}
                     >
@@ -483,7 +484,7 @@ export default function Indent() {
                           {p.code} - {p.name}
                         </option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="legacy-item-col">
@@ -524,13 +525,13 @@ export default function Indent() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                     <span style={{ fontSize: 11.5, fontWeight: 600, color: '#4a5568' }}>Reason:</span>
-                    <select
+                    <BlueSelect
                       style={{ fontSize: 11.5, padding: '3px 8px', border: '1px solid #b8c7d9', borderRadius: 2 }}
                       value={itemInput.reason}
                       onChange={(e) => setItemInput({ ...itemInput, reason: e.target.value })}
                     >
                       {REASON_OPTIONS.map((r) => <option key={r} value={r}>{r}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="legacy-item-btns">
@@ -614,18 +615,18 @@ export default function Indent() {
 
                   <div className="field">
                     <label>Type</label>
-                    <select value={filterType} onChange={(e) => { setFilterType(e.target.value); setPage(1); }}>
+                    <BlueSelect value={filterType} onChange={(e) => { setFilterType(e.target.value); setPage(1); }}>
                       <option value="">— All —</option>
                       {INDENT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
                     <label>Order</label>
-                    <select value={filterOrder} onChange={(e) => { setFilterOrder(e.target.value); setPage(1); }}>
+                    <BlueSelect value={filterOrder} onChange={(e) => { setFilterOrder(e.target.value); setPage(1); }}>
                       <option value="">— All —</option>
                       {orders.map((o) => <option key={o.orderNo} value={o.orderNo}>{o.orderNo} · {o.customer}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
@@ -639,10 +640,10 @@ export default function Indent() {
 
                   <div className="field">
                     <label>Indent By</label>
-                    <select value={filterIndentBy} onChange={(e) => { setFilterIndentBy(e.target.value); setPage(1); }}>
+                    <BlueSelect value={filterIndentBy} onChange={(e) => { setFilterIndentBy(e.target.value); setPage(1); }}>
                       <option value="">— All —</option>
                       {INDENT_BY_OPTIONS.map((u) => <option key={u} value={u}>{u}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
@@ -657,9 +658,9 @@ export default function Indent() {
 
                   <div className="field">
                     <label>Approval</label>
-                    <select value={approval} onChange={(e) => { setApproval(e.target.value); setPage(1); }}>
+                    <BlueSelect value={approval} onChange={(e) => { setApproval(e.target.value); setPage(1); }}>
                       {INDENT_APPROVAL.map((a) => <option key={a} value={a}>{a}</option>)}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                 </div>
@@ -669,9 +670,9 @@ export default function Indent() {
               <div className="toolbar indent-toolbar">
                 <div className="toolbar-left">
                   <span className="icon-btn" title="Download">⬇️</span>
-                  <select className="dsel" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
+                  <BlueSelect className="dsel" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
                     {INDENT_DOWNLOAD_TYPES.map((d) => <option key={d} value={d}>{d.toUpperCase()}</option>)}
-                  </select>
+                  </BlueSelect>
                   <button className="btn-outline sm" onClick={handleExport}>⬇️ Download</button>
                 </div>
                 <div className="toolbar-right">
@@ -697,14 +698,14 @@ export default function Indent() {
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 12, color: '#627d98' }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       Rows per page:
-                      <select
+                      <BlueSelect
                         className="dsel"
                         style={{ padding: '4px 8px', fontSize: 12 }}
                         value={perPage}
                         onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}
                       >
                         {INDENT_PER_PAGE_OPTIONS.map((n) => <option key={n} value={n}>{n}</option>)}
-                      </select>
+                      </BlueSelect>
                     </label>
                   </div>
                 </div>

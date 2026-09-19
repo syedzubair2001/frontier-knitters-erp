@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   ORDER_TYPES,
   STYLE_TYPES,
@@ -135,135 +136,135 @@ export default function MisqueryStock() {
               
               <div className="field" style={{ margin: 0 }}>
                 <label>Company</label>
-                <select className="inp" value={company} onChange={e => setCompany(e.target.value)}>
+                <BlueSelect className="inp" value={company} onChange={e => setCompany(e.target.value)}>
                   {COMPANY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               
               <div className="field" style={{ margin: 0 }}>
                 <label>Item</label>
-                <select className="inp" value={item} onChange={e => setItem(e.target.value)}>
+                <BlueSelect className="inp" value={item} onChange={e => setItem(e.target.value)}>
                   {ITEM_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Color</label>
-                <select className="inp" value={color} onChange={e => setColor(e.target.value)}>
+                <BlueSelect className="inp" value={color} onChange={e => setColor(e.target.value)}>
                   {COLOR_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Supplier</label>
-                <select className="inp" value={supplier} onChange={e => setSupplier(e.target.value)}>
+                <BlueSelect className="inp" value={supplier} onChange={e => setSupplier(e.target.value)}>
                   {UNIT_SUPPLIER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Size</label>
-                <select className="inp" value={size} onChange={e => setSize(e.target.value)}>
+                <BlueSelect className="inp" value={size} onChange={e => setSize(e.target.value)}>
                   {SIZE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Customer</label>
-                <select className="inp" value={customer} onChange={e => setCustomer(e.target.value)}>
+                <BlueSelect className="inp" value={customer} onChange={e => setCustomer(e.target.value)}>
                   {CUSTOMER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Manufacturer</label>
-                <select className="inp" value={manufacturer} onChange={e => setManufacturer(e.target.value)}>
+                <BlueSelect className="inp" value={manufacturer} onChange={e => setManufacturer(e.target.value)}>
                   {MANUFACTURER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Unit</label>
-                <select className="inp" value={unit} onChange={e => setUnit(e.target.value)}>
+                <BlueSelect className="inp" value={unit} onChange={e => setUnit(e.target.value)}>
                   {UNIT_SUPPLIER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Product Category</label>
-                <select className="inp" value={productCategory} onChange={e => setProductCategory(e.target.value)}>
+                <BlueSelect className="inp" value={productCategory} onChange={e => setProductCategory(e.target.value)}>
                   {PRODUCT_CATEGORY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Store</label>
-                <select className="inp" value={store} onChange={e => setStore(e.target.value)}>
+                <BlueSelect className="inp" value={store} onChange={e => setStore(e.target.value)}>
                   {STORE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Item Category</label>
-                <select className="inp" value={itemCategory} onChange={e => setItemCategory(e.target.value)}>
+                <BlueSelect className="inp" value={itemCategory} onChange={e => setItemCategory(e.target.value)}>
                   {ITEM_CATEGORY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Item Group</label>
-                <select className="inp" value={itemGroup} onChange={e => setItemGroup(e.target.value)}>
+                <BlueSelect className="inp" value={itemGroup} onChange={e => setItemGroup(e.target.value)}>
                   {ITEM_GROUP_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Process</label>
-                <select className="inp" value={processType} onChange={e => setProcessType(e.target.value)}>
+                <BlueSelect className="inp" value={processType} onChange={e => setProcessType(e.target.value)}>
                   {PROCESS_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Sub Group</label>
-                <select className="inp" value={subGroup} onChange={e => setSubGroup(e.target.value)}>
+                <BlueSelect className="inp" value={subGroup} onChange={e => setSubGroup(e.target.value)}>
                   {SUB_GROUP_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Merchandiser</label>
-                <select className="inp" value={merchandiser} onChange={e => setMerchandiser(e.target.value)}>
+                <BlueSelect className="inp" value={merchandiser} onChange={e => setMerchandiser(e.target.value)}>
                   {MERCHANDISER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Item Type</label>
-                <select className="inp" value={itemType} onChange={e => setItemType(e.target.value)}>
+                <BlueSelect className="inp" value={itemType} onChange={e => setItemType(e.target.value)}>
                   {ITEM_TYPE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Stock Type</label>
-                <select className="inp" value={stockType} onChange={e => setStockType(e.target.value)}>
+                <BlueSelect className="inp" value={stockType} onChange={e => setStockType(e.target.value)}>
                   {STOCK_TYPE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Order Type</label>
-                <select className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
+                <BlueSelect className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
                   {ORDER_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div className="field" style={{ margin: 0 }}>
                 <label>Style</label>
-                <select className="inp" value={style} onChange={e => setStyle(e.target.value)}>
+                <BlueSelect className="inp" value={style} onChange={e => setStyle(e.target.value)}>
                   {STYLE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 

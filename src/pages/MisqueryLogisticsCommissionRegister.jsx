@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
 import { CUSTOMER_LIST, INITIAL_COMMISSION_REGISTER } from '../misqueryConfig';
+import BlueSelect from '../components/BlueSelect';
 
 // Commission Register dropdown lists
 const COMMISSION_COMPANY_LIST = ['-- All --', 'FRONTIER FASHIONS', 'FRONTIER KNITTERS (P) LTD', 'FRONTIER PRINTING'];
@@ -104,9 +105,9 @@ export default function MisqueryLogisticsCommissionRegister() {
         <input type="radio" checked={active} onChange={() => setActive(!active)} onClick={() => setActive(!active)} />
         {label}
       </label>
-      <select className="inp" value={value} onChange={(e) => setValue(e.target.value)} style={{ flex: 1 }}>
+      <BlueSelect className="inp" value={value} onChange={(e) => setValue(e.target.value)} style={{ flex: 1 }}>
         {options.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-      </select>
+      </BlueSelect>
     </div>
   );
 

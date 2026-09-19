@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   ORDER_TYPES,
   STYLE_TYPES,
@@ -152,21 +153,21 @@ export default function MisqueryWorkflowReceiptStatus() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
               <div className="field">
                 <label>Order Type</label>
-                <select className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
+                <BlueSelect className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
                   {ORDER_TYPES.map(o => <option key={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Style Type</label>
-                <select className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
+                <BlueSelect className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
                   {STYLE_TYPES.map(o => <option key={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Order Category</label>
-                <select className="inp" value={orderCategory} onChange={e => setOrderCategory(e.target.value)}>
+                <BlueSelect className="inp" value={orderCategory} onChange={e => setOrderCategory(e.target.value)}>
                   {ORDER_CATEGORY_LIST.map(o => <option key={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -178,9 +179,9 @@ export default function MisqueryWorkflowReceiptStatus() {
                     <input type="radio" checked={active} onChange={() => setActive(!active)} onClick={() => setActive(!active)} />
                     {label}
                   </label>
-                  <select className="inp" value={value} onChange={e => setValue(e.target.value)} style={{ flex: 1 }}>
+                  <BlueSelect className="inp" value={value} onChange={e => setValue(e.target.value)} style={{ flex: 1 }}>
                     {list.map(o => <option key={o}>{o}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
               ))}
             </div>
@@ -189,15 +190,15 @@ export default function MisqueryWorkflowReceiptStatus() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 20 }}>
               <div className="field">
                 <label>Item Group</label>
-                <select className="inp" value={itemGroup} onChange={e => setItemGroup(e.target.value)}>
+                <BlueSelect className="inp" value={itemGroup} onChange={e => setItemGroup(e.target.value)}>
                   {['-- All --'].concat(ITEM_GROUP_LIST.slice(1)).map(o => <option key={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Store</label>
-                <select className="inp" value={store} onChange={e => setStore(e.target.value)}>
+                <BlueSelect className="inp" value={store} onChange={e => setStore(e.target.value)}>
                   {['-- All --'].concat(STORE_LIST.slice(1)).map(o => <option key={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 

@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   ORDER_TYPES,
   STYLE_TYPES,
@@ -136,21 +137,21 @@ export default function MisqueryOrderSummary() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
             <div className="field">
               <label>Order Type</label>
-              <select className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
+              <BlueSelect className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
                 {ORDER_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
             <div className="field">
               <label>Style Type</label>
-              <select className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
+              <BlueSelect className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
                 {STYLE_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
             <div className="field">
               <label>Order</label>
-              <select className="inp" value={orderOpt} onChange={e => setOrderOpt(e.target.value)}>
+              <BlueSelect className="inp" value={orderOpt} onChange={e => setOrderOpt(e.target.value)}>
                 {ORDER_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
           </div>
 
@@ -163,9 +164,9 @@ export default function MisqueryOrderSummary() {
                 <input type="radio" checked={activeCompany} onChange={() => setActiveCompany(!activeCompany)} onClick={() => setActiveCompany(!activeCompany)} />
                 Company
               </label>
-              <select className="inp" value={company} onChange={e => setCompany(e.target.value)} style={{ flex: 1 }}>
+              <BlueSelect className="inp" value={company} onChange={e => setCompany(e.target.value)} style={{ flex: 1 }}>
                 {COMPANY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             {/* Customer */}
@@ -174,9 +175,9 @@ export default function MisqueryOrderSummary() {
                 <input type="radio" checked={activeCustomer} onChange={() => setActiveCustomer(!activeCustomer)} onClick={() => setActiveCustomer(!activeCustomer)} />
                 Customer
               </label>
-              <select className="inp" value={customer} onChange={e => setCustomer(e.target.value)} style={{ flex: 1 }}>
+              <BlueSelect className="inp" value={customer} onChange={e => setCustomer(e.target.value)} style={{ flex: 1 }}>
                 {CUSTOMER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             {/* Unit / Supplier */}
@@ -191,9 +192,9 @@ export default function MisqueryOrderSummary() {
                   Supplier
                 </label>
               </div>
-              <select className="inp" value={unitSup} onChange={e => setUnitSup(e.target.value)} style={{ flex: 1 }}>
+              <BlueSelect className="inp" value={unitSup} onChange={e => setUnitSup(e.target.value)} style={{ flex: 1 }}>
                 {UNIT_SUPPLIER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             {/* Style */}
@@ -202,9 +203,9 @@ export default function MisqueryOrderSummary() {
                 <input type="radio" checked={activeStyle} onChange={() => setActiveStyle(!activeStyle)} onClick={() => setActiveStyle(!activeStyle)} />
                 Style
               </label>
-              <select className="inp" value={style} onChange={e => setStyle(e.target.value)} style={{ flex: 1 }}>
+              <BlueSelect className="inp" value={style} onChange={e => setStyle(e.target.value)} style={{ flex: 1 }}>
                 {STYLE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             {/* Merchandiser */}
@@ -213,9 +214,9 @@ export default function MisqueryOrderSummary() {
                 <input type="radio" checked={activeMerchandiser} onChange={() => setActiveMerchandiser(!activeMerchandiser)} onClick={() => setActiveMerchandiser(!activeMerchandiser)} />
                 Merchandiser
               </label>
-              <select className="inp" value={merchandiser} onChange={e => setMerchandiser(e.target.value)} style={{ flex: 1 }}>
+              <BlueSelect className="inp" value={merchandiser} onChange={e => setMerchandiser(e.target.value)} style={{ flex: 1 }}>
                 {MERCHANDISER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             {/* Manager */}
@@ -224,9 +225,9 @@ export default function MisqueryOrderSummary() {
                 <input type="radio" checked={activeManager} onChange={() => setActiveManager(!activeManager)} onClick={() => setActiveManager(!activeManager)} />
                 Manager
               </label>
-              <select className="inp" value={manager} onChange={e => setManager(e.target.value)} style={{ flex: 1 }}>
+              <BlueSelect className="inp" value={manager} onChange={e => setManager(e.target.value)} style={{ flex: 1 }}>
                 {MANAGER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             {/* Team */}
@@ -235,9 +236,9 @@ export default function MisqueryOrderSummary() {
                 <input type="radio" checked={activeTeam} onChange={() => setActiveTeam(!activeTeam)} onClick={() => setActiveTeam(!activeTeam)} />
                 Team
               </label>
-              <select className="inp" value={team} onChange={e => setTeam(e.target.value)} style={{ flex: 1 }}>
+              <BlueSelect className="inp" value={team} onChange={e => setTeam(e.target.value)} style={{ flex: 1 }}>
                 {TEAM_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
             {/* Brand */}
@@ -246,9 +247,9 @@ export default function MisqueryOrderSummary() {
                 <input type="radio" checked={activeBrand} onChange={() => setActiveBrand(!activeBrand)} onClick={() => setActiveBrand(!activeBrand)} />
                 Brand
               </label>
-              <select className="inp" value={brand} onChange={e => setBrand(e.target.value)} style={{ flex: 1 }}>
+              <BlueSelect className="inp" value={brand} onChange={e => setBrand(e.target.value)} style={{ flex: 1 }}>
                 {BRAND_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-              </select>
+              </BlueSelect>
             </div>
 
           </div>

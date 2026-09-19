@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
 import { CUSTOMER_LIST, INITIAL_INV_PROFIT_STATEMENT } from '../misqueryConfig';
+import BlueSelect from '../components/BlueSelect';
 
 const PROFIT_COMPANY_LIST = ['-- All --', 'FRONTIER FASHIONS', 'FRONTIER KNITTERS (P) LTD', 'FRONTIER PRINTING'];
 const PROFIT_BUYER_LIST = ['-- All --', ...CUSTOMER_LIST.filter((c) => c !== '--Select--')];
@@ -60,9 +61,9 @@ export default function MisqueryLogisticsInvProfitStatement() {
         <input type="radio" checked={active} onChange={() => setActive(!active)} onClick={() => setActive(!active)} />
         {label}
       </label>
-      <select className="inp" value={value} onChange={(e) => setValue(e.target.value)} style={{ flex: 1 }}>
+      <BlueSelect className="inp" value={value} onChange={(e) => setValue(e.target.value)} style={{ flex: 1 }}>
         {options.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-      </select>
+      </BlueSelect>
     </div>
   );
 

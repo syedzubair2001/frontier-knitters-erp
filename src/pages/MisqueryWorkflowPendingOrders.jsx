@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   ORDER_TYPES,
   STYLE_TYPES,
@@ -106,21 +107,21 @@ export default function MisqueryWorkflowPendingOrders() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
               <div className="field">
                 <label>Order Type</label>
-                <select className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
+                <BlueSelect className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
                   {ORDER_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Style Type</label>
-                <select className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
+                <BlueSelect className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
                   {STYLE_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Order Category</label>
-                <select className="inp" value={orderCategory} onChange={e => setOrderCategory(e.target.value)}>
+                <BlueSelect className="inp" value={orderCategory} onChange={e => setOrderCategory(e.target.value)}>
                   {ORDER_CATEGORY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -132,9 +133,9 @@ export default function MisqueryWorkflowPendingOrders() {
                     <input type="radio" checked={active} onChange={() => setActive(!active)} onClick={() => setActive(!active)} />
                     {label}
                   </label>
-                  <select className="inp" value={value} onChange={e => setValue(e.target.value)} style={{ flex: 1 }}>
+                  <BlueSelect className="inp" value={value} onChange={e => setValue(e.target.value)} style={{ flex: 1 }}>
                     {list.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
               ))}
             </div>

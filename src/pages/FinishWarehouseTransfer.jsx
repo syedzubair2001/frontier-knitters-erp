@@ -10,6 +10,7 @@ import {
 import {
   listFinishWarehouseTransfers, saveFinishWarehouseTransfer, deleteFinishWarehouseTransfer
 } from '../finishWarehouseTransferService';
+import BlueSelect from '../components/BlueSelect';
 
 function generateEntryNo() {
   const num = Math.floor(100 + Math.random() * 900);
@@ -405,7 +406,7 @@ export default function FinishWarehouseTransfer() {
                 {/* Order No Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Order No</label>
-                  <select
+                  <BlueSelect
                     value={filterOrderNo}
                     onChange={(e) => setFilterOrderNo(e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -413,13 +414,13 @@ export default function FinishWarehouseTransfer() {
                     {ORDER_NO_OPTIONS.map((opt) => (
                       <option key={opt} value={opt === 'All Orders' ? '' : opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* Store Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Store</label>
-                  <select
+                  <BlueSelect
                     value={filterStore}
                     onChange={(e) => setFilterStore(e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -427,13 +428,13 @@ export default function FinishWarehouseTransfer() {
                     {STORE_OPTIONS.map((opt) => (
                       <option key={opt} value={opt === 'All Stores' ? '' : opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* Entry No Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Entry No</label>
-                  <select
+                  <BlueSelect
                     value={filterEntryNo}
                     onChange={(e) => setFilterEntryNo(e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -441,7 +442,7 @@ export default function FinishWarehouseTransfer() {
                     {ENTRY_NO_OPTIONS.map((opt) => (
                       <option key={opt} value={opt === 'All Entries' ? '' : opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* From Date */}
@@ -487,7 +488,7 @@ export default function FinishWarehouseTransfer() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, gap: 12, flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 14, color: '#475569', fontWeight: 500 }}>Download Format:</span>
-                <select
+                <BlueSelect
                   value={downloadType}
                   onChange={(e) => setDownloadType(e.target.value)}
                   style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, color: '#0f172a' }}
@@ -495,7 +496,7 @@ export default function FinishWarehouseTransfer() {
                   {TRANSFER_DOWNLOAD_FORMATS.map((fmt) => (
                     <option key={fmt} value={fmt}>{fmt}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <button
                   onClick={handleDownload}
                   style={{ padding: '6px 14px', borderRadius: 6, border: '1px solid #0284c7', backgroundColor: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
@@ -730,7 +731,7 @@ export default function FinishWarehouseTransfer() {
 
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Customer Dropdown *</label>
-                <select
+                <BlueSelect
                   value={form.customer}
                   onChange={(e) => setForm({ ...form, customer: e.target.value })}
                   style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -739,7 +740,7 @@ export default function FinishWarehouseTransfer() {
                   {CUSTOMER_OPTIONS.filter(c => c !== 'All Customers').map(c => (
                     <option key={c} value={c}>{c}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -777,7 +778,7 @@ export default function FinishWarehouseTransfer() {
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <span style={{ fontSize: 13, color: '#475569', fontWeight: 600 }}>Order No Lookup:</span>
-                  <select
+                  <BlueSelect
                     value={selectedOrderNoLookup}
                     onChange={(e) => setSelectedOrderNoLookup(e.target.value)}
                     style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, color: '#0f172a' }}
@@ -785,7 +786,7 @@ export default function FinishWarehouseTransfer() {
                     {ORDER_NO_OPTIONS.map((opt) => (
                       <option key={opt} value={opt === 'All Orders' ? '' : opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                   
                   <button
                     type="button"
@@ -926,7 +927,7 @@ export default function FinishWarehouseTransfer() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                     <span style={{ fontSize: 13, color: '#475569', fontWeight: 600 }}>Store Dropdown:</span>
-                    <select
+                    <BlueSelect
                       value={form.store}
                       onChange={(e) => setForm({ ...form, store: e.target.value })}
                       style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, color: '#0f172a' }}
@@ -934,7 +935,7 @@ export default function FinishWarehouseTransfer() {
                       {STORE_OPTIONS.filter(s => s !== 'All Stores').map(st => (
                         <option key={st} value={st}>{st}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
                 </div>
 

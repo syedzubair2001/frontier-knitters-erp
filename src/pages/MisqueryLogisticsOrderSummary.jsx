@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   CUSTOMER_LIST,
   STYLE_LIST,
@@ -120,9 +121,9 @@ export default function MisqueryLogisticsOrderSummary() {
                     <input type="radio" checked={active} onChange={() => setActive(!active)} onClick={() => setActive(!active)} />
                     {label}
                   </label>
-                  <select className="inp" value={value} onChange={e => setValue(e.target.value)} style={{ flex: 1 }}>
+                  <BlueSelect className="inp" value={value} onChange={e => setValue(e.target.value)} style={{ flex: 1 }}>
                     {list.map(o => <option key={o}>{o}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
               ))}
             </div>

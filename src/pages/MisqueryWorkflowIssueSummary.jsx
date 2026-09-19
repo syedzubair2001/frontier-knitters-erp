@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   CUSTOMER_LIST,
   PROCESS_LIST,
@@ -129,9 +130,9 @@ export default function MisqueryWorkflowIssueSummary() {
               ].map(([lbl, val, setter, list]) => (
                 <div key={lbl} style={fieldBox}>
                   <label style={lblStyle}>{lbl}</label>
-                  <select style={ddStyle} value={val} onChange={e => setter(e.target.value)}>
+                  <BlueSelect style={ddStyle} value={val} onChange={e => setter(e.target.value)}>
                     {list.map(o => <option key={o}>{o}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
               ))}
             </div>
@@ -156,15 +157,15 @@ export default function MisqueryWorkflowIssueSummary() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px 16px', marginBottom: 4 }}>
               <div style={fieldBox}>
                 <label style={lblStyle}>Issue No</label>
-                <select style={ddStyle} value={issueNo} onChange={e => setIssueNo(e.target.value)}>
+                <BlueSelect style={ddStyle} value={issueNo} onChange={e => setIssueNo(e.target.value)}>
                   {ISSUE_NO_LIST.map(o => <option key={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div style={fieldBox}>
                 <label style={lblStyle}>Store</label>
-                <select style={ddStyle} value={store} onChange={e => setStore(e.target.value)}>
+                <BlueSelect style={ddStyle} value={store} onChange={e => setStore(e.target.value)}>
                   {['-- All --'].concat(STORE_LIST.slice(1)).map(o => <option key={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -191,9 +192,9 @@ export default function MisqueryWorkflowIssueSummary() {
               ].map(([lbl, val, setter, list]) => (
                 <div key={lbl} style={fieldBox}>
                   <label style={lblStyle}>{lbl}</label>
-                  <select style={ddStyle} value={val} onChange={e => setter(e.target.value)}>
+                  <BlueSelect style={ddStyle} value={val} onChange={e => setter(e.target.value)}>
                     {list.map(o => <option key={o}>{o}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
               ))}
             </div>
@@ -221,13 +222,13 @@ export default function MisqueryWorkflowIssueSummary() {
               {/* Export dropdown */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <label style={{ fontSize: 13, fontWeight: 600, color: '#16a34a' }}>Export</label>
-                <select
+                <BlueSelect
                   style={{ ...ddStyle, width: 'auto', minWidth: 120, borderColor: '#86efac', color: '#15803d', fontWeight: 600 }}
                   value={exportFormat}
                   onChange={e => setExportFormat(e.target.value)}
                 >
                   {EXPORT_FORMATS.map(f => <option key={f}>{f}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Grouping checkbox */}

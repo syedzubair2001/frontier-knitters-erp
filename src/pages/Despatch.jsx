@@ -9,6 +9,7 @@ import {
   DESPATCH_DOWNLOAD_TYPES, DESPATCH_COLUMNS,
 } from '../salesConfig';
 import { listDespatches, saveDespatch, deleteDespatch } from '../salesService';
+import BlueSelect from '../components/BlueSelect';
 
 function generateDespatchNo() {
   const num = Math.floor(100 + Math.random() * 900);
@@ -419,7 +420,7 @@ export default function Despatch() {
                 </div>
                 <div className="field">
                   <label>Buyer / Customer <span className="req">*</span></label>
-                  <select
+                  <BlueSelect
                     className="inp"
                     value={form.customer}
                     onChange={(e) => setForm({ ...form, customer: e.target.value })}
@@ -427,11 +428,11 @@ export default function Despatch() {
                     {BUYER_LIST.map((b) => (
                       <option key={b} value={b}>{b}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
                 <div className="field">
                   <label>Job Order No <span className="req">*</span></label>
-                  <select
+                  <BlueSelect
                     className="inp"
                     value={form.jobOrderNo}
                     onChange={(e) => setForm({ ...form, jobOrderNo: e.target.value })}
@@ -439,7 +440,7 @@ export default function Despatch() {
                     {JOB_ORDER_LIST.map((j) => (
                       <option key={j} value={j}>{j}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
               </div>
 
@@ -448,7 +449,7 @@ export default function Despatch() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
                   <div className="field">
                     <label>Supplier <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.supplier}
                       onChange={(e) => setForm({ ...form, supplier: e.target.value })}
@@ -456,12 +457,12 @@ export default function Despatch() {
                       {SUPPLIER_LIST.map((s) => (
                         <option key={s} value={s}>{s}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
                     <label>Forwarder <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.forwarder}
                       onChange={(e) => setForm({ ...form, forwarder: e.target.value })}
@@ -469,12 +470,12 @@ export default function Despatch() {
                       {FORWARDER_LIST.map((f) => (
                         <option key={f} value={f}>{f}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
                     <label>Ship Mode <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.shipMode}
                       onChange={(e) => setForm({ ...form, shipMode: e.target.value })}
@@ -482,12 +483,12 @@ export default function Despatch() {
                       {SHIP_MODES.map((m) => (
                         <option key={m} value={m}>{m}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
                     <label>Despatch Type <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.type}
                       onChange={(e) => setForm({ ...form, type: e.target.value })}
@@ -495,7 +496,7 @@ export default function Despatch() {
                       {TYPE_OPTIONS.map((t) => (
                         <option key={t} value={t}>{t}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
@@ -560,14 +561,14 @@ export default function Despatch() {
 
                   <div className="field">
                     <label>Approval Status</label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.approval}
                       onChange={(e) => setForm({ ...form, approval: e.target.value })}
                     >
                       <option value="Approved">Approved</option>
                       <option value="Pending">Pending</option>
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field" style={{ gridColumn: 'span 3' }}>
@@ -632,42 +633,42 @@ export default function Despatch() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12 }}>
                 <div className="field">
                   <label>Buyer</label>
-                  <select className="inp" value={filterBuyer} onChange={(e) => { setFilterBuyer(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterBuyer} onChange={(e) => { setFilterBuyer(e.target.value); setPage(1); }}>
                     <option value="">-- All Buyers --</option>
                     {BUYER_LIST.map((b) => (
                       <option key={b} value={b}>{b}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Job Order No</label>
-                  <select className="inp" value={filterJobOrder} onChange={(e) => { setFilterJobOrder(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterJobOrder} onChange={(e) => { setFilterJobOrder(e.target.value); setPage(1); }}>
                     <option value="">-- All Job Orders --</option>
                     {JOB_ORDER_LIST.map((j) => (
                       <option key={j} value={j}>{j}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Supplier</label>
-                  <select className="inp" value={filterSupplier} onChange={(e) => { setFilterSupplier(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterSupplier} onChange={(e) => { setFilterSupplier(e.target.value); setPage(1); }}>
                     <option value="">-- All Suppliers --</option>
                     {SUPPLIER_LIST.map((s) => (
                       <option key={s} value={s}>{s}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Type</label>
-                  <select className="inp" value={filterType} onChange={(e) => { setFilterType(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterType} onChange={(e) => { setFilterType(e.target.value); setPage(1); }}>
                     <option value="">-- All Types --</option>
                     {TYPE_OPTIONS.map((t) => (
                       <option key={t} value={t}>{t}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
@@ -683,11 +684,11 @@ export default function Despatch() {
 
                 <div className="field">
                   <label>Approval</label>
-                  <select className="inp" value={filterApproval} onChange={(e) => { setFilterApproval(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterApproval} onChange={(e) => { setFilterApproval(e.target.value); setPage(1); }}>
                     {APPROVAL_TYPES.map((a) => (
                       <option key={a} value={a}>{a}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
@@ -724,11 +725,11 @@ export default function Despatch() {
             <div className="toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Download Format:</span>
-                <select className="inp inline-select" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
+                <BlueSelect className="inp inline-select" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
                   {DESPATCH_DOWNLOAD_TYPES.map((d) => (
                     <option key={d} value={d}>{d.toUpperCase()}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <button type="button" className="btn-secondary" onClick={handleExport}>
                   📥 Download
                 </button>
@@ -817,11 +818,11 @@ export default function Despatch() {
             <div className="pager" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Per Page:</span>
-                <select className="inp inline-select" value={perPage} onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}>
+                <BlueSelect className="inp inline-select" value={perPage} onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}>
                   {DESPATCH_PER_PAGE_OPTIONS.map((opt) => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
                   Showing {sorted.length ? (safePage - 1) * perPage + 1 : 0} - {Math.min(safePage * perPage, sorted.length)} of {sorted.length} entries
                 </span>

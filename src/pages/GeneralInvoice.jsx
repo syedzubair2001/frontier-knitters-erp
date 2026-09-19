@@ -10,6 +10,7 @@ import {
 } from '../generalInvoiceConfig';
 import { listGeneralInvoices, saveGeneralInvoice, deleteGeneralInvoice } from '../generalInvoiceService';
 import { listBillInwards } from '../billInwardService';
+import BlueSelect from '../components/BlueSelect';
 
 function generateInvoiceNo() {
   const num = Math.floor(100 + Math.random() * 900);
@@ -389,7 +390,7 @@ export default function GeneralInvoice() {
                 </div>
                 <div className="field">
                   <label>Supplier <span className="req">*</span></label>
-                  <select
+                  <BlueSelect
                     className="inp"
                     value={form.supplier}
                     onChange={(e) => setForm({ ...form, supplier: e.target.value })}
@@ -397,7 +398,7 @@ export default function GeneralInvoice() {
                     {SUPPLIER_LIST.map((s) => (
                       <option key={s} value={s}>{s}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
                 <div className="field">
                   <label>Supplier Invoice No <span className="req">*</span></label>
@@ -431,7 +432,7 @@ export default function GeneralInvoice() {
 
                   <div className="field">
                     <label>Currency Type <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.curType}
                       onChange={(e) => setForm({ ...form, curType: e.target.value })}
@@ -439,7 +440,7 @@ export default function GeneralInvoice() {
                       {CURRENCY_TYPES.map((c) => (
                         <option key={c} value={c}>{c}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
@@ -510,7 +511,7 @@ export default function GeneralInvoice() {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 12 }}>
                     <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Type Category:</label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       style={{ minWidth: 140 }}
                       value={form.categoryType}
@@ -519,7 +520,7 @@ export default function GeneralInvoice() {
                       {INVOICE_CATEGORIES.map((cat) => (
                         <option key={cat} value={cat}>{cat}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
                 </div>
               </div>
@@ -528,7 +529,7 @@ export default function GeneralInvoice() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
                 <div className="field">
                   <label>Bill Inward No (Dropdown)</label>
-                  <select
+                  <BlueSelect
                     className="inp"
                     value={form.billInwardNo}
                     onChange={(e) => handleBillInwardChange(e.target.value)}
@@ -539,7 +540,7 @@ export default function GeneralInvoice() {
                         {b.billInwNo} ({b.supplier || b.party} - ₹{b.amount})
                       </option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
@@ -612,12 +613,12 @@ export default function GeneralInvoice() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12 }}>
                 <div className="field">
                   <label>Supplier</label>
-                  <select className="inp" value={filterSupplier} onChange={(e) => { setFilterSupplier(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterSupplier} onChange={(e) => { setFilterSupplier(e.target.value); setPage(1); }}>
                     <option value="">-- All Suppliers --</option>
                     {SUPPLIER_LIST.map((s) => (
                       <option key={s} value={s}>{s}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
@@ -633,31 +634,31 @@ export default function GeneralInvoice() {
 
                 <div className="field">
                   <label>Bill Inward No</label>
-                  <select className="inp" value={filterBillInwNo} onChange={(e) => { setFilterBillInwNo(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterBillInwNo} onChange={(e) => { setFilterBillInwNo(e.target.value); setPage(1); }}>
                     <option value="">-- All Bill Inwards --</option>
                     {billInwardList.map((b) => (
                       <option key={b.billInwNo} value={b.billInwNo}>{b.billInwNo}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Approval</label>
-                  <select className="inp" value={filterApproval} onChange={(e) => { setFilterApproval(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterApproval} onChange={(e) => { setFilterApproval(e.target.value); setPage(1); }}>
                     {APPROVAL_STATUSES.map((a) => (
                       <option key={a} value={a}>{a}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Invoice Type</label>
-                  <select className="inp" value={filterInvoiceType} onChange={(e) => { setFilterInvoiceType(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterInvoiceType} onChange={(e) => { setFilterInvoiceType(e.target.value); setPage(1); }}>
                     <option value="">-- All Types --</option>
                     {INVOICE_TYPES.map((t) => (
                       <option key={t} value={t}>{t}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
@@ -676,11 +677,11 @@ export default function GeneralInvoice() {
             <div className="toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Download Format:</span>
-                <select className="inp inline-select" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
+                <BlueSelect className="inp inline-select" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
                   {GENERAL_INVOICE_DOWNLOAD_TYPES.map((d) => (
                     <option key={d} value={d}>{d.toUpperCase()}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <button type="button" className="btn-secondary" onClick={handleExport}>
                   📥 Download
                 </button>
@@ -766,11 +767,11 @@ export default function GeneralInvoice() {
             <div className="pager" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Per Page:</span>
-                <select className="inp inline-select" value={perPage} onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}>
+                <BlueSelect className="inp inline-select" value={perPage} onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}>
                   {GENERAL_INVOICE_PER_PAGE_OPTIONS.map((opt) => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
                   Showing {sorted.length ? (safePage - 1) * perPage + 1 : 0} - {Math.min(safePage * perPage, sorted.length)} of {sorted.length} entries
                 </span>

@@ -110,7 +110,7 @@ body { margin: 0; background: #eef2f7; font-family: 'Inter', sans-serif; }
 .dd { position: relative; display: inline-block; flex-shrink: 0; }
 .dd-menu { position: absolute; top: 100%; left: 0; margin-top: 6px; min-width: 230px; background: #fff; border: 1px solid #d3dce8; border-radius: 12px; box-shadow: 0 14px 34px rgba(11,42,91,.28); padding: 8px; z-index: 100; display: flex; flex-direction: column; gap: 4px; overflow: visible !important; }
 .dd-item { display: flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: 8px; color: #102a43; text-decoration: none; font-size: 13px; font-weight: 600; white-space: nowrap; }
-.dd-item:hover { background: #eef4ff; color: #164b9e; }
+.dd-item:hover { background: linear-gradient(90deg, #1e6fe0, #3d8bf3); color: #fff; }
 .dd-item.on { background: #164b9e; color: #fff; }
 .dd-ic { font-size: 14px; }
 
@@ -200,10 +200,12 @@ body { margin: 0; background: #eef2f7; font-family: 'Inter', sans-serif; }
 .dd-col { display: flex; flex-direction: column; gap: 4px; }
 .dd-group { position: relative; overflow: visible; }
 .dd-group-cap { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px; border-radius: 8px; cursor: pointer; color: #102a43; font-size: 13px; font-weight: 700; }
+.dd-group-cap:hover { background: linear-gradient(90deg, #1e6fe0, #3d8bf3); color: #fff; }
 .dd-sub { position: absolute; left: 100%; top: -4px; margin-left: 2px; min-width: 220px; background: #fff; border: 1px solid #d3dce8; border-radius: 12px; box-shadow: 0 14px 34px rgba(11,42,91,.28); padding: 8px; display: flex; flex-direction: column; gap: 4px; z-index: 120; overflow: visible !important; }
 .dd-sub::before { content: ''; position: absolute; left: -12px; top: -10px; bottom: -10px; width: 18px; background: transparent; }
 .dd-code { font-size: 10px; font-weight: 800; color: #1e6fe0; background: #eef4ff; border: 1px solid #d3e0f5; border-radius: 6px; padding: 1px 5px; min-width: 34px; text-align: center; }
 .dd-item.on .dd-code { background: rgba(255,255,255,.22); border-color: transparent; color: #fff; }
+.dd-item:hover .dd-code { background: rgba(255,255,255,.22); border-color: transparent; color: #fff; }
 
 @media (max-width: 900px) {
   .rail { display: none; }
@@ -1004,6 +1006,72 @@ body { margin: 0; background: #eef2f7; font-family: 'Inter', sans-serif; }
   border-radius: 12px;
   box-shadow: 0 10px 26px rgba(0, 0, 0, .35);
 }
+
+/* GLOBAL NATIVE SELECT THEME — login role + every field dropdown (entire project).
+   Box stays white normally, hover/selected turns base theme blue (#1e6fe0 → #3d8bf3).
+   Note: Chrome/Edge on Windows draw the opened <option> list with the OS,
+   so full row theming applies in Firefox + the focused/selected row in Chromium. */
+select:hover { border-color: #1e6fe0; }
+select:focus, select:focus-visible { border-color: #1e6fe0 !important; box-shadow: 0 0 0 3px rgba(30,111,224,.15); outline: none; }
+select option, select optgroup { background-color: #ffffff; color: #102a43; }
+select option:hover, select option:focus { background-color: #1e6fe0 !important; color: #ffffff; }
+select option:checked { background: linear-gradient(90deg, #1e6fe0, #3d8bf3) !important; color: #ffffff; }
+select option:active { background-color: #164b9e !important; color: #ffffff; }
+
+/* CUSTOM BLUE DROPDOWN (BlueSelect) — div-based so hover is ALWAYS theme blue
+   in Chrome/Edge/Firefox. Closed box looks exactly like native select. */
+.bsel { position: relative; width: 100%; }
+.bsel-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 12px; border: 1.5px solid #d3dce8; border-radius: 9px; font-size: 14px; background: #f8fafd; color: #102a43; outline: none; cursor: pointer; text-align: left; }
+.bsel-btn:hover { border-color: #1e6fe0; }
+.bsel-btn.open, .bsel-btn:focus { border-color: #1e6fe0; background: #fff; box-shadow: 0 0 0 3px rgba(30,111,224,.15); }
+.bsel-btn.is-placeholder .bsel-label { color: #627d98; }
+.bsel-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bsel-caret { color: #1e6fe0; font-size: 12px; flex-shrink: 0; transition: transform .15s; }
+.bsel-btn.open .bsel-caret { transform: rotate(180deg); }
+.bsel-list { position: absolute; top: calc(100% + 6px); left: 0; right: 0; min-width: 100%; background: #fff; border: 1px solid #d3dce8; border-radius: 12px; box-shadow: 0 14px 34px rgba(11,42,91,.28); padding: 6px; z-index: 200; }
+.bsel-searchwrap { padding: 4px 4px 6px; }
+.bsel-search { width: 100%; padding: 8px 10px; border: 1.5px solid #d3dce8; border-radius: 8px; font-size: 13px; outline: none; color: #102a43; }
+.bsel-search:focus { border-color: #1e6fe0; box-shadow: 0 0 0 3px rgba(30,111,224,.12); }
+.bsel-items { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+.bsel-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px; border-radius: 8px; color: #102a43; font-size: 13.5px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.bsel-item:hover, .bsel-item.hi { background: linear-gradient(90deg, #1e6fe0, #3d8bf3); color: #fff; }
+.bsel-item.sel { background: #e8f0fe; color: #164b9e; }
+.bsel-item.sel:hover, .bsel-item.sel.hi { background: linear-gradient(90deg, #1e6fe0, #3d8bf3); color: #fff; }
+.bsel-tick { font-weight: 800; }
+.bsel-empty { padding: 10px 12px; color: #627d98; font-size: 13px; }
+/* compact variant for filter bars / tables (same blue hover) */
+.bsel.compact .bsel-btn { padding: 6px 10px; font-size: 13px; border-radius: 8px; }
+.bsel.compact .bsel-item { font-size: 13px; padding: 7px 10px; }
+/* inline variant for per-page / download selects */
+.bsel.inline { width: auto; min-width: 80px; display: inline-block; }
+.bsel.inline .bsel-btn { width: auto; padding: 5px 10px; font-size: 12.5px; border-radius: 7px; }
+/* ── GLOBAL AUTO-UPGRADE: every native <select> gets a BlueSelect twin ──
+   JS hides the native select (kept in DOM, synced, still submits/forms fine)
+   and injects a .native-bsel twin right after it. Twin hover = theme blue. */
+select.bsel-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; white-space: nowrap !important; border: 0 !important; opacity: 0 !important; pointer-events: none !important; }
+.native-bsel { position: relative; width: 100%; }
+.native-bsel-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; border: 1.5px solid #d3dce8; border-radius: 9px; font-size: 13.5px; background: #fff; color: #102a43; outline: none; cursor: pointer; text-align: left; font-weight: 600; }
+.native-bsel-btn:hover { border-color: #1e6fe0; }
+.native-bsel-btn.open, .native-bsel-btn:focus { border-color: #1e6fe0; box-shadow: 0 0 0 3px rgba(30,111,224,.15); }
+.native-bsel-btn.is-placeholder .native-bsel-label { color: #627d98; font-weight: 400; }
+.native-bsel-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.native-bsel-caret { color: #1e6fe0; font-size: 11px; flex-shrink: 0; transition: transform .15s; }
+.native-bsel-btn.open .native-bsel-caret { transform: rotate(180deg); }
+.native-bsel-list { position: absolute; top: calc(100% + 6px); left: 0; right: 0; min-width: max(100%, 150px); max-width: 320px; background: #fff; border: 1px solid #d3dce8; border-radius: 12px; box-shadow: 0 14px 34px rgba(11,42,91,.28); padding: 6px; z-index: 9999; }
+.native-bsel-searchwrap { padding: 4px 4px 6px; }
+.native-bsel-search { width: 100%; padding: 8px 10px; border: 1.5px solid #d3dce8; border-radius: 8px; font-size: 13px; outline: none; color: #102a43; box-sizing: border-box; }
+.native-bsel-search:focus { border-color: #1e6fe0; box-shadow: 0 0 0 3px rgba(30,111,224,.12); }
+.native-bsel-items { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+/* ★ THE FIX: normal = white/dark text, HOVER = base theme blue — every dropdown, whole project */
+.native-bsel-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px; border-radius: 8px; color: #102a43; background: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.native-bsel-item:hover, .native-bsel-item.hi { background: linear-gradient(90deg, #1e6fe0, #3d8bf3) !important; color: #fff !important; }
+.native-bsel-item.sel { background: #e8f0fe; color: #164b9e; }
+.native-bsel-item.sel:hover, .native-bsel-item.sel.hi { background: linear-gradient(90deg, #1e6fe0, #3d8bf3) !important; color: #fff !important; }
+.native-bsel-tick { font-weight: 800; }
+.native-bsel-empty { padding: 10px 12px; color: #627d98; font-size: 13px; }
+.native-bsel.inline { width: auto; min-width: 80px; display: inline-block; }
+.native-bsel.inline .native-bsel-btn { width: auto; padding: 5px 10px; font-size: 12.5px; border-radius: 7px; }
+.native-bsel.compact .native-bsel-btn { padding: 6px 10px; font-size: 13px; border-radius: 8px; }
 
 @media (prefers-reduced-motion: reduce) {
   .fk-loader-bar span { animation-duration: 1.6s; }

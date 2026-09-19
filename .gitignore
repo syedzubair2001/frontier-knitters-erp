@@ -1,0 +1,9 @@
+node_modules
+dist
+dist-ssr
+*.local
+build-check.log
+codemod-blueselect.mjs
+.vite
+.vscode/*
+!.vscode/extensions.json

@@ -9,6 +9,7 @@ import {
   ADDRESS_FIELDS, ADDRESS_LABELS, makeAddress, makeCustomer,
 } from '../customerModel';
 import { getCustomer, saveCustomer } from '../customerService';
+import BlueSelect from '../components/BlueSelect';
 
 export default function CustomerForm() {
   const nav = useNavigate();
@@ -98,9 +99,9 @@ export default function CustomerForm() {
   const text = (name, label, extra = {}) => field(name, label,
     <input value={customer[name] || ''} onChange={(e) => set(name, e.target.value)} type={extra.type || 'text'} step={extra.step} min={extra.min} />, extra);
   const select = (name, label, options, extra = {}) => field(name, label,
-    <select value={customer[name] || ''} onChange={(e) => set(name, e.target.value)}>
+    <BlueSelect value={customer[name] || ''} onChange={(e) => set(name, e.target.value)}>
       {options.map((o) => <option key={o} value={o}>{o}</option>)}
-    </select>, extra);
+    </BlueSelect>, extra);
 
   return (
     <div className="wrap">

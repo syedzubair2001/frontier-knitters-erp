@@ -13,6 +13,7 @@ import {
 import {
   listAdjustments, saveAdjustment, deleteAdjustment
 } from '../accountsService';
+import BlueSelect from '../components/BlueSelect';
 
 function generateVoucherNo() {
   const num = Math.floor(100 + Math.random() * 900);
@@ -473,7 +474,7 @@ export default function Adjustment() {
                 {/* Type Dropdown (Customer / Supplier) */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Type</label>
-                  <select
+                  <BlueSelect
                     value={filterPartyType}
                     onChange={(e) => setFilterPartyType(e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -481,13 +482,13 @@ export default function Adjustment() {
                     {PARTY_TYPE_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* Customer Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Customer</label>
-                  <select
+                  <BlueSelect
                     value={filterCustomer}
                     onChange={(e) => setFilterCustomer(e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -495,13 +496,13 @@ export default function Adjustment() {
                     {CUSTOMER_OPTIONS.map((opt) => (
                       <option key={opt} value={opt === 'All Customers' ? '' : opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* Voucher Type Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Voucher Type</label>
-                  <select
+                  <BlueSelect
                     value={filterVoucherType}
                     onChange={(e) => setFilterVoucherType(e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -510,13 +511,13 @@ export default function Adjustment() {
                     {VOUCHER_TYPE_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* Voucher No Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Voucher No</label>
-                  <select
+                  <BlueSelect
                     value={filterVoucherNo}
                     onChange={(e) => setFilterVoucherNo(e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -524,13 +525,13 @@ export default function Adjustment() {
                     {VOUCHER_NO_OPTIONS.map((opt) => (
                       <option key={opt} value={opt === 'All Vouchers' ? '' : opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* Status Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Status</label>
-                  <select
+                  <BlueSelect
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -538,7 +539,7 @@ export default function Adjustment() {
                     {STATUS_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* Reset Filters */}
@@ -562,7 +563,7 @@ export default function Adjustment() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, gap: 12, flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 14, color: '#475569', fontWeight: 500 }}>Download Format:</span>
-                <select
+                <BlueSelect
                   value={downloadType}
                   onChange={(e) => setDownloadType(e.target.value)}
                   style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, color: '#0f172a' }}
@@ -570,7 +571,7 @@ export default function Adjustment() {
                   {ACCOUNTS_DOWNLOAD_TYPES.map((fmt) => (
                     <option key={fmt} value={fmt}>{fmt}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <button
                   onClick={handleDownload}
                   style={{ padding: '6px 14px', borderRadius: 6, border: '1px solid #0284c7', backgroundColor: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
@@ -808,7 +809,7 @@ export default function Adjustment() {
 
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Customer Dropdown *</label>
-                <select
+                <BlueSelect
                   value={form.customer}
                   onChange={(e) => setForm({ ...form, customer: e.target.value })}
                   style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -817,7 +818,7 @@ export default function Adjustment() {
                   {CUSTOMER_OPTIONS.filter(c => c !== 'All Customers').map(c => (
                     <option key={c} value={c}>{c}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -827,7 +828,7 @@ export default function Adjustment() {
               {/* Type Dropdown */}
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Type</label>
-                <select
+                <BlueSelect
                   value={form.voucherType}
                   onChange={(e) => setForm({ ...form, voucherType: e.target.value })}
                   style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -835,13 +836,13 @@ export default function Adjustment() {
                   {VOUCHER_TYPE_OPTIONS.map(v => (
                     <option key={v} value={v}>{v}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Invoice Type Dropdown */}
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Invoice Type</label>
-                <select
+                <BlueSelect
                   value={form.invoiceType}
                   onChange={(e) => setForm({ ...form, invoiceType: e.target.value })}
                   style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -849,13 +850,13 @@ export default function Adjustment() {
                   {INVOICE_TYPE_OPTIONS.map(it => (
                     <option key={it} value={it}>{it}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Invoice No Dropdown */}
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Invoice No</label>
-                <select
+                <BlueSelect
                   value={form.invoiceNo}
                   onChange={(e) => setForm({ ...form, invoiceNo: e.target.value })}
                   style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -863,13 +864,13 @@ export default function Adjustment() {
                   {INVOICE_NO_OPTIONS.map(ino => (
                     <option key={ino} value={ino}>{ino}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Currency Type Dropdown */}
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Currency Type</label>
-                <select
+                <BlueSelect
                   value={form.currency}
                   onChange={(e) => handleCurrencyChange(e.target.value)}
                   style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -877,7 +878,7 @@ export default function Adjustment() {
                   {CURRENCY_OPTIONS.map(c => (
                     <option key={c.code} value={c.code}>{c.name} ({c.code})</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Ex. Rate */}
@@ -895,7 +896,7 @@ export default function Adjustment() {
               {/* Receipt Type Dropdown */}
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Receipt Type</label>
-                <select
+                <BlueSelect
                   value={form.receiptType}
                   onChange={(e) => setForm({ ...form, receiptType: e.target.value })}
                   style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -903,13 +904,13 @@ export default function Adjustment() {
                   {RECEIPT_TYPE_OPTIONS.map(rt => (
                     <option key={rt} value={rt}>{rt}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Bank Dropdown */}
               <div style={{ gridColumn: 'span 2' }}>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Bank</label>
-                <select
+                <BlueSelect
                   value={form.bank}
                   onChange={(e) => setForm({ ...form, bank: e.target.value })}
                   style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -917,7 +918,7 @@ export default function Adjustment() {
                   {BANK_OPTIONS.map(bk => (
                     <option key={bk} value={bk}>{bk}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               {/* Chq/DD/Trf No */}
@@ -1051,7 +1052,7 @@ export default function Adjustment() {
                         form.details.map((det) => (
                           <tr key={det.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                             <td style={{ padding: '6px 8px' }}>
-                              <select
+                              <BlueSelect
                                 value={det.invoiceType}
                                 onChange={(e) => handleDetailChange(det.id, 'invoiceType', e.target.value)}
                                 style={{ width: '100%', padding: '4px 6px', borderRadius: 4, border: '1px solid #cbd5e1', fontSize: 12 }}
@@ -1059,7 +1060,7 @@ export default function Adjustment() {
                                 {INVOICE_TYPE_OPTIONS.map(it => (
                                   <option key={it} value={it}>{it}</option>
                                 ))}
-                              </select>
+                              </BlueSelect>
                             </td>
                             <td style={{ padding: '6px 8px' }}>
                               <input
@@ -1192,7 +1193,7 @@ export default function Adjustment() {
                         form.adjustItems.map((adj) => (
                           <tr key={adj.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                             <td style={{ padding: '6px 8px' }}>
-                              <select
+                              <BlueSelect
                                 value={adj.accountHead}
                                 onChange={(e) => handleAdjustItemChange(adj.id, 'accountHead', e.target.value)}
                                 style={{ width: '100%', padding: '6px 8px', borderRadius: 4, border: '1px solid #cbd5e1', fontSize: 13, color: '#0f172a' }}
@@ -1200,7 +1201,7 @@ export default function Adjustment() {
                                 {ACCOUNT_HEAD_OPTIONS.map(ah => (
                                   <option key={ah} value={ah}>{ah}</option>
                                 ))}
-                              </select>
+                              </BlueSelect>
                             </td>
                             <td style={{ padding: '6px 8px' }}>
                               <input

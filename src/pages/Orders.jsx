@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSession, logout } from '../auth';
 import Navbar from '../components/Navbar';
+import BlueSelect from '../components/BlueSelect';
 
 const defaultRows = [
   { buyer: 'H&M', style: 'ST-1001', desc: 'Ladies Polo Shirt', fabric: 'Cotton 100%', qty: 5000, rate: 4.5, date: '2026-09-01', delivery: '2026-10-15', status: 'New' },
@@ -95,17 +96,17 @@ export default function Orders() {
         <form className="frm" onSubmit={addRow}>
           <h3>➕ Add New Order (Excel row)</h3>
           <label>Buyer</label>
-          <select value={buyer} onChange={(e) => setBuyer(e.target.value)}>
+          <BlueSelect value={buyer} onChange={(e) => setBuyer(e.target.value)}>
             {masters.buyers.map((b) => <option key={b} value={b}>{b}</option>)}
-          </select>
+          </BlueSelect>
           <label>Style No</label>
           <input value={style} onChange={(e) => setStyle(e.target.value)} placeholder="ST-1003" />
           <label>Description</label>
           <input value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Mens T-Shirt" />
           <label>Fabric</label>
-          <select value={fabric} onChange={(e) => setFabric(e.target.value)}>
+          <BlueSelect value={fabric} onChange={(e) => setFabric(e.target.value)}>
             {masters.fabrics.map((f) => <option key={f} value={f}>{f}</option>)}
-          </select>
+          </BlueSelect>
           <label>Order Qty</label>
           <input type="number" value={qty} onChange={(e) => setQty(e.target.value)} placeholder="5000" />
           <label>Rate / Unit</label>
@@ -144,10 +145,10 @@ export default function Orders() {
                   <td>{r.date || '-'}</td>
                   <td>{r.delivery || '-'}</td>
                   <td>
-                    <select className="status" value={r.status || 'New'} onChange={(e) => editStatus(i, e.target.value)}>
+                    <BlueSelect className="status" value={r.status || 'New'} onChange={(e) => editStatus(i, e.target.value)}>
                       <option>New</option><option>In Cutting</option><option>In Stitching</option>
                       <option>In QC</option><option>Packed</option><option>Shipped</option>
-                    </select>
+                    </BlueSelect>
                   </td>
                   <td><button className="del" onClick={() => delRow(i)}>🗑️</button></td>
                 </tr>

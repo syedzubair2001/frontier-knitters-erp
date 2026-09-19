@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   ORDER_TYPES,
   STYLE_TYPES,
@@ -132,21 +133,21 @@ export default function MisqueryWip() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
               <div className="field">
                 <label>Order Type</label>
-                <select className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
+                <BlueSelect className="inp" value={orderType} onChange={e => setOrderType(e.target.value)}>
                   {ORDER_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Style Type</label>
-                <select className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
+                <BlueSelect className="inp" value={styleType} onChange={e => setStyleType(e.target.value)}>
                   {STYLE_TYPES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field">
                 <label>Order Category</label>
-                <select className="inp" value={orderCategory} onChange={e => setOrderCategory(e.target.value)}>
+                <BlueSelect className="inp" value={orderCategory} onChange={e => setOrderCategory(e.target.value)}>
                   {ORDER_CATEGORY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -158,9 +159,9 @@ export default function MisqueryWip() {
                   <input type="radio" checked={activeCompany} onChange={() => setActiveCompany(!activeCompany)} onClick={() => setActiveCompany(!activeCompany)} />
                   Company
                 </label>
-                <select className="inp" value={company} onChange={e => setCompany(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={company} onChange={e => setCompany(e.target.value)} style={{ flex: 1 }}>
                   {COMPANY_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -168,9 +169,9 @@ export default function MisqueryWip() {
                   <input type="radio" checked={activeCompanyUnit} onChange={() => setActiveCompanyUnit(!activeCompanyUnit)} onClick={() => setActiveCompanyUnit(!activeCompanyUnit)} />
                   Company Unit
                 </label>
-                <select className="inp" value={companyUnit} onChange={e => setCompanyUnit(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={companyUnit} onChange={e => setCompanyUnit(e.target.value)} style={{ flex: 1 }}>
                   {UNIT_SUPPLIER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -178,9 +179,9 @@ export default function MisqueryWip() {
                   <input type="radio" checked={activeCustomer} onChange={() => setActiveCustomer(!activeCustomer)} onClick={() => setActiveCustomer(!activeCustomer)} />
                   Customer
                 </label>
-                <select className="inp" value={customer} onChange={e => setCustomer(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={customer} onChange={e => setCustomer(e.target.value)} style={{ flex: 1 }}>
                   {CUSTOMER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -188,9 +189,9 @@ export default function MisqueryWip() {
                   <input type="radio" checked={activeProcessor} onChange={() => setActiveProcessor(!activeProcessor)} onClick={() => setActiveProcessor(!activeProcessor)} />
                   Processor
                 </label>
-                <select className="inp" value={processor} onChange={e => setProcessor(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={processor} onChange={e => setProcessor(e.target.value)} style={{ flex: 1 }}>
                   {PROCESSOR_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -198,9 +199,9 @@ export default function MisqueryWip() {
                   <input type="radio" checked={activeWorkDivision} onChange={() => setActiveWorkDivision(!activeWorkDivision)} onClick={() => setActiveWorkDivision(!activeWorkDivision)} />
                   Work Division
                 </label>
-                <select className="inp" value={workDivision} onChange={e => setWorkDivision(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={workDivision} onChange={e => setWorkDivision(e.target.value)} style={{ flex: 1 }}>
                   {WORK_DIVISION_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -208,9 +209,9 @@ export default function MisqueryWip() {
                   <input type="radio" checked={activeProcess} onChange={() => setActiveProcess(!activeProcess)} onClick={() => setActiveProcess(!activeProcess)} />
                   Process
                 </label>
-                <select className="inp" value={processType} onChange={e => setProcessType(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={processType} onChange={e => setProcessType(e.target.value)} style={{ flex: 1 }}>
                   {PROCESS_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -218,9 +219,9 @@ export default function MisqueryWip() {
                   <input type="radio" checked={activeStyle} onChange={() => setActiveStyle(!activeStyle)} onClick={() => setActiveStyle(!activeStyle)} />
                   Style
                 </label>
-                <select className="inp" value={style} onChange={e => setStyle(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={style} onChange={e => setStyle(e.target.value)} style={{ flex: 1 }}>
                   {STYLE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -228,9 +229,9 @@ export default function MisqueryWip() {
                   <input type="radio" checked={activeProcessCoord} onChange={() => setActiveProcessCoord(!activeProcessCoord)} onClick={() => setActiveProcessCoord(!activeProcessCoord)} />
                   Process Co-Ordinator
                 </label>
-                <select className="inp" value={processCoord} onChange={e => setProcessCoord(e.target.value)} style={{ flex: 1 }}>
+                <BlueSelect className="inp" value={processCoord} onChange={e => setProcessCoord(e.target.value)} style={{ flex: 1 }}>
                   {COORDINATOR_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -238,27 +239,27 @@ export default function MisqueryWip() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 20 }}>
               <div className="field" style={{ margin: 0 }}>
                 <label>Merchandiser</label>
-                <select className="inp" value={merchandiser} onChange={e => setMerchandiser(e.target.value)}>
+                <BlueSelect className="inp" value={merchandiser} onChange={e => setMerchandiser(e.target.value)}>
                   {MERCHANDISER_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field" style={{ margin: 0 }}>
                 <label>From Store</label>
-                <select className="inp" value={fromStore} onChange={e => setFromStore(e.target.value)}>
+                <BlueSelect className="inp" value={fromStore} onChange={e => setFromStore(e.target.value)}>
                   {STORE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field" style={{ margin: 0 }}>
                 <label>Color</label>
-                <select className="inp" value={color} onChange={e => setColor(e.target.value)}>
+                <BlueSelect className="inp" value={color} onChange={e => setColor(e.target.value)}>
                   {COLOR_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
               <div className="field" style={{ margin: 0 }}>
                 <label>Size</label>
-                <select className="inp" value={size} onChange={e => setSize(e.target.value)}>
+                <BlueSelect className="inp" value={size} onChange={e => setSize(e.target.value)}>
                   {SIZE_LIST.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 

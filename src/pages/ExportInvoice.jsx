@@ -9,6 +9,7 @@ import {
   EXPORT_INVOICE_PER_PAGE, EXPORT_INVOICE_DOWNLOAD_TYPES, EXPORT_INVOICE_COLUMNS,
 } from '../exportInvoiceConfig';
 import { listExportInvoices, saveExportInvoice, deleteExportInvoice } from '../exportInvoiceService';
+import BlueSelect from '../components/BlueSelect';
 
 function generateExportInvNo() {
   const num = Math.floor(100 + Math.random() * 900);
@@ -431,7 +432,7 @@ export default function ExportInvoice() {
 
                 <div className="field">
                   <label>Against <span className="req">*</span></label>
-                  <select
+                  <BlueSelect
                     className="inp"
                     value={form.against}
                     onChange={(e) => setForm({ ...form, against: e.target.value })}
@@ -439,12 +440,12 @@ export default function ExportInvoice() {
                     {AGAINST_OPTIONS.map((a) => (
                       <option key={a} value={a}>{a}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Order Cat <span className="req">*</span></label>
-                  <select
+                  <BlueSelect
                     className="inp"
                     value={form.orderCat}
                     onChange={(e) => setForm({ ...form, orderCat: e.target.value })}
@@ -452,7 +453,7 @@ export default function ExportInvoice() {
                     {ORDER_CAT_OPTIONS.map((c) => (
                       <option key={c} value={c}>{c}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
@@ -479,7 +480,7 @@ export default function ExportInvoice() {
 
                 <div className="field">
                   <label>Customer / Buyer <span className="req">*</span></label>
-                  <select
+                  <BlueSelect
                     className="inp"
                     value={form.buyer}
                     onChange={(e) => setForm({ ...form, buyer: e.target.value })}
@@ -487,12 +488,12 @@ export default function ExportInvoice() {
                     {BUYER_LIST.map((b) => (
                       <option key={b} value={b}>{b}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Shipment Mode <span className="req">*</span></label>
-                  <select
+                  <BlueSelect
                     className="inp"
                     value={form.mode}
                     onChange={(e) => setForm({ ...form, mode: e.target.value })}
@@ -500,7 +501,7 @@ export default function ExportInvoice() {
                     {SHIP_MODES.map((m) => (
                       <option key={m} value={m}>{m}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
               </div>
 
@@ -514,7 +515,7 @@ export default function ExportInvoice() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
                   <div className="field">
                     <label>Currency Dropdown <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.currency}
                       onChange={(e) => handleCurrencyChange(e.target.value)}
@@ -524,7 +525,7 @@ export default function ExportInvoice() {
                           {c.code} ({c.symbol})
                         </option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field">
@@ -556,7 +557,7 @@ export default function ExportInvoice() {
 
                   <div className="field">
                     <label>Consignee <span className="req">*</span></label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.consignee}
                       onChange={(e) => setForm({ ...form, consignee: e.target.value })}
@@ -564,12 +565,12 @@ export default function ExportInvoice() {
                       {CONSIGNEE_LIST.map((c) => (
                         <option key={c} value={c}>{c}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
 
                   <div className="field" style={{ gridColumn: 'span 4' }}>
                     <label>Delivery Address</label>
-                    <select
+                    <BlueSelect
                       className="inp"
                       value={form.delAddress}
                       onChange={(e) => setForm({ ...form, delAddress: e.target.value })}
@@ -577,7 +578,7 @@ export default function ExportInvoice() {
                       {DELIVERY_ADDRESSES.map((a) => (
                         <option key={a} value={a}>{a}</option>
                       ))}
-                    </select>
+                    </BlueSelect>
                   </div>
                 </div>
               </div>
@@ -845,22 +846,22 @@ export default function ExportInvoice() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12 }}>
                 <div className="field">
                   <label>Order Type</label>
-                  <select className="inp" value={filterOrderType} onChange={(e) => { setFilterOrderType(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterOrderType} onChange={(e) => { setFilterOrderType(e.target.value); setPage(1); }}>
                     <option value="">-- All Order Types --</option>
                     {ORDER_TYPES.map((t) => (
                       <option key={t} value={t}>{t}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Invoice Type</label>
-                  <select className="inp" value={filterInvType} onChange={(e) => { setFilterInvType(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterInvType} onChange={(e) => { setFilterInvType(e.target.value); setPage(1); }}>
                     <option value="">-- All Inv Types --</option>
                     {INVOICE_TYPES.map((t) => (
                       <option key={t} value={t}>{t}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
@@ -887,22 +888,22 @@ export default function ExportInvoice() {
 
                 <div className="field">
                   <label>Customer</label>
-                  <select className="inp" value={filterCustomer} onChange={(e) => { setFilterCustomer(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterCustomer} onChange={(e) => { setFilterCustomer(e.target.value); setPage(1); }}>
                     <option value="">-- All Customers --</option>
                     {BUYER_LIST.map((b) => (
                       <option key={b} value={b}>{b}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
                   <label>Shipment Mode</label>
-                  <select className="inp" value={filterShipMode} onChange={(e) => { setFilterShipMode(e.target.value); setPage(1); }}>
+                  <BlueSelect className="inp" value={filterShipMode} onChange={(e) => { setFilterShipMode(e.target.value); setPage(1); }}>
                     <option value="">-- All Modes --</option>
                     {SHIP_MODES.map((m) => (
                       <option key={m} value={m}>{m}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 <div className="field">
@@ -921,11 +922,11 @@ export default function ExportInvoice() {
             <div className="toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Download Format:</span>
-                <select className="inp inline-select" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
+                <BlueSelect className="inp inline-select" value={downloadType} onChange={(e) => setDownloadType(e.target.value)}>
                   {EXPORT_INVOICE_DOWNLOAD_TYPES.map((d) => (
                     <option key={d} value={d}>{d.toUpperCase()}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <button type="button" className="btn-secondary" onClick={handleExport}>
                   📥 Download
                 </button>
@@ -1014,11 +1015,11 @@ export default function ExportInvoice() {
             <div className="pager" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Per Page:</span>
-                <select className="inp inline-select" value={perPage} onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}>
+                <BlueSelect className="inp inline-select" value={perPage} onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}>
                   {EXPORT_INVOICE_PER_PAGE.map((opt) => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
                   Showing {sorted.length ? (safePage - 1) * perPage + 1 : 0} - {Math.min(safePage * perPage, sorted.length)} of {sorted.length} entries
                 </span>

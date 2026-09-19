@@ -19,6 +19,7 @@ import {
   DEFAULT_PO_DETAILS,
   DEFAULT_PROCESS_ORD_DETAILS,
 } from '../passingConfig';
+import BlueSelect from '../components/BlueSelect';
 import {
   getPassingRecords,
   addPassingRecord,
@@ -435,7 +436,7 @@ export default function Passing() {
                 {/* Bill Approval No Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Bill Approval No</label>
-                  <select
+                  <BlueSelect
                     value={filters.billApprovalNo}
                     onChange={(e) => handleFilterChange('billApprovalNo', e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -443,13 +444,13 @@ export default function Passing() {
                     {billApprovalNoOptions.map((opt) => (
                       <option key={opt} value={opt}>{opt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* Invoice Type Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Invoice Type</label>
-                  <select
+                  <BlueSelect
                     value={filters.invoiceType}
                     onChange={(e) => handleFilterChange('invoiceType', e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -457,13 +458,13 @@ export default function Passing() {
                     {PASSING_INVOICE_TYPES.map((type) => (
                       <option key={type} value={type}>{type}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
 
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Supplier</label>
-                  <select
+                  <BlueSelect
                     value={filters.supplier}
                     onChange={(e) => handleFilterChange('supplier', e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -471,13 +472,13 @@ export default function Passing() {
                     {PASSING_SUPPLIERS.map((s) => (
                       <option key={s} value={s}>{s}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* Type Dropdown */}
                 <div>
                   <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 6 }}>Type</label>
-                  <select
+                  <BlueSelect
                     value={filters.type}
                     onChange={(e) => handleFilterChange('type', e.target.value)}
                     style={{ width: '100%', padding: '8px 12px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 14, color: '#0f172a', outline: 'none' }}
@@ -486,7 +487,7 @@ export default function Passing() {
                     {PASSING_PARTY_TYPES.map((pt) => (
                       <option key={pt} value={pt}>{pt}</option>
                     ))}
-                  </select>
+                  </BlueSelect>
                 </div>
 
                 {/* From Date */}
@@ -532,7 +533,7 @@ export default function Passing() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, gap: 12, flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 14, color: '#475569', fontWeight: 500 }}>Download Format:</span>
-                <select
+                <BlueSelect
                   value={filters.downloadFormat}
                   onChange={(e) => handleFilterChange('downloadFormat', e.target.value)}
                   style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #cbd5e1', fontSize: 13, color: '#0f172a' }}
@@ -540,7 +541,7 @@ export default function Passing() {
                   {ACCOUNTS_DOWNLOAD_TYPES.map((fmt) => (
                     <option key={fmt} value={fmt}>{fmt}</option>
                   ))}
-                </select>
+                </BlueSelect>
                 <button
                   onClick={handleDownload}
                   style={{ padding: '6px 14px', borderRadius: 6, border: '1px solid #0284c7', backgroundColor: '#0284c7', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
@@ -854,7 +855,7 @@ export default function Passing() {
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>
                   {formData.partyType} *
                 </label>
-                <select
+                <BlueSelect
                   value={formData.party}
                   disabled={viewMode === 'view'}
                   onChange={(e) => handleFormChange('party', e.target.value)}
@@ -865,7 +866,7 @@ export default function Passing() {
                   {getPartyOptions(formData.partyType).map((opt) => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -873,7 +874,7 @@ export default function Passing() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 24, backgroundColor: '#ffffff', padding: 16, borderRadius: 6, border: '1px solid #e2e8f0' }}>
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Invoice Type</label>
-                <select
+                <BlueSelect
                   value={formData.invoiceType}
                   disabled={viewMode === 'view'}
                   onChange={(e) => handleFormChange('invoiceType', e.target.value)}
@@ -882,12 +883,12 @@ export default function Passing() {
                   {PASSING_INVOICE_TYPES_ENTRY.map((t) => (
                     <option key={t} value={t}>{t}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Entered By</label>
-                <select
+                <BlueSelect
                   value={formData.enteredBy}
                   disabled={viewMode === 'view'}
                   onChange={(e) => handleFormChange('enteredBy', e.target.value)}
@@ -896,12 +897,12 @@ export default function Passing() {
                   {PASSING_ENTERED_BY.map((u) => (
                     <option key={u} value={u}>{u}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Item Type</label>
-                <select
+                <BlueSelect
                   value={formData.itemType}
                   disabled={viewMode === 'view'}
                   onChange={(e) => handleFormChange('itemType', e.target.value)}
@@ -910,12 +911,12 @@ export default function Passing() {
                   {PASSING_ITEM_TYPES.map((it) => (
                     <option key={it} value={it}>{it}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Process</label>
-                <select
+                <BlueSelect
                   value={formData.process}
                   disabled={viewMode === 'view'}
                   onChange={(e) => handleFormChange('process', e.target.value)}
@@ -924,12 +925,12 @@ export default function Passing() {
                   {PASSING_PROCESSES.map((p) => (
                     <option key={p} value={p}>{p}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Sup Inv No</label>
-                <select
+                <BlueSelect
                   value={formData.supInvNo}
                   disabled={viewMode === 'view'}
                   onChange={(e) => handleFormChange('supInvNo', e.target.value)}
@@ -938,12 +939,12 @@ export default function Passing() {
                   {PASSING_SUP_INV_NOS.map((s) => (
                     <option key={s} value={s}>{s}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#334155', marginBottom: 6 }}>Invoice No</label>
-                <select
+                <BlueSelect
                   value={formData.invoiceNo}
                   disabled={viewMode === 'view'}
                   onChange={(e) => handleFormChange('invoiceNo', e.target.value)}
@@ -952,7 +953,7 @@ export default function Passing() {
                   {PASSING_INVOICE_NOS.map((inv) => (
                     <option key={inv} value={inv}>{inv}</option>
                   ))}
-                </select>
+                </BlueSelect>
               </div>
 
               <div>
@@ -1042,7 +1043,7 @@ export default function Passing() {
                             />
                           </td>
                           <td style={{ padding: '6px 8px' }}>
-                            <select
+                            <BlueSelect
                               value={inv.invoiceType}
                               disabled={viewMode === 'view'}
                               onChange={(e) => handleInvoiceRowChange(inv.id, 'invoiceType', e.target.value)}
@@ -1051,7 +1052,7 @@ export default function Passing() {
                               {PASSING_INVOICE_TYPES_ENTRY.map((t) => (
                                 <option key={t} value={t}>{t}</option>
                               ))}
-                            </select>
+                            </BlueSelect>
                           </td>
                           <td style={{ padding: '6px 8px' }}>
                             <input

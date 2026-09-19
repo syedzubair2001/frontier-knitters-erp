@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { getSession } from '../auth';
+import BlueSelect from '../components/BlueSelect';
 import {
   CUSTOMER_LIST,
   PROCESS_LIST,
@@ -106,9 +107,9 @@ export default function MisqueryWorkflowProductionSummary() {
               ].map(([lbl, val, setter, list]) => (
                 <div key={lbl} style={fieldBox}>
                   <label style={lblStyle}>{lbl}</label>
-                  <select style={ddStyle} value={val} onChange={e => setter(e.target.value)}>
+                  <BlueSelect style={ddStyle} value={val} onChange={e => setter(e.target.value)}>
                     {list.map(o => <option key={o}>{o}</option>)}
-                  </select>
+                  </BlueSelect>
                 </div>
               ))}
             </div>
@@ -133,9 +134,9 @@ export default function MisqueryWorkflowProductionSummary() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px 16px' }}>
               <div style={fieldBox}>
                 <label style={lblStyle}>Receipt No</label>
-                <select style={ddStyle} value={receiptNo} onChange={e => setReceiptNo(e.target.value)}>
+                <BlueSelect style={ddStyle} value={receiptNo} onChange={e => setReceiptNo(e.target.value)}>
                   {RECEIPT_NO_LIST.map(o => <option key={o}>{o}</option>)}
-                </select>
+                </BlueSelect>
               </div>
             </div>
 
@@ -175,13 +176,13 @@ export default function MisqueryWorkflowProductionSummary() {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <label style={{ fontSize: 13, fontWeight: 600, color: '#16a34a' }}>Export</label>
-                <select
+                <BlueSelect
                   style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #86efac', fontSize: 13, color: '#15803d', fontWeight: 600, backgroundColor: '#f0fdf4', minWidth: 120, cursor: 'pointer' }}
                   value={exportFormat}
                   onChange={e => setExportFormat(e.target.value)}
                 >
                   {EXPORT_FORMATS.map(f => <option key={f}>{f}</option>)}
-                </select>
+                </BlueSelect>
               </div>
 
               <div style={{ display: 'flex', gap: 12 }}>
