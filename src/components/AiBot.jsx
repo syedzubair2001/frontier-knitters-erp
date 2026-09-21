@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { getSession } from '../auth';
 import {
   loadChats, createChat, appendMessage, deleteChat, clearAllChats,
   getActiveId, setActiveId, recentQuestions, answerQuestion, QUICK_ASKS,
 } from '../aiBotService';
 
-/* ── tiny markdown renderer: **bold**, *italic*, _note_, bullets ── */
+/* ── tiny markdown renderer: **bold**, *italic*, _note_ ── */
 function inline(text, keyBase) {
   const parts = [];
   const re = /(\*\*[^*]+\*\*|\*[^*]+\*|_[^_]+_)/g;
@@ -52,15 +53,26 @@ const fmtTime = (iso) => {
   return d.toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
 };
 
-
 export default function AiBot() {
-  const [session] = useState(() => getSession());
+  const { pathname } = useLocation();
+  const session = getSession();
+  const [, force] = useState(0);
+
+  /* Re-check login state whenever the user navigates (login / logout) and
+     whenever another tab changes the session storage. */
+  useEffect(() => { force((n) => n + 1); }, [pathname]);
+  useEffect(() => {
+    const onStorage = (e) => { if (!e.key || e.key.includes('session')) force((n) => n + 1); };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   const [open, setOpen] = useState(false);
   const [chats, setChats] = useState(() => loadChats());
+  const [showHistory, setShowHistory] = useState(false);
   const [activeId, setActive] = useState(() => getActiveId());
   const [input, setInput] = useState('');
   const [thinking, setThinking] = useState(false);
-  const [showHistory, setShowHistory] = useState(false);
   const bodyRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -72,7 +84,7 @@ export default function AiBot() {
   const refresh = useCallback(() => setChats(loadChats()), []);
   const history = useMemo(() => recentQuestions(6), [chats]);
 
-  /* First open → make sure a conversation exists and greet the user */
+  /* First open → make sure a conversation exists and greet the user. */
   useEffect(() => {
     if (!open) return;
     let id = activeId;
@@ -90,9 +102,6 @@ export default function AiBot() {
         '',
         `You are signed in as **${session?.role || 'user'}**. Ask me about **Stock, Indent, Invoices, Despatch** or your **role documents** — or tap a suggestion below.`,
       ];
-FIX
-        '',
-BLANK
       appendMessage(id, { role: 'bot', text: hello });
       refresh();
     }
@@ -104,6 +113,14 @@ BLANK
 
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus();
+  }, [open]);
+
+  /* Esc closes the full-screen popup. */
+  useEffect(() => {
+    if (!open) return;
+    const onEsc = (e) => { if (e.key === 'Escape') setOpen(false); };
+    window.addEventListener('keydown', onEsc);
+    return () => window.removeEventListener('keydown', onEsc);
   }, [open]);
 
   const send = (text) => {
@@ -120,7 +137,7 @@ BLANK
     refresh();
     setInput('');
     setThinking(true);
-    // short delay so the "thinking" dots are visible, then answer from live data
+    /* short delay so the "thinking" dots are visible, then answer from live data */
     setTimeout(() => {
       let ans;
       try {
@@ -131,6 +148,7 @@ BLANK
       }
       appendMessage(id, { role: 'bot', text: ans });
       refresh();
+      setShowHistory(true);
       setThinking(false);
     }, 420);
   };
@@ -144,7 +162,7 @@ BLANK
     setActive(c.id);
     setActiveId(c.id);
     refresh();
-    setShowHistory(false);
+    setShowHistory(true);
     setOpen(true);
   };
 
@@ -153,6 +171,20 @@ BLANK
     setChats(next);
     const first = next[0] ? next[0].id : '';
     if (first) { setActive(first); setActiveId(first); } else { newChat(); }
+  };
+
+  const wipe = () => {
+    clearAllChats();
+    setChats([]);
+    const c = createChat(session?.username);
+    setActive(c.id);
+    setActiveId(c.id);
+    refresh();
+  };
+
+  /* Only for signed-in users — the assistant never appears on Login / Signup.
+     (All hooks above run first, so the hook order stays stable.) */
+  if (!session || !session.username) return null;
 
   return (
     <>
@@ -184,25 +216,41 @@ BLANK
               </div>
             </div>
             <div className="bot-head-btns">
-              <button type="button" className="bot-hbtn" onClick={() => setShowHistory((s) => !s)}>
-                {showHistory ? '💬 Chat' : `🗂 History (${chats.length})`}
+              <button
+                type="button"
+                className="bot-hbtn"
+                onClick={() => setShowHistory((v) => !v)}
+                title="Show / hide saved conversations"
+              >
+                {showHistory ? '💬 Chat' : `🗂 History · ${chats.length}`}
               </button>
-              <button type="button" className="bot-hbtn" onClick={newChat}>＋ New chat</button>
-              <button type="button" className="bot-hbtn" onClick={wipe} title="Delete all saved conversations">🗑 Clear all</button>
+              <button type="button" className="bot-hbtn" onClick={newChat}>+ New</button>
+              <button
+                type="button"
+                className="bot-hbtn"
+                onClick={wipe}
+                title="Delete all saved conversations"
+              >Clear all</button>
               <button type="button" className="bot-hbtn close" onClick={() => setOpen(false)}>✕ Close</button>
             </div>
           </div>
 
+          {/* Body */}
           <div className="bot-main">
-            {/* Saved conversations */}
+            {/* Saved conversations sidebar */}
             <aside className={'bot-side' + (showHistory ? ' show' : '')}>
               <div className="bot-side-cap">Saved conversations</div>
-              {!chats.length && <div className="bot-side-empty">No conversations yet.</div>}
+              {!chats.length && (
+                <div className="bot-side-empty">
+                  No saved conversations yet.
+                  <span className="bot-side-hint">Send a message and it is saved here automatically.</span>
+                </div>
+              )}
               {chats.map((c) => (
                 <div
                   key={c.id}
                   className={'bot-side-item' + (active && c.id === active.id ? ' active' : '')}
-                  onClick={() => { setActive(c.id); setActiveId(c.id); setShowHistory(false); }}
+                  onClick={() => { setActive(c.id); setActiveId(c.id); setShowHistory(true); }}
                 >
                   <div className="bot-side-txt">
                     <b>{c.title}</b>
@@ -268,14 +316,4 @@ BLANK
       )}
     </>
   );
-}
-
-  const wipe = () => {
-    clearAllChats();
-    setChats([]);
-    const c = createChat(session?.username);
-    setActive(c.id);
-    setActiveId(c.id);
-    refresh();
-  };
 }

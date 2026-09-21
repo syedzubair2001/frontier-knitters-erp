@@ -1097,6 +1097,7 @@ select.bsel-hidden { position: absolute !important; width: 1px !important; heigh
 }
 .bot-fab:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 16px 36px rgba(11,42,91,.5); }
 .bot-fab.hide { display: none; }
+.bot-fab.hide { display: none; }
 .bot-fab-ic { font-size: 22px; line-height: 1; position: relative; }
 .bot-fab-lbl { white-space: nowrap; }
 .bot-fab-pulse {
@@ -1144,7 +1145,8 @@ select.bsel-hidden { position: absolute !important; width: 1px !important; heigh
   font-size: 11px; font-weight: 800; letter-spacing: .6px; color: #627d98;
   text-transform: uppercase; padding: 6px 8px 10px;
 }
-.bot-side-empty { font-size: 12.5px; color: #94a3b8; padding: 8px; }
+.bot-side-empty { font-size: 12.5px; color: #94a3b8; padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+.bot-side-hint { font-size: 11.5px; color: #b0bfcf; line-height: 1.4; }
 .bot-side-item {
   display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 10px;
   border: 1px solid #e6eef8; margin-bottom: 6px; cursor: pointer; background: #f8fbff;
