@@ -12,7 +12,7 @@ export const ITEM_GROUPS = [
 ];
 
 export const PRODUCT_TYPES = [
-  'Yarn', 'Sewing Thread', 'Buttons', 'Zippers', 'Elastic', 'Labels', 'Poly Bags', 'Dyes & Chemicals',
+  'Yarn', 'Sewing Thread', 'Buttons', 'Zippers', 'Elastic', 'Labels', 'Poly Bags', 'Dyes & Chemicals', 'A4 Sheet',
 ];
 
 export const PRODUCT_CATALOG = [
@@ -25,6 +25,8 @@ export const PRODUCT_CATALOG = [
   { code: 'PRD-LBL-001', name: 'Main Brand Woven Label (FK)', type: 'Labels', uom: 'Pcs' },
   { code: 'PRD-BAG-001', name: 'Self-Adhesive Poly Bag 12x15"', type: 'Poly Bags', uom: 'Pcs' },
   { code: 'PRD-DYE-001', name: 'Reactive Blue Dyes B-2G', type: 'Dyes & Chemicals', uom: 'Kgs' },
+  { code: 'PRD-A4S-001', name: 'A4 Sheet 75 GSM — Ream (500 Sheets)', type: 'A4 Sheet', uom: 'Reams' },
+  { code: 'PRD-A4S-002', name: 'A4 Sheet 90 GSM — Ream (500 Sheets)', type: 'A4 Sheet', uom: 'Reams' },
 ];
 
 export const REASON_OPTIONS = [

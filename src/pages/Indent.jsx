@@ -560,6 +560,8 @@ export default function Indent() {
                       <th>Req Date</th>
                       <th>Req Qty</th>
                       <th>Uom</th>
+                      <th>Remarks</th>
+                      <th>Reason</th>
                       <th style={{ width: 70 }}>Detail</th>
                     </tr>
                   </thead>
@@ -573,6 +575,8 @@ export default function Indent() {
                         <td>{it.reqDate}</td>
                         <td><b>{it.reqQty}</b></td>
                         <td>{it.uom}</td>
+                        <td style={{ textAlign: 'left' }}>{it.remarks || '—'}</td>
+                        <td style={{ textAlign: 'left' }}>{it.reason || '—'}</td>
                         <td>
                           <button
                             type="button"
@@ -585,7 +589,7 @@ export default function Indent() {
                     ))}
                     {!form.items.length && (
                       <tr>
-                        <td colSpan={8} className="empty-td">
+                        <td colSpan={10} className="empty-td">
                           No data to display
                         </td>
                       </tr>
