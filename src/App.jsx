@@ -2,6 +2,7 @@ import { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingOverlay, { LoadingFallback } from './components/LoadingOverlay';
+import AiBot from './components/AiBot';
 
 // Screens are code-split: each one downloads on first visit, so the loading
 // animation covers the real load time (and shows clearly on a slow network).
@@ -124,6 +125,7 @@ export default function App() {
           <Route path="/module/:key" element={<ModulePage />} />
           <Route path="*" element={<Dashboard />} />
         </Routes>
+        <AiBot />
         </Suspense>
       </BrowserRouter>
     </ErrorBoundary>
