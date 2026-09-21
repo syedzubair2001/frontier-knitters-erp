@@ -99,8 +99,9 @@ function defaults() {
         map[r][d.key] = true;
       } else if (r === 'DOCUMENT' || r === ROLES.DOCUMENT || r === ROLES.Document) {
         // DOCUMENT role gets Home, Stores -> Indent, Bill Inward, General Invoice, Export Despatch,
-        // Export Invoice, Finish Warehouse Transfer, Misquery reports AND Documents Team.
+        // Export Invoice, Misquery reports AND Documents Team.
         // NO Accounts documents (Adjustment/Collection/Payment/Passing) — those belong to Accounts role.
+        // NO Shipment — Finish Warehouse Transfer (hidden for DOCUMENT role only, others keep it).
         map[r][d.key] = (
           d.key === 'home' ||
           d.key === 'indent' ||
@@ -108,7 +109,6 @@ function defaults() {
           d.key === 'general-invoice' ||
           d.key === 'export-despatch' ||
           d.key === 'export-invoice' ||
-          d.key === 'finish-warehouse-transfer' ||
           d.key === 'misquery' ||
           d.key === 'tracking' ||
           d.key === 'stores-indent' ||
@@ -162,7 +162,7 @@ export function loadRoleDocs() {
         });
       }
     });
-    return migrateAccountsV2(obj);
+    return migrateShipmentV3(migrateAccountsV2(obj));
   } catch {
     return def;
   }
@@ -181,6 +181,19 @@ function migrateAccountsV2(obj) {
       if (obj[docRole]) obj[docRole][k] = false;
     });
     localStorage.setItem(MIG_V2_KEY, '1');
+  } catch { /* storage unavailable — skip */ }
+  return obj;
+}
+
+/* v3 fix: DOCUMENT role must NOT see Shipment — Finish Warehouse Transfer.
+   One-time clear of any previously saved grant. Other roles keep it. */
+const MIG_V3_KEY = 'fk_role_docs_v3_no_shipment';
+function migrateShipmentV3(obj) {
+  try {
+    if (localStorage.getItem(MIG_V3_KEY) === '1') return obj;
+    const docRole = ROLES.DOCUMENT;
+    if (obj[docRole]) obj[docRole]['finish-warehouse-transfer'] = false;
+    localStorage.setItem(MIG_V3_KEY, '1');
   } catch { /* storage unavailable — skip */ }
   return obj;
 }
