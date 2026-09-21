@@ -98,7 +98,9 @@ function defaults() {
       if (r === ROLES.SUPER_ADMIN || r === ROLES.ADMIN) {
         map[r][d.key] = true;
       } else if (r === 'DOCUMENT' || r === ROLES.DOCUMENT || r === ROLES.Document) {
-        // DOCUMENT role gets Home, Stores -> Indent, Bill Inward, General Invoice, Export Despatch, Export Invoice, Finish Warehouse Transfer, Adjustment, Collection, Payment, Passing, AND Documents Team
+        // DOCUMENT role gets Home, Stores -> Indent, Bill Inward, General Invoice, Export Despatch,
+        // Export Invoice, Finish Warehouse Transfer, Misquery reports AND Documents Team.
+        // NO Accounts documents (Adjustment/Collection/Payment/Passing) — those belong to Accounts role.
         map[r][d.key] = (
           d.key === 'home' ||
           d.key === 'indent' ||
@@ -107,10 +109,6 @@ function defaults() {
           d.key === 'export-despatch' ||
           d.key === 'export-invoice' ||
           d.key === 'finish-warehouse-transfer' ||
-          d.key === 'adjustment' ||
-          d.key === 'collection' ||
-          d.key === 'payment' ||
-          d.key === 'passing' ||
           d.key === 'misquery' ||
           d.key === 'tracking' ||
           d.key === 'stores-indent' ||
@@ -164,10 +162,27 @@ export function loadRoleDocs() {
         });
       }
     });
-    return obj;
+    return migrateAccountsV2(obj);
   } catch {
     return def;
   }
+}
+
+/* v2 fix: DOCUMENT role must NOT see Accounts documents (Receipt Adjustment,
+   Collection, Supplier Payments, Bill Approval Passing). Older saved setups
+   included them — this one-time migration clears them so the Accounts menu
+   disappears for the DOCUMENT role. Accounts ROLE keeps everything. */
+const MIG_V2_KEY = 'fk_role_docs_v2_no_accounts';
+function migrateAccountsV2(obj) {
+  try {
+    if (localStorage.getItem(MIG_V2_KEY) === '1') return obj;
+    const docRole = ROLES.DOCUMENT;
+    ['adjustment', 'collection', 'payment', 'passing'].forEach((k) => {
+      if (obj[docRole]) obj[docRole][k] = false;
+    });
+    localStorage.setItem(MIG_V2_KEY, '1');
+  } catch { /* storage unavailable — skip */ }
+  return obj;
 }
 
 export function saveRoleDocs(data) {
