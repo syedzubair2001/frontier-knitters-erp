@@ -272,6 +272,11 @@ export function hasRight(role, docKey, right) {
 export function canUseRole(role, docKey) {
   if (role === ROLES.SUPER_ADMIN || role === ROLES.ADMIN) return true;
   if (docKey === 'home' || docKey === 'dashboard') return true; // Dashboard is common for all roles
+
+  // HARD RULE (enforced in code, cannot be overridden by saved data):
+  // DOCUMENT role must NEVER see Stock — neither in the Purchase & Stores menu
+  // nor on the dashboard. INDENT stays granted. All other roles keep Stock.
+  if (String(role || '').trim().toUpperCase() === 'DOCUMENT' && docKey === 'stock') return false;
   
   const docTeamKeys = [
     'documents-team', 'order-booking', 'invoice-shipment', 'shipping-bill',
