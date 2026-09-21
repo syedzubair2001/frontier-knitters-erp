@@ -88,13 +88,19 @@ export default function Dashboard() {
     };
   }, []);
 
+  // Dashboard shows ONLY these working documents (Stores → Exports), per requirement.
+  const DASHBOARD_DOC_KEYS = ['stock', 'indent', 'bill-inward', 'general-invoice', 'export-despatch', 'export-invoice'];
+
   // Filter accessible documents based strictly on user's assigned role permissions
   const permittedDocKeys = useMemo(() => {
     if (!session) return [];
     const isSuper = session.role === ROLES.SUPER_ADMIN;
+    const seen = new Set();
     return ROLE_DOCUMENTS
       .filter((d) => d.key !== 'home' && d.key !== 'dashboard' && !d.group)
       .filter((d) => isSuper || canUseRole(session.role, d.key))
+      .filter((d) => DASHBOARD_DOC_KEYS.includes(d.key)) // dashboard: only Stores → Exports working docs
+      .filter((d) => (seen.has(d.key) ? false : seen.add(d.key))) // 'stock' exists twice in ROLE_DOCUMENTS — keep first
       .map((d) => d.key);
   }, [session]);
 
