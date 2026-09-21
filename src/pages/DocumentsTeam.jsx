@@ -22,6 +22,7 @@ import {
   saveDocTeamRecord,
   deleteDocTeamRecord,
 } from '../documentsTeamService';
+import { docKeyFor, hasRight } from '../roleDocsService';
 
 export default function DocumentsTeam() {
   const nav = useNavigate();
@@ -76,13 +77,25 @@ export default function DocumentsTeam() {
     setFormData((prev) => ({ ...prev, [field]: val }));
   };
 
+  // ── Rights (View/Add/Edit/Delete) for the active section, from Role Documents setup ──
+  const docPermKey = docKeyFor(activeSection) || activeSection;
+  const canAdd = hasRight(session.role, docPermKey, 'add');
+  const canEdit = hasRight(session.role, docPermKey, 'edit');
+  const canDelete = hasRight(session.role, docPermKey, 'delete');
+  const deny = (right) => {
+    setMsg(`⛔ Your role (${session.role}) has no ${right.toUpperCase()} right for this document — ask Admin to grant it in Role Documents.`);
+    setTimeout(() => setMsg(''), 3000);
+  };
+
   const handleOpenAdd = () => {
+    if (!canAdd) { deny('add'); return; }
     setModalMode('add');
     setFormData({});
     setShowModal(true);
   };
 
   const handleOpenEdit = (rec) => {
+    if (!canEdit) { deny('edit'); return; }
     setModalMode('edit');
     setFormData({ ...rec });
     setShowModal(true);
@@ -95,6 +108,7 @@ export default function DocumentsTeam() {
   };
 
   const handleDelete = (id) => {
+    if (!canDelete) { deny('delete'); return; }
     if (window.confirm('Are you sure you want to delete this record?')) {
       const res = deleteDocTeamRecord(activeSection, id);
       if (res.ok) {
@@ -190,7 +204,7 @@ export default function DocumentsTeam() {
             </h1>
           </div>
 
-          {activeSection !== 'documents-reports' && (
+          {canAdd && activeSection !== 'documents-reports' && (
             <button
               onClick={handleOpenAdd}
               style={{

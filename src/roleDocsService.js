@@ -180,6 +180,52 @@ export function saveRoleDocs(data) {
   }
 }
 
+/* ── Rights (View / Add / Edit / Delete) per role × document ──
+   Stored separately under its own key so existing access data stays valid.
+   A document with no explicit rights record = FULL rights (old behaviour). */
+export const RIGHTS = ['view', 'add', 'edit', 'delete'];
+const RIGHTS_KEY = 'fk_role_rights';
+
+function fullRights() {
+  return { view: true, add: true, edit: true, delete: true };
+}
+
+export function loadRights() {
+  try {
+    const obj = JSON.parse(localStorage.getItem(RIGHTS_KEY));
+    if (obj && typeof obj === 'object') return obj;
+  } catch { /* corrupted -> start clean */ }
+  return {};
+}
+
+export function saveRights(data) {
+  try {
+    localStorage.setItem(RIGHTS_KEY, JSON.stringify(data));
+    return { ok: true };
+  } catch (e) {
+    console.error(e);
+    return { ok: false, msg: 'Could not save role rights.' };
+  }
+}
+
+/** Effective rights for a role × document (missing record = full rights). */
+export function rightsFor(rightsData, role, docKey) {
+  const rec = rightsData && rightsData[role] ? rightsData[role][docKey] : null;
+  return rec && typeof rec === 'object' ? { ...fullRights(), ...rec } : fullRights();
+}
+
+/** Can this role perform `right` ('view'|'add'|'edit'|'delete') on docKey? */
+export function hasRight(role, docKey, right) {
+  if (role === ROLES.SUPER_ADMIN) return true;
+  if (docKey === 'home' || docKey === 'dashboard') return true;
+  if (!canUseRole(role, docKey)) return false; // no access -> no rights at all
+  const data = loadRights();
+  const rec = data[role] ? data[role][docKey] : null;
+  if (!rec || typeof rec !== 'object') return true; // no explicit record = full rights
+  return !!rec[right];
+}
+
+
 /** Does the given role have access to the document key? */
 export function canUseRole(role, docKey) {
   if (role === ROLES.SUPER_ADMIN || role === ROLES.ADMIN) return true;

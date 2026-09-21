@@ -7,6 +7,7 @@ import BlueSelect from '../components/BlueSelect';
 import { ROLES } from '../roles';
 import {
   TEAMS, ROLE_DOCUMENTS, roleOptions, loadRoleDocs, saveRoleDocs,
+  RIGHTS, loadRights, saveRights, rightsFor,
 } from '../roleDocsService';
 
 export default function RoleDocuments() {
@@ -18,6 +19,7 @@ export default function RoleDocuments() {
   const [msg, setMsg] = useState('');
   const [view, setView] = useState('list');
   const [docTerm, setDocTerm] = useState('');
+  const [rights, setRights] = useState(loadRights);
 
   useEffect(() => {
     const s = getSession();
@@ -47,6 +49,14 @@ export default function RoleDocuments() {
       ROLE_DOCUMENTS.forEach((doc) => { perm[doc.key] = val; });
       return { ...d, [role]: perm };
     });
+    if (val) {
+      // Access granted everywhere -> restore default FULL rights for this role
+      setRights((r) => {
+        const next = { ...r };
+        delete next[role];
+        return next;
+      });
+    }
   };
   const toggleCell = (roleKey, docKey) => {
     setData((d) => {
@@ -55,9 +65,18 @@ export default function RoleDocuments() {
       return { ...d, [roleKey]: perm };
     });
   };
+  const toggleRight = (docKey, right) => {
+    setRights((r) => {
+      const roleRec = { ...(r[role] || {}) };
+      roleRec[docKey] = { ...rightsFor(r, role, docKey), [right]: !rightsFor(r, role, docKey)[right] };
+      return { ...r, [role]: roleRec };
+    });
+  };
+  const rightsOf = (docKey) => rightsFor(rights, role, docKey);
   const save = () => {
     const res = saveRoleDocs(data);
-    setMsg(res.ok ? `Documents saved for ${role} (team: ${team}) ✅` : res.msg);
+    const res2 = saveRights(rights);
+    setMsg(res.ok && res2.ok ? `Documents & rights saved for ${role} (team: ${team}) ✅` : (res.msg || res2.msg || 'Save failed.'));
   };
 
   return (
@@ -126,7 +145,11 @@ export default function RoleDocuments() {
                     <tr>
                       <th>#</th>
                       <th>Document</th>
-                      <th>Access</th>
+                      <th style={{ width: 60 }}>Access</th>
+                      <th style={{ fontSize: 11 }} title="See the document / lists">View</th>
+                      <th style={{ fontSize: 11 }} title="Create new records">Add</th>
+                      <th style={{ fontSize: 11 }} title="Modify existing records">Edit</th>
+                      <th style={{ fontSize: 11 }} title="Delete records">Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -134,7 +157,7 @@ export default function RoleDocuments() {
                       <tr key={d.key}>
                         <td>{i + 1}</td>
                         <td>{d.group ? <b>{d.label}</b> : d.label}</td>
-                        <td>
+                        <td style={{ textAlign: 'center' }}>
                           <input
                             type="checkbox"
                             checked={!!rolePerm[d.key]}
@@ -142,9 +165,19 @@ export default function RoleDocuments() {
                             onChange={() => toggleDoc(d.key)}
                           />
                         </td>
+                        {RIGHTS.map((r) => (
+                          <td key={r} style={{ textAlign: 'center' }}>
+                            <input
+                              type="checkbox"
+                              checked={!!rightsOf(d.key)[r]}
+                              disabled={role === ROLES.SUPER_ADMIN || !rolePerm[d.key] || !!d.group}
+                              onChange={() => toggleRight(d.key, r)}
+                            />
+                          </td>
+                        ))}
                       </tr>
                     ))}
-                    {!visibleDocs.length && <tr><td colSpan={3} className="empty">No documents match your search.</td></tr>}
+                    {!visibleDocs.length && <tr><td colSpan={3 + RIGHTS.length} className="empty">No documents match your search.</td></tr>}
                   </tbody>
                 </table>
               </div>
