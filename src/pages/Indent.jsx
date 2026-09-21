@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 import {
   INDENT_TYPES, INDENT_APPROVAL, INDENT_UNITS, INDENT_BY_OPTIONS,
   ITEM_GROUPS, PRODUCT_TYPES, PRODUCT_CATALOG, REASON_OPTIONS, ORDER_NO_LIST,
-  INDENT_PER_PAGE_OPTIONS, INDENT_DOWNLOAD_TYPES, INDENT_COLUMNS,
+  INDENT_PER_PAGE_OPTIONS, INDENT_DOWNLOAD_TYPES, INDENT_COLUMNS, INDENT_STORES,
 } from '../indentConfig';
 import { listIndents, saveIndent, deleteIndent } from '../indentService';
 import { loadOrderLookup } from '../requisitionService';
@@ -43,6 +43,7 @@ function makeBlankItemInput() {
     productNo: firstProd.code,
     productName: firstProd.name,
     uom: firstProd.uom,
+    store: INDENT_STORES[0],
     reqQty: '',
     reqDate: today,
     remarks: '',
@@ -197,6 +198,7 @@ export default function Indent() {
       reqDate: itemInput.reqDate,
       reqQty: Number(itemInput.reqQty),
       uom: itemInput.uom,
+      store: itemInput.store,
       remarks: itemInput.remarks,
       reason: itemInput.reason,
     };
@@ -493,6 +495,16 @@ export default function Indent() {
                   </div>
 
                   <div className="legacy-item-col">
+                    <label>Store</label>
+                    <BlueSelect
+                      value={itemInput.store}
+                      onChange={(e) => setItemInput({ ...itemInput, store: e.target.value })}
+                    >
+                      {INDENT_STORES.map((st) => <option key={st} value={st}>{st}</option>)}
+                    </BlueSelect>
+                  </div>
+
+                  <div className="legacy-item-col">
                     <label>Req Qty</label>
                     <input
                       type="number"
@@ -557,6 +569,7 @@ export default function Indent() {
                       <th>Product Type</th>
                       <th>Product No</th>
                       <th>Product Name</th>
+                      <th>Store</th>
                       <th>Req Date</th>
                       <th>Req Qty</th>
                       <th>Uom</th>
@@ -572,6 +585,7 @@ export default function Indent() {
                         <td>{it.productType}</td>
                         <td><b>{it.productNo}</b></td>
                         <td style={{ textAlign: 'left' }}>{it.productName}</td>
+                        <td>{it.store || '—'}</td>
                         <td>{it.reqDate}</td>
                         <td><b>{it.reqQty}</b></td>
                         <td>{it.uom}</td>
@@ -589,7 +603,7 @@ export default function Indent() {
                     ))}
                     {!form.items.length && (
                       <tr>
-                        <td colSpan={10} className="empty-td">
+                        <td colSpan={11} className="empty-td">
                           No data to display
                         </td>
                       </tr>
@@ -820,6 +834,7 @@ export default function Indent() {
                           <th>Product Type</th>
                           <th>Product No</th>
                           <th>Product Name</th>
+                          <th>Store</th>
                           <th>Req Date</th>
                           <th>Req Qty</th>
                           <th>Uom</th>
@@ -834,6 +849,7 @@ export default function Indent() {
                               <td>{it.productType}</td>
                               <td><b>{it.productNo}</b></td>
                               <td style={{ textAlign: 'left' }}>{it.productName}</td>
+                              <td>{it.store || '—'}</td>
                               <td>{it.reqDate}</td>
                               <td><b>{it.reqQty}</b></td>
                               <td>{it.uom}</td>
@@ -846,6 +862,7 @@ export default function Indent() {
                             <td>General Store Item</td>
                             <td><b>{printRecord.refNo || 'PRD-STORE'}</b></td>
                             <td style={{ textAlign: 'left' }}>General Store Material Requirement</td>
+                            <td>Main Store</td>
                             <td>{printRecord.date}</td>
                             <td><b>100</b></td>
                             <td>Pcs</td>

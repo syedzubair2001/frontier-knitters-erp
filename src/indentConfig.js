@@ -11,6 +11,10 @@ export const ITEM_GROUPS = [
   'Yarn', 'Dyes & Chemicals', 'Accessories', 'Packing Material', 'Spare Parts', 'General',
 ];
 
+export const INDENT_STORES = [
+  'Main Store', 'Yarn Store', 'General Store', 'Unit 1 Store', 'Unit 2 Store',
+];
+
 export const PRODUCT_TYPES = [
   'Yarn', 'Sewing Thread', 'Buttons', 'Zippers', 'Elastic', 'Labels', 'Poly Bags', 'Dyes & Chemicals', 'A4 Sheet',
 ];
