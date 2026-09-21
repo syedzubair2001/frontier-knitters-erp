@@ -418,12 +418,14 @@ body { margin: 0; background: #eef2f7; font-family: 'Inter', sans-serif; }
 }
 .legacy-item-inputs {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  /* 8 cols: Product Type · Product No (span 2) · Uom · Stock Type · Avail Stock
+     · Store · Req Qty  — then Req Date / Remarks wrap onto the next line. */
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 8px;
   align-items: flex-end;
   margin-bottom: 8px;
 }
-@media (max-width: 1100px) { .legacy-item-inputs { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 1100px) { .legacy-item-inputs { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 600px)  { .legacy-item-inputs { grid-template-columns: 1fr; } }
 
 .legacy-item-col {
