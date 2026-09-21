@@ -11,9 +11,9 @@ export const ITEM_GROUPS = [
   'Yarn', 'Dyes & Chemicals', 'Accessories', 'Packing Material', 'Spare Parts', 'General',
 ];
 
-export const INDENT_STORES = [
-  'Main Store', 'Yarn Store', 'General Store', 'Unit 1 Store', 'Unit 2 Store',
-];
+// Store master now lives in the Stock module data (src/stockService.js) so the
+// Indent Store dropdown always shows the stores that exist in the Stock screen
+// — the old hard-coded INDENT_STORES list was removed on purpose.
 
 export const PRODUCT_TYPES = [
   'Yarn', 'Sewing Thread', 'Buttons', 'Zippers', 'Elastic', 'Labels', 'Poly Bags', 'Dyes & Chemicals', 'A4 Sheet',

@@ -1,4 +1,5 @@
 // Misquery Module Configuration & Data Definitions
+import { listStores } from './stockService';
 
 export const MISQUERY_MENU = [
   {
@@ -66,7 +67,8 @@ export const WORK_DIVISION_LIST = ['--Select--', 'Cutting', 'Sewing', 'Finishing
 export const DEPARTMENT_LIST = ['--Select--', 'HR', 'IT', 'Production', 'Logistics'];
 export const EMPLOYEE_LIST = ['--Select--', 'Emp 101', 'Emp 102', 'Emp 103'];
 export const ITEM_TYPE_LIST = ['--Select--', 'Raw Material', 'Work in Progress', 'Finished Goods'];
-export const STORE_LIST = ['--Select--', 'Main Store', 'Sub Store A', 'Sub Store B', 'Scrap Yard'];
+// Store options fetched from the Stock module store master (src/stockService.js)
+export const STORE_LIST = ['--Select--', ...listStores()];
 export const ITEM_LIST = ['--Select--', 'Item 1', 'Item 2', 'Item 3'];
 export const COLOR_LIST = ['--Select--', 'Red', 'Blue', 'Green', 'Black', 'White'];
 export const SIZE_LIST = ['--Select--', 'S', 'M', 'L', 'XL', 'XXL'];

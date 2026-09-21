@@ -30,6 +30,7 @@ const MisqueryOrderSummary = lazy(() => import('./pages/MisqueryOrderSummary'));
 const MisqueryStoresIndent = lazy(() => import('./pages/MisqueryStoresIndent'));
 const MisqueryStoresIssue = lazy(() => import('./pages/MisqueryStoresIssue'));
 const MisqueryStock = lazy(() => import('./pages/MisqueryStock'));
+const Stock = lazy(() => import('./pages/Stock'));
 const MisqueryWip = lazy(() => import('./pages/MisqueryWip'));
 const MisqueryDayBook = lazy(() => import('./pages/MisqueryDayBook'));
 const MisqueryWorkflowOrderSummary = lazy(() => import('./pages/MisqueryWorkflowOrderSummary'));
@@ -87,6 +88,8 @@ export default function App() {
           <Route path="/admin/role-documents" element={<RoleDocuments />} />
           <Route path="/purchase/requisition" element={<Requisition />} />
           <Route path="/store/indent" element={<Indent />} />
+          <Route path="/store/stock" element={<Stock />} />
+          <Route path="/module/stock" element={<Stock />} />
           <Route path="/purchase/bill-inward" element={<BillInward />} />
           <Route path="/invoice/inward/bill-inward" element={<BillInward />} />
           <Route path="/purchase/invoice/general" element={<GeneralInvoice />} />

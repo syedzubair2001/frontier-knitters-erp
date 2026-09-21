@@ -6,8 +6,9 @@ import Navbar from '../components/Navbar';
 import {
   INDENT_TYPES, INDENT_APPROVAL, INDENT_UNITS, INDENT_BY_OPTIONS,
   ITEM_GROUPS, PRODUCT_TYPES, PRODUCT_CATALOG, REASON_OPTIONS, ORDER_NO_LIST,
-  INDENT_PER_PAGE_OPTIONS, INDENT_DOWNLOAD_TYPES, INDENT_COLUMNS, INDENT_STORES,
+  INDENT_PER_PAGE_OPTIONS, INDENT_DOWNLOAD_TYPES, INDENT_COLUMNS,
 } from '../indentConfig';
+import { listStores, getStockForProduct, getStockRowsForProduct, getStockForProductInStore } from '../stockService';
 import { listIndents, saveIndent, deleteIndent } from '../indentService';
 import { loadOrderLookup } from '../requisitionService';
 import BlueSelect from '../components/BlueSelect';
@@ -38,12 +39,17 @@ function makeBlankIndentForm() {
 function makeBlankItemInput() {
   const today = new Date().toISOString().slice(0, 10);
   const firstProd = PRODUCT_CATALOG[0];
+  // Store / Stock Type / Available Qty are FETCHED from the Stock module data
+  // (same source as the Stock screen) — nothing is hard-coded here.
+  const stock = getStockForProduct(firstProd.code);
   return {
     productType: firstProd.type,
     productNo: firstProd.code,
     productName: firstProd.name,
     uom: firstProd.uom,
-    store: INDENT_STORES[0],
+    store: stock?.store || listStores()[0] || '',
+    stockType: stock?.stockType || '',
+    availQty: stock ? Number(stock.qty) : '',
     reqQty: '',
     reqDate: today,
     remarks: '',
@@ -131,6 +137,25 @@ export default function Indent() {
     });
   }, [filtered, sortKey, sortOrder]);
 
+  /* ── Store dropdown options: FETCHED from the Stock module data ──
+     Each option lists the balance that place holds, so the user can see WHICH
+     PLACE has the item — same numbers as the Stock screen. Stores with no
+     record for this product are shown as "Nil" but stay selectable, and any
+     store already saved on the form is kept so old records never break. */
+  const storeOptions = useMemo(() => {
+    const opts = getStockRowsForProduct(itemInput.productNo).map((r) => ({
+      value: r.store,
+      label: `${r.store} — ${Number(r.qty || 0).toLocaleString('en-US')} ${r.uom}`,
+    }));
+    listStores().forEach((s) => {
+      if (!opts.some((o) => o.value === s)) opts.push({ value: s, label: `${s} — Nil` });
+    });
+    [itemInput.store, ...form.items.map((it) => it.store)].forEach((s) => {
+      if (s && !opts.some((o) => o.value === s)) opts.push({ value: s, label: s });
+    });
+    return opts;
+  }, [itemInput.productNo, itemInput.store, form.items]);
+
   if (!session) {
     return <div style={{ color: '#627d98', padding: 40, fontFamily: 'Segoe UI,Arial' }}>Loading… please wait</div>;
   }
@@ -172,6 +197,7 @@ export default function Indent() {
   /* ── Item Input Handlers ── */
   const handleProductNoChange = (code) => {
     const prod = PRODUCT_CATALOG.find((p) => p.code === code);
+    const stock = getStockForProduct(code); // FETCHED from the Stock screen data
     if (prod) {
       setItemInput((prev) => ({
         ...prev,
@@ -179,10 +205,28 @@ export default function Indent() {
         productName: prod.name,
         productType: prod.type,
         uom: prod.uom,
+        store: stock?.store || prev.store,
+        stockType: stock?.stockType || '',
+        availQty: stock ? Number(stock.qty) : '',
       }));
+      if (stock) {
+        setEntryMsg(`Stock fetched → Store: ${stock.store} · ${stock.stockType} · Available: ${Number(stock.qty).toLocaleString('en-US')} ${prod.uom}`);
+        setTimeout(() => setEntryMsg(''), 3500);
+      }
     } else {
       setItemInput((prev) => ({ ...prev, productNo: code }));
     }
+  };
+
+  /* Store change → re-fetch THAT store's Stock Type + Available Qty */
+  const handleStoreChange = (store) => {
+    const hit = getStockForProductInStore(itemInput.productNo, store);
+    setItemInput((prev) => ({
+      ...prev,
+      store,
+      stockType: hit?.stockType || '',
+      availQty: hit ? Number(hit.qty) : 0,
+    }));
   };
 
   const addItemToGrid = () => {
@@ -199,6 +243,8 @@ export default function Indent() {
       reqQty: Number(itemInput.reqQty),
       uom: itemInput.uom,
       store: itemInput.store,
+      stockType: itemInput.stockType,
+      availQty: itemInput.availQty === '' ? '' : Number(itemInput.availQty),
       remarks: itemInput.remarks,
       reason: itemInput.reason,
     };
@@ -494,14 +540,30 @@ export default function Indent() {
                     <input type="text" readOnly value={itemInput.uom} style={{ background: '#f1f5f9' }} />
                   </div>
 
+                  {/* Fetched from the Stock screen data (read-only) */}
                   <div className="legacy-item-col">
-                    <label>Store</label>
+                    <label>Stock Type</label>
+                    <input type="text" readOnly value={itemInput.stockType || '—'} style={{ background: '#f1f5f9' }} />
+                  </div>
+
+                  {/* Fetched from the Stock screen data (read-only) */}
+                  <div className="legacy-item-col">
+                    <label>Avail Stock</label>
+                    <input
+                      type="text"
+                      readOnly
+                      value={itemInput.availQty === '' ? '—' : Number(itemInput.availQty).toLocaleString('en-US')}
+                      style={{ background: '#f1f5f9' }}
+                    />
+                  </div>
+
+                  <div className="legacy-item-col">
+                    <label>Store (place having stock)</label>
                     <BlueSelect
+                      options={storeOptions}
                       value={itemInput.store}
-                      onChange={(e) => setItemInput({ ...itemInput, store: e.target.value })}
-                    >
-                      {INDENT_STORES.map((st) => <option key={st} value={st}>{st}</option>)}
-                    </BlueSelect>
+                      onChange={(e) => handleStoreChange(e.target.value)}
+                    />
                   </div>
 
                   <div className="legacy-item-col">
@@ -570,6 +632,8 @@ export default function Indent() {
                       <th>Product No</th>
                       <th>Product Name</th>
                       <th>Store</th>
+                      <th>Stock Type</th>
+                      <th>Avail Stock</th>
                       <th>Req Date</th>
                       <th>Req Qty</th>
                       <th>Uom</th>
@@ -586,6 +650,8 @@ export default function Indent() {
                         <td><b>{it.productNo}</b></td>
                         <td style={{ textAlign: 'left' }}>{it.productName}</td>
                         <td>{it.store || '—'}</td>
+                        <td>{it.stockType || '—'}</td>
+                        <td>{it.availQty === '' || it.availQty == null ? '—' : Number(it.availQty).toLocaleString('en-US')} {it.uom}</td>
                         <td>{it.reqDate}</td>
                         <td><b>{it.reqQty}</b></td>
                         <td>{it.uom}</td>
@@ -603,7 +669,7 @@ export default function Indent() {
                     ))}
                     {!form.items.length && (
                       <tr>
-                        <td colSpan={11} className="empty-td">
+                        <td colSpan={13} className="empty-td">
                           No data to display
                         </td>
                       </tr>
