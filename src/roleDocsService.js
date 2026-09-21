@@ -162,7 +162,7 @@ export function loadRoleDocs() {
         });
       }
     });
-    return migrateShipmentV3(migrateAccountsV2(obj));
+    return migrateStockV4(migrateShipmentV3(migrateAccountsV2(obj)));
   } catch {
     return def;
   }
@@ -194,6 +194,20 @@ function migrateShipmentV3(obj) {
     const docRole = ROLES.DOCUMENT;
     if (obj[docRole]) obj[docRole]['finish-warehouse-transfer'] = false;
     localStorage.setItem(MIG_V3_KEY, '1');
+  } catch { /* storage unavailable — skip */ }
+  return obj;
+}
+
+/* v4 fix: DOCUMENT role must NOT see Stock (Purchase & Stores menu + dashboard
+   card). INDENT stays granted for DOCUMENT role. One-time clear of any
+   previously saved grant — other roles keep Stock. */
+const MIG_V4_KEY = 'fk_role_docs_v4_no_stock';
+function migrateStockV4(obj) {
+  try {
+    if (localStorage.getItem(MIG_V4_KEY) === '1') return obj;
+    const docRole = ROLES.DOCUMENT;
+    if (obj[docRole]) obj[docRole]['stock'] = false;
+    localStorage.setItem(MIG_V4_KEY, '1');
   } catch { /* storage unavailable — skip */ }
   return obj;
 }
