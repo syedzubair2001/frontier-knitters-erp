@@ -1141,6 +1141,8 @@ select.bsel-hidden { position: absolute !important; width: 1px !important; heigh
   width: 280px; flex-shrink: 0; background: #fff; border-right: 1px solid #e0e8f2;
   overflow-y: auto; padding: 10px;
 }
+
+
 .bot-side-cap {
   font-size: 11px; font-weight: 800; letter-spacing: .6px; color: #627d98;
   text-transform: uppercase; padding: 6px 8px 10px;
@@ -1226,6 +1228,23 @@ select.bsel-hidden { position: absolute !important; width: 1px !important; heigh
   box-shadow: 0 6px 16px rgba(22,75,158,.32); white-space: nowrap;
 }
 .bot-send:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+
+/* ── AI bot answer tables + report buttons ── */
+.bot-table-wrap { overflow-x: auto; margin: 8px 0 4px; border: 1px solid #cbd5e1; border-radius: 8px; }
+.bot-table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; }
+.bot-table th {
+  background: linear-gradient(180deg, #e3edf7, #d4e3f3); color: #0b2a5b;
+  padding: 7px 9px; border: 1px solid #cbd5e1; text-align: left; white-space: nowrap;
+}
+.bot-table td { padding: 6px 9px; border: 1px solid #e2e8f0; color: #102a43; vertical-align: top; }
+.bot-table tbody tr:nth-child(even) td { background: #f6f9fd; }
+.bot-report-btns { display: flex; gap: 8px; margin: 10px 64px 6px 0; flex-wrap: wrap; }
+.bot-rbtn {
+  border: 1px solid #b9d2f5; background: #eef4ff; color: #164b9e;
+  font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 16px; cursor: pointer;
+}
+.bot-rbtn:hover { background: linear-gradient(90deg, #1e6fe0, #3d8bf3); color: #fff; border-color: #1e6fe0; }
+
 
 /* â”€â”€ Mobile: sidebar slides over the chat â”€â”€ */
 @media (max-width: 760px) {

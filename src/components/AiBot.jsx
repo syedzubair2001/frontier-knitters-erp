@@ -4,6 +4,7 @@ import { getSession } from '../auth';
 import {
   loadChats, createChat, appendMessage, deleteChat, clearAllChats,
   getActiveId, setActiveId, recentQuestions, answerQuestion, QUICK_ASKS,
+  answerToCsv, answerToText, answerToHtml,
 } from '../aiBotService';
 
 /* ── tiny markdown renderer: **bold**, *italic*, _note_ ── */
@@ -26,20 +27,127 @@ function inline(text, keyBase) {
   return parts;
 }
 
+/* ── table detection: consecutive | ... | lines form one table ── */
+const isTableRow = (ln) => /^\|.*\|\s*$/.test(ln.trim());
+const isSepRow = (ln) => {
+  const t = ln.trim();
+  return isTableRow(t) && !/[a-zA-Z0-9]/.test(t.replace(/[-|: ]/g, ''));
+};
+
+function BotTable({ rows }) {
+  const head = rows[0] || [];
+  const body = rows.slice(1);
+  return (
+    <div className="bot-table-wrap">
+      <table className="bot-table">
+        <thead>
+          <tr>{head.map((c, i) => <th key={i}>{inline(c, `h${i}`)}</th>)}</tr>
+        </thead>
+        <tbody>
+          {body.map((r, i) => (
+            <tr key={i}>{r.map((c, j) => <td key={j}>{inline(c, `c${i}-${j}`)}</td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/* ── bot bubble + ⬇ CSV / 🖨 Print / 📋 Copy report buttons ──
+   Buttons appear under every answer that contains a table. */
+function BotMessage({ m }) {
+  const hasTable = /^\|.*\|\s*$/m.test(m.text || '');
+  const stamp = new Date().toISOString().slice(0, 10);
+
+  const doCsv = () => {
+    const csv = answerToCsv(m.text);
+    if (!csv) return;
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `ERP-report-${stamp}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  };
+
+  const doCopy = async () => {
+    const t = answerToText(m.text);
+    try {
+      await navigator.clipboard.writeText(t);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = t;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch { /* clipboard blocked */ }
+      ta.remove();
+    }
+  };
+
+  const doPrint = () => {
+    const w = window.open('', '_blank', 'width=900,height=700');
+    if (!w) return;
+    w.document.write(answerToHtml(m.text, 'Frontier Knitters ERP — Report'));
+    w.document.close();
+    w.focus();
+    setTimeout(() => { try { w.print(); } catch { /* print blocked */ } }, 350);
+  };
+
+  return (
+    <div className="bot-bubble">
+      <MessageBody text={m.text} />
+      {hasTable && (
+        <div className="bot-report-btns">
+          <button type="button" className="bot-rbtn" onClick={doCsv} title="Download this table as a CSV report">⬇ CSV</button>
+          <button type="button" className="bot-rbtn" onClick={doPrint} title="Print this answer as a report">🖨 Print</button>
+          <button type="button" className="bot-rbtn" onClick={doCopy} title="Copy this answer as text">📋 Copy</button>
+        </div>
+      )}
+      <span className="bot-time">{fmtTime(m.at)}</span>
+    </div>
+  );
+}
+
+
 function MessageBody({ text }) {
   const lines = String(text || '').split('\n');
+  /* group lines into blocks: tables, headings, normal lines */
+  const blocks = [];
+  let i = 0;
+  while (i < lines.length) {
+    const ln = lines[i];
+    if (!ln.trim()) { blocks.push({ t: 'blank', k: i }); i += 1; continue; }
+    if (/^##\s+/.test(ln.trim())) { blocks.push({ t: 'head', k: i, text: ln.trim().replace(/^##\s+/, '') }); i += 1; continue; }
+    if (isTableRow(ln)) {
+      const rows = [];
+      while (i < lines.length && isTableRow(lines[i])) {
+        if (!isSepRow(lines[i])) {
+          rows.push(lines[i].trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim()));
+        }
+        i += 1;
+      }
+      if (rows.length) blocks.push({ t: 'table', k: i, rows });
+      continue;
+    }
+    blocks.push({ t: 'line', k: i, text: ln });
+    i += 1;
+  }
   return (
     <div className="bot-msg-body">
-      {lines.map((ln, i) => {
-        if (!ln.trim()) return <div key={i} style={{ height: 6 }} />;
+      {blocks.map((b) => {
+        if (b.t === 'blank') return <div key={b.k} className="bot-line blank" />;
+        if (b.t === 'head') return <div key={b.k} className="bot-line head">{inline(b.text, `h${b.k}`)}</div>;
+        if (b.t === 'table') return <BotTable key={b.k} rows={b.rows} />;
+        const ln = b.text;
         const bullet = /^\s*[•\-]\s+/.test(ln);
         const numbered = /^\s*\d+[.)]\s+/.test(ln);
         const clean = ln.replace(/^\s*[•\-]\s+/, '').replace(/^\s*\d+[.)]\s+/, '');
         return (
-          <div key={i} className={'bot-line' + (bullet ? ' bullet' : '') + (numbered ? ' numbered' : '')}>
+          <div key={b.k} className={'bot-line' + (bullet ? ' bullet' : '') + (numbered ? ' numbered' : '')}>
             {bullet && <span className="bot-dot">•</span>}
             {numbered && <span className="bot-num">{ln.trim().match(/^\d+/)[0]}.</span>}
-            <span>{inline(clean, `l${i}`)}</span>
+            <span>{inline(clean, `l${b.k}`)}</span>
           </div>
         );
       })}
@@ -272,10 +380,12 @@ export default function AiBot() {
                 {(active ? active.messages : []).map((m, i) => (
                   <div key={`${i}-${m.at || ''}`} className={'bot-msg ' + (m.role === 'user' ? 'me' : 'bot')}>
                     {m.role === 'bot' && <span className="bot-avatar">🤖</span>}
-                    <div className="bot-bubble">
-                      <MessageBody text={m.text} />
-                      <span className="bot-time">{fmtTime(m.at)}</span>
-                    </div>
+                    {m.role === 'bot' ? <BotMessage m={m} /> : (
+                      <div className="bot-bubble">
+                        <MessageBody text={m.text} />
+                        <span className="bot-time">{fmtTime(m.at)}</span>
+                      </div>
+                    )}
                   </div>
                 ))}
                 {thinking && (

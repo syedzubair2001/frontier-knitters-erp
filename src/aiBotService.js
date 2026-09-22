@@ -36,6 +36,26 @@ const ACTIVE_KEY = 'fk_aibot_active';
 
 const uid = () => `C${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 
+/* ── markdown table + report builders ──
+   Every data answer is returned as a pipe table so the chat renders a REAL
+   table and the CSV / Print / Copy report buttons appear. */
+const cell = (v) => String(v ?? '—').replace(/\|/g, '/').replace(/\n/g, ' ').trim() || '—';
+function mdTable(headers, rows) {
+  const h = (headers || []).map(cell);
+  const lines = [`| ${h.join(' | ')} |`, `| ${h.map(() => '---').join(' | ')} |`];
+  (rows || []).forEach((r) => {
+    lines.push(`| ${(r || []).map(cell).join(' | ')} |`);
+  });
+  return lines.join('\n');
+}
+function reportBlock(title, sublines, headers, rows, footlines) {
+  const parts = [`**${title}**`];
+  (sublines || []).forEach((s) => { if (s) parts.push(s); });
+  parts.push('', mdTable(headers, rows));
+  (footlines || []).forEach((s) => { if (s) parts.push(s); });
+  return parts.join('\n');
+}
+
 /** All saved conversations, newest first. */
 export function loadChats() {
   try {
@@ -154,6 +174,121 @@ const num = (n) => Number(n || 0).toLocaleString('en-US');
 const money = (n) => Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9\s.-]/g, ' ').replace(/\s+/g, ' ').trim();
 
+/* ───────────────────────── answer tables ─────────────────────────
+   Every data answer is emitted as a markdown pipe-table:
+
+     | Store | Qty |
+     |---|---|
+     | Yarn Store | 1,250 |
+
+   AiBot.jsx renders those lines as a REAL HTML table and puts
+   ⬇ CSV / 🖨 Print / 📋 Copy report buttons under the bubble, so any
+   answer can be turned into a downloadable report.
+   ───────────────────────────────────────────────────────────────── */
+
+/** Build a markdown pipe-table block. */
+export function tbl(headers, rows) {
+  const head = `| ${headers.join(' | ')} |`;
+  const sep = `|${headers.map(() => '---').join('|')}|`;
+  const body = rows.map((r) => `| ${headers
+    .map((_, i) => {
+      const c = r[i];
+      return c === null || c === undefined || c === '' ? '—' : String(c);
+    })
+    .join(' | ')} |`);
+  return [head, sep, ...body].join('\n');
+}
+
+/** Section heading used above a table (`## Text`). */
+const cap = (text) => `## ${text}`;
+
+/** Every question the user can ask — grouped, so "what can I ask" is a table. */
+export const QUESTION_GROUPS = [
+  { group: '📦 Stock', ask: ['Where is A4 Sheet kept?', 'Show stock by store', 'Damage stock lines', 'Scrap stock lines'] },
+  { group: '🏪 Stores', ask: ['List all stores', 'Which stores have stock?'] },
+  { group: '📋 Indent', ask: ['How many indents are pending?', 'Indent summary', 'Qty requested per store'] },
+  { group: '🧾 Purchase / Sales', ask: ['Bill inward total', 'General invoice summary', 'Export invoice summary', 'Despatch records', 'Requisition status'] },
+  { group: '🔐 Roles', ask: ['What documents can my role see?', 'Which documents are blocked for me?', 'Does Accounts have access to Collection?'] },
+  { group: '📊 Reports', ask: ['Generate stock report', 'Generate indent report', 'Today summary', 'Generate full ERP report'] },
+  { group: '❓ Guides', ask: ['How do I create an indent?', 'How do I check stock?', 'How do I grant rights to a role?'] },
+];
+
+/** Turn pipe-table + text into CSV (used by the ⬇ CSV button). */
+export function answerToCsv(answer) {
+  const lines = String(answer || '').split('\n');
+  const csv = [];
+  lines.forEach((ln) => {
+    const cells = ln.trim().match(/^\|(.+)\|$/);
+    if (!cells) return;
+    if (/^\|?[\s|:-]+\|?$/.test(ln.trim()) && !/[a-zA-Z0-9]/.test(ln.replace(/[-|: ]/g, ''))) return; // separator row
+    csv.push(
+      cells[1].split('|').map((c) => `"${c.trim().replace(/"/g, '""')}"`).join(','),
+    );
+  });
+  return csv.join('\n');
+}
+
+/** Plain-text version for 🖨 Print / 📋 Copy. */
+export function answerToText(answer) {
+  return String(answer || '')
+    .replace(/\|([^|\n]*)\|/g, (_, inner) => inner.split('|').join(' | '))
+    .replace(/\|?[\s|:-]{3,}\|?/g, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/(^|\n)##\s*/g, '$1')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+/* ── escape a value for HTML output ── */
+const esc = (s) => String(s ?? '—')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;');
+
+/** Printable HTML report (used by the 🖨 Print button). */
+export function answerToHtml(answer, title = 'Frontier Knitters ERP — Report') {
+  const raw = String(answer || '');
+  const lines = raw.split('\n');
+  const body = [];
+  let i = 0;
+  while (i < lines.length) {
+    const ln = lines[i].trim();
+    if (!ln) { i += 1; continue; }
+    if (/^##\s+/.test(ln)) {
+      body.push(`<h3>${esc(ln.replace(/^##\s+/, '').replace(/\*\*/g, ''))}</h3>`);
+      i += 1;
+      continue;
+    }
+    if (/^\|.*\|\s*$/.test(ln)) {
+      const rows = [];
+      while (i < lines.length && /^\|.*\|\s*$/.test(lines[i].trim())) {
+        const t = lines[i].trim();
+        if (/[a-zA-Z0-9]/.test(t.replace(/[-|: ]/g, ''))) {
+          rows.push(t.replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim().replace(/\*\*/g, '')));
+        }
+        i += 1;
+      }
+      if (rows.length) {
+        const [head, ...rest] = rows;
+        body.push('<table><thead><tr>' + head.map((c) => `<th>${esc(c)}</th>`).join('') + '</tr></thead><tbody>'
+          + rest.map((r) => `<tr>${r.map((c) => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')
+          + '</tbody></table>');
+      }
+      continue;
+    }
+    body.push(`<p>${esc(ln.replace(/^•\s*/, '• ').replace(/\*\*/g, ''))}</p>`);
+    i += 1;
+  }
+  const stamp = new Date().toLocaleString('en-GB');
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${esc(title)}</title>`
+    + '<style>body{font-family:Arial,sans-serif;margin:28px;color:#102a43}h1{font-size:18px;margin:0}h3{font-size:14px;margin:18px 0 8px;color:#0b2a5b}'
+    + '.meta{font-size:11px;color:#64748b;margin:4px 0 16px}p{font-size:12px;margin:4px 0}'
+    + 'table{border-collapse:collapse;width:100%;margin:8px 0 14px;font-size:11.5px}th,td{border:1px solid #94a3b8;padding:5px 7px;text-align:left}th{background:#e3edf7;color:#0b2a5b}</style>'
+    + `</head><body><h1>${esc(title)}</h1><div class="meta">Generated ${esc(stamp)}</div>`
+    + body.join('') + '</body></html>';
+}
+
+
 /** Products mentioned in the question (by code or by a word of the name). */
 function findProducts(text, ctx) {
   const q = norm(text);
@@ -171,7 +306,7 @@ function stockLines(rows, limit = 8) {
     .join('\n');
 }
 
-/** "Where is this product kept?" — store-wise breakdown from the Stock module. */
+/** "Where is this product kept?" — store-wise table from the Stock module. */
 function answerWhereProduct(text, ctx) {
   const hits = findProducts(text, ctx);
   if (!hits.length) return null;
@@ -180,10 +315,14 @@ function answerWhereProduct(text, ctx) {
     const rows = ctx.stock.filter((r) => r.productNo === p.code)
       .sort((a, b) => Number(b.qty) - Number(a.qty));
     const total = rows.reduce((s, r) => s + Number(r.qty || 0), 0);
-    out.push(`**${p.code} - ${p.name}** (${p.type} · ${p.uom}) — total **${num(total)} ${p.uom}**`);
-    out.push(rows.length
-      ? rows.map((r) => `   • ${r.store} → ${num(r.qty)} ${r.uom} (${r.stockType})`).join('\n')
-      : '   • No stock record found.');
+    out.push(cap(`Where ${p.code} - ${p.name} is kept`));
+    out.push(`_${p.type} · ${p.uom} · total balance **${num(total)} ${p.uom}** across ${rows.length} location(s)_`);
+    out.push(tbl(
+      ['Sno', 'Store (Place)', 'Stock Type', 'Qty', 'Uom', 'Rate', 'Value'],
+      rows.length
+        ? rows.map((r, i) => [i + 1, r.store, r.stockType, num(r.qty), r.uom, money(r.rate), money(Number(r.qty || 0) * Number(r.rate || 0))])
+        : [['—', 'No stock record found', '—', '0', p.uom, '—', '—']],
+    ));
     out.push('');
   });
   return out.join('\n').trim();
@@ -220,16 +359,88 @@ export function answerQuestion(question, session) {
     return [
       `Hello${ctx.session?.username ? ` ${ctx.session.username}` : ''} 👋 I am the Frontier Knitters ERP assistant.`,
       '',
-      'I answer from the live data of this ERP:',
-      '• **Stock** — store-wise balance, "where is <product> kept"',
-      '• **Indent** — pending / approved counts, items, stores',
-      '• **Invoice** — Bill Inward, General Invoice, Export Invoice',
-      '• **Exports** — Despatch records',
-      '• **Roles** — which documents & rights a role has (Role Documents)',
+      'I answer from the live data of this ERP — always in **table format**, and every table can be downloaded as a **report** (⬇ CSV / 🖨 Print / 📋 Copy under my message):',
+      '',
+      tbl(
+        ['Sno', 'Topic', 'Example question'],
+        [
+          [1, '📦 Stock', '*Where is A4 Sheet kept?*'],
+          [2, '🏪 Stores', '*List all stores*'],
+          [3, '📋 Indent', '*How many indents are pending?*'],
+          [4, '🧾 Invoices', '*Export invoice summary*'],
+          [5, '🚚 Despatch', '*Despatch records*'],
+          [6, '🔐 My role', '*What documents can my role see?*'],
+          [7, '📊 Reports', '*Generate stock report*'],
+        ],
+      ),
       '',
       'Ask me anything, or tap a suggestion chip below.' + roleLine,
     ].join('\n');
   }
+
+  /* 0a — "what can I ask / questions" → full grouped question table */
+  if (has('what can i ask', 'what to ask', 'questions can', 'list of question', 'sample question', 'examples', 'question list')) {
+    return [
+      '**What you can ask me** — every question below works. Tap any suggestion chip or type it:',
+      '',
+      ...QUESTION_GROUPS.flatMap((g) => [
+        cap(g.group),
+        tbl(['Sno', 'Question you can ask'], g.ask.map((a, i) => [i + 1, a])),
+        '',
+      ]),
+      '_Ask with a product code (PRD-A4S-001), a product word (A4 Sheet) or a store name (Yarn Store)._' + roleLine,
+    ].join('\n').trim();
+  }
+
+  /* 0b — how-to guides.
+     IMPORTANT: this check must run BEFORE the indent / stock / role data
+     sections, otherwise "How do I create an indent?" (a quick-ask chip) is
+     swallowed by the indent section and returns a data list instead of steps. */
+  if (has('how to', 'how do i', 'how can i', 'steps', 'kaise', 'guide')) {
+    if (has('indent')) {
+      return [
+        '**Create an Indent — step by step**',
+        '1. Menu **Purchase & Stores ▾ → STORE → INDENT**',
+        '2. Fill Indent No / Date / Unit / Type / Order No / Indent By',
+        '3. In the item row pick **Product Type** → **Product No / Name**',
+        '4. Store, Stock Type and Avail Stock **fetch automatically** for that product (from the Stock module)',
+        '5. Change **Store** if you need another place — Stock Type + Avail Qty re-fetch for that store',
+        '6. Type **Req Qty** → click **Add** (the row appears in the items table)',
+        '7. Click **Save** — the indent is stored and the list view opens',
+        '',
+        '_Every field you filled is shown in the items table and on the print voucher._' + roleLine,
+      ].join('\n');
+    }
+    if (has('role', 'document', 'right', 'permission')) {
+      return [
+        '**Grant documents / rights to a role**',
+        '1. Login as Super Admin → click **🔐 Role Docs** in the navbar',
+        '2. Choose the role (e.g. **Accounts**) and open the **List** view',
+        '3. Tick **Access** for the documents that role may open',
+        '4. Tick **View / Add / Edit / Delete** for each document',
+        '5. Click **Save** — menu, dashboard cards and buttons update for that role at once',
+        '',
+        '_No **Add** right → the ➕ Add button is hidden and blocked. No **Access** → the document leaves the menu._' + roleLine,
+      ].join('\n');
+    }
+    if (has('stock')) {
+      return [
+        '**Check stock**',
+        '1. Menu **Purchase & Stores ▾ → STORE → STOCK** (or the dashboard card)',
+        '2. Top table = every **store** with items / qty / value / Has Stock ✅',
+        '3. Grid below = store-wise stock lines. Filter by **Store**, **Stock Type** (Fresh / Damage / Scrap) or search a product',
+        '4. Bottom strip shows records, total qty and total value' + roleLine,
+      ].join('\n');
+    }
+    return [
+      '**Popular guides**',
+      '• Create an indent → *how do I create an indent*',
+      '• Check stock → *how do I check stock*',
+      '• Give a role rights → *how do I grant rights to a role*',
+      '• Locate an item → *where is A4 Sheet kept*' + roleLine,
+    ].join('\n');
+  }
+
 
   /* 1 — product location */
   if (has('where', 'which store', 'kaha', 'kahan', 'location', 'kept', 'rakha')) {
@@ -238,12 +449,15 @@ export function answerQuestion(question, session) {
   }
 
   /* 2 — store master */
-  if (has('how many store', 'store list', 'stores in system', 'list of store', 'store master')) {
+  if (has('how many store', 'store list', 'stores in system', 'list of store', 'store master', 'stores have stock', 'which store')) {
     const summary = stockSummary();
     return [
-      `**Stores in the system: ${ctx.stores.length}**`,
+      cap(`Stores in the system — ${ctx.stores.length}`),
       '',
-      ...summary.map((s) => `• **${s.store}** → ${s.items} items · ${num(s.qty)} qty · value ${money(s.value)} ${s.qty > 0 ? '✅' : '(nil)'}`),
+      tbl(
+        ['Sno', 'Store', 'Items', 'Stock Qty', 'Stock Value', 'Has Stock'],
+        summary.map((s, i) => [i + 1, s.store, s.items, num(s.qty), money(s.value), s.qty > 0 ? '✅ Yes' : '— Nil']),
+      ),
       '',
       '_The Indent screen fetches its Store dropdown from this same store master._' + roleLine,
     ].join('\n');
@@ -262,11 +476,18 @@ export function answerQuestion(question, session) {
     const value = rows.reduce((s, r) => s + Number(r.qty || 0) * Number(r.rate || 0), 0);
     return [
       prodAns ? `${prodAns}\n` : '',
-      `**Store-wise stock${storeHit ? ` — ${storeHit}` : ''}${type ? ` (${type})` : ''}**`,
-      `Total **${num(qty)}** qty · value **${money(value)}** · ${rows.length} item line(s)`,
+      cap(`Store-wise stock${storeHit ? ` — ${storeHit}` : ''}${type ? ` (${type})` : ''}`),
+      `_Total **${num(qty)}** qty · value **${money(value)}** · ${rows.length} item line(s)_`,
       '',
-      stockLines(rows) || '• No matching stock lines.',
-      rows.length > 8 ? `\n_…and ${rows.length - 8} more line(s). Open **Purchase & Stores → STORE → STOCK** for the full grid._` : '',
+      tbl(
+        ['Sno', 'Store (Place)', 'Stock Type', 'Product No', 'Product Name', 'Qty', 'Uom', 'Rate', 'Value'],
+        (rows.length ? rows.slice(0, 20) : []).map((r, i) => [
+          i + 1, r.store, r.stockType, r.productNo, r.productName,
+          num(r.qty), r.uom, money(r.rate), money(Number(r.qty || 0) * Number(r.rate || 0)),
+        ]),
+      ),
+      rows.length ? '' : '• No matching stock lines.',
+      rows.length > 20 ? `\n_…and ${rows.length - 20} more line(s). Ask **Generate stock report** for the full report._` : '',
     ].filter(Boolean).join('\n') + roleLine;
   }
 
@@ -399,8 +620,9 @@ export function answerQuestion(question, session) {
     ].filter(Boolean).join('\n') + roleLine;
   }
 
-  /* 12 — how-to guides */
-  if (has('how to', 'how do i', 'steps', 'kaise', 'guide')) {
+  /* 12 — how-to guides: MOVED to section 0b (above the data sections) so
+     "how do I …" questions are answered with steps, not with a data list. */
+  if (false && has('how to', 'how do i', 'steps', 'kaise', 'guide')) {
     if (has('indent')) {
       return [
         '**Create an Indent — step by step**',
