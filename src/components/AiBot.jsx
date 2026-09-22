@@ -292,6 +292,8 @@ export default function AiBot() {
 
   /* Only for signed-in users — the assistant never appears on Login / Signup.
      (All hooks above run first, so the hook order stays stable.) */
+  const onAuthScreen = /^\/(login|signup)\/?$/i.test(pathname || '');
+  if (onAuthScreen) return null; // Ask AI Reports shows ONLY after login
   if (!session || !session.username) return null;
 
   return (
@@ -306,7 +308,7 @@ export default function AiBot() {
       >
         <span className="bot-fab-ic">🤖</span>
         <span className="bot-fab-pulse" />
-        <span className="bot-fab-lbl">Ask AI</span>
+        <span className="bot-fab-lbl">Ask AI Reports</span>
       </button>
 
       {open && (
@@ -316,7 +318,7 @@ export default function AiBot() {
             <div className="bot-head-left">
               <span className="bot-head-ic">🤖</span>
               <div className="bot-head-txt">
-                <b>ERP AI Assistant</b>
+                <b>Ask AI Reports</b>
                 <span className="bot-head-sub">
                   {session ? `${session.username} · ${session.role}` : 'live ERP data'}
                   {active ? ` · ${active.messages.length} message(s)` : ''}
