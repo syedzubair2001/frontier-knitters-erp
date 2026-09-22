@@ -186,15 +186,14 @@ const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9\s.-]/g, ' ')
    answer can be turned into a downloadable report.
    ───────────────────────────────────────────────────────────────── */
 
-/** Build a markdown pipe-table block. */
+/** Build a markdown pipe-table block (cells are sanitised so | / newlines in
+    data can never break the table parse in the chat UI). */
 export function tbl(headers, rows) {
-  const head = `| ${headers.join(' | ')} |`;
+  const clean = (v) => (v === null || v === undefined || v === '' ? '—' : String(v).replace(/\|/g, '/').replace(/\n/g, ' '));
+  const head = `| ${headers.map(clean).join(' | ')} |`;
   const sep = `|${headers.map(() => '---').join('|')}|`;
-  const body = rows.map((r) => `| ${headers
-    .map((_, i) => {
-      const c = r[i];
-      return c === null || c === undefined || c === '' ? '—' : String(c);
-    })
+  const body = (rows || []).map((r) => `| ${headers
+    .map((_, i) => clean(r[i]))
     .join(' | ')} |`);
   return [head, sep, ...body].join('\n');
 }
@@ -463,8 +462,8 @@ export function answerQuestion(question, session) {
     ].join('\n');
   }
 
-  /* 3 — stock / balance */
-  if (has('stock', 'balance', 'available', 'inventory')) {
+  /* 3 — stock / balance (skipped for "generate report" asks: those get the FULL report in 12b/12c) */
+  if (has('stock', 'balance', 'available', 'inventory') && !has('generate', 'download report', 'export report')) {
     const prodAns = answerWhereProduct(raw, ctx);
     const type = has('damage') ? 'Damage' : has('scrap') ? 'Scrap' : has('fresh') ? 'Fresh' : '';
     let rows = ctx.stock.filter((r) => Number(r.qty) > 0);
@@ -491,8 +490,8 @@ export function answerQuestion(question, session) {
     ].filter(Boolean).join('\n') + roleLine;
   }
 
-  /* 4 — role documents & rights */
-  if (has('role', 'right', 'permission', 'document', 'access', 'can my', 'which document', 'allowed', 'hide')) {
+  /* 4 — role documents & rights (skipped for "generate rights report": full table in 12c) */
+  if (has('role', 'right', 'permission', 'document', 'access', 'can my', 'which document', 'allowed', 'hide') && !has('generate', 'download report', 'export report')) {
     const roleHit = ['Super Admin', 'Admin', 'Merchandiser', 'Production Manager', 'Cutting Master',
       'Stitching Supervisor', 'Quality Checker (QC)', 'Store Keeper', 'Packing Staff', 'Accounts', 'HR', 'DOCUMENT']
       .find((r) => q.includes(norm(r)) || q.includes(norm(r.split(' ')[0])));
@@ -519,13 +518,24 @@ export function answerQuestion(question, session) {
       const blocked = flat.filter((d) => !canUseRole(targetRole, d.key));
       const viewOnly = (k) => !rightsFor(ctx.rightsData, targetRole, k).add;
       return [
-        `**Role "${targetRole}" — granted documents: ${allowed.length}**`,
+        `**Role "${targetRole}" — granted documents: ${allowed.length} · blocked: ${blocked.length}**`,
         '',
-        allowed.slice(0, 30).map((d) => `• ${d.label}${viewOnly(d.key) ? ' _(view only)_' : ''}`).join('\n'),
+        cap('Granted documents'),
+        allowed.length
+          ? tbl(
+            ['Sno', 'Document', 'Access'],
+            allowed.slice(0, 30).map((d, i) => [i + 1, d.label, viewOnly(d.key) ? 'View only' : 'Full']),
+          )
+          : '• none',
         allowed.length > 30 ? `_…and ${allowed.length - 30} more._` : '',
         '',
-        `**Blocked documents: ${blocked.length}**`,
-        blocked.slice(0, 12).map((d) => `• ${d.label}`).join('\n') || '• none',
+        cap('Blocked documents'),
+        blocked.length
+          ? tbl(
+            ['Sno', 'Document'],
+            blocked.slice(0, 12).map((d, i) => [i + 1, d.label]),
+          )
+          : '• none',
         blocked.length > 12 ? `_…and ${blocked.length - 12} more._` : '',
         '',
         `_Saved setup: ${ctx.docs[targetRole] ? 'customised' : 'default'}._ Edit in **🔐 Role Docs**.` + roleLine,
@@ -533,8 +543,8 @@ export function answerQuestion(question, session) {
     }
   }
 
-  /* 5 — indent */
-  if (has('indent')) {
+  /* 5 — indent (skipped for "generate indent report": full table in 12b) */
+  if (has('indent') && !has('generate', 'download report', 'export report')) {
     const rows = ctx.indents;
     const pending = rows.filter((r) => !r.approved);
     const byStore = {};
@@ -545,75 +555,135 @@ export function answerQuestion(question, session) {
     return [
       `**Indents — total ${rows.length} · approved ${rows.length - pending.length} · pending ${pending.length}**`,
       '',
-      rows.slice(0, 6).map((r) => `• ${r.indentNo} · ${r.date || r.indentDate || '—'} · ${r.type || '—'} · ${r.indentBy || '—'} · ${r.approved ? '✅ Approved' : '⏳ Pending'} · ${(r.items || []).length} item(s)`).join('\n') || '• No indents yet.',
+      cap('Indent list'),
+      rows.length
+        ? tbl(
+          ['Sno', 'Indent No', 'Date', 'Type', 'Indent By', 'Status', 'Items'],
+          rows.slice(0, 10).map((r, i) => [
+            i + 1, r.indentNo || '—', r.date || r.indentDate || '—', r.type || '—',
+            r.indentBy || '—', r.approved ? '✅ Approved' : '⏳ Pending', (r.items || []).length,
+          ]),
+        )
+        : '• No indents yet.',
+      rows.length > 10 ? `_…and ${rows.length - 10} more. Ask **Generate indent report** for the full list._` : '',
       '',
+      Object.keys(byStore).length ? cap('Qty requested per store') : '',
       Object.keys(byStore).length
-        ? `**Qty requested per store:**\n${Object.entries(byStore).map(([s, v]) => `• ${s} → ${num(v)}`).join('\n')}`
+        ? tbl(['Sno', 'Store (Place)', 'Req Qty'], Object.entries(byStore).map(([s, v], i) => [i + 1, s, num(v)]))
         : '',
       '',
       '_The Indent screen fetches Store / Stock Type / Avail Qty from the Stock module._' + roleLine,
     ].filter(Boolean).join('\n');
   }
 
-  /* 6 — purchase bill inward */
-  if (has('bill inward', 'bill-inward', 'purchase bill')) {
+  /* 6 — purchase bill inward (skipped for "generate bill report": full table in 12c) */
+  if (has('bill inward', 'bill-inward', 'purchase bill') && !has('generate', 'download report', 'export report')) {
     const amt = ctx.bills.reduce((s, r) => s + Number(r.totalAmount || r.amount || r.netAmount || 0), 0);
     return [
       `**Bill Inward — ${ctx.bills.length} record(s)** · total value **${money(amt)}**`,
       '',
-      ctx.bills.slice(0, 8).map((r) => `• ${r.billNo || r.invoiceNo || r.id || '—'} · ${r.billDate || r.date || '—'} · ${r.supplierName || r.supplier || '—'} · ${money(r.totalAmount || r.amount || r.netAmount || 0)}`).join('\n') || '• No records yet.',
-    ].join('\n') + roleLine;
+      ctx.bills.length
+        ? tbl(
+          ['Sno', 'Bill No', 'Date', 'Supplier', 'Amount'],
+          ctx.bills.slice(0, 10).map((r, i) => [
+            i + 1, r.billNo || r.invoiceNo || r.id || '—', r.billDate || r.date || '—',
+            r.supplierName || r.supplier || '—', money(r.totalAmount || r.amount || r.netAmount || 0),
+          ]),
+        )
+        : '• No records yet.',
+      ctx.bills.length > 10 ? `_…and ${ctx.bills.length - 10} more. Ask **Generate bill inward report** for the full list._` : '',
+    ].filter(Boolean).join('\n') + roleLine;
   }
 
-  /* 7 — general invoice */
-  if (has('general invoice', 'invoice general')) {
+  /* 7 — general invoice (skipped for "generate report": full table in 12c) */
+  if (has('general invoice', 'invoice general') && !has('generate', 'download report', 'export report')) {
     const amt = ctx.genInvoices.reduce((s, r) => s + Number(r.totalAmount || r.grandTotal || r.amount || 0), 0);
     return [
       `**General Invoice — ${ctx.genInvoices.length} record(s)** · total value **${money(amt)}**`,
       '',
-      ctx.genInvoices.slice(0, 8).map((r) => `• ${r.invoiceNo || r.id || '—'} · ${r.invoiceDate || r.date || '—'} · ${r.partyName || r.customerName || '—'} · ${money(r.totalAmount || r.grandTotal || r.amount || 0)}`).join('\n') || '• No records yet.',
-    ].join('\n') + roleLine;
+      ctx.genInvoices.length
+        ? tbl(
+          ['Sno', 'Invoice No', 'Date', 'Party', 'Amount'],
+          ctx.genInvoices.slice(0, 10).map((r, i) => [
+            i + 1, r.invoiceNo || r.id || '—', r.invoiceDate || r.date || '—',
+            r.partyName || r.customerName || '—', money(r.totalAmount || r.grandTotal || r.amount || 0),
+          ]),
+        )
+        : '• No records yet.',
+      ctx.genInvoices.length > 10 ? `_…and ${ctx.genInvoices.length - 10} more. Ask **Generate general invoice report** for the full list._` : '',
+    ].filter(Boolean).join('\n') + roleLine;
   }
 
   /* ⚠ dead text removed here earlier — now flowing to section 8 */
 
-  /* 8 — export invoice */
-  if (has('export invoice', 'export-invoice')) {
+  /* 8 — export invoice (skipped for "generate export report": full table in 12c) */
+  if (has('export invoice', 'export-invoice') && !has('generate', 'download report', 'export report')) {
     const amt = ctx.expInvoices.reduce((s, r) => s + Number(r.totalAmount || r.grandTotal || r.amount || 0), 0);
     const qty = ctx.expInvoices.reduce((s, r) => s + Number(r.totalQty || r.quantity || 0), 0);
     return [
       `**Export Invoice — ${ctx.expInvoices.length} record(s)** · value **${money(amt)}** · qty **${num(qty)}**`,
       '',
-      ctx.expInvoices.slice(0, 8).map((r) => `• ${r.invoiceNo || r.id || '—'} · ${r.invoiceDate || r.date || '—'} · ${r.buyerName || r.customerName || '—'} · ${money(r.totalAmount || r.grandTotal || r.amount || 0)}`).join('\n') || '• No records yet.',
-    ].join('\n') + roleLine;
+      ctx.expInvoices.length
+        ? tbl(
+          ['Sno', 'Invoice No', 'Date', 'Buyer', 'Amount'],
+          ctx.expInvoices.slice(0, 10).map((r, i) => [
+            i + 1, r.invoiceNo || r.id || '—', r.invoiceDate || r.date || '—',
+            r.buyerName || r.customerName || '—', money(r.totalAmount || r.grandTotal || r.amount || 0),
+          ]),
+        )
+        : '• No records yet.',
+      ctx.expInvoices.length > 10 ? `_…and ${ctx.expInvoices.length - 10} more. Ask **Generate export invoice report** for the full list._` : '',
+    ].filter(Boolean).join('\n') + roleLine;
   }
 
-  /* 9 — despatch / shipment transfer */
-  if (has('despatch', 'dispatch', 'shipment transfer', 'finish warehouse')) {
+  /* 9 — despatch (skipped for "generate despatch report": full table in 12c) */
+  if (has('despatch', 'dispatch', 'shipment transfer', 'finish warehouse') && !has('generate', 'download report', 'export report')) {
     const qty = ctx.despatches.reduce((s, r) => s + Number(r.totalQty || r.quantity || 0), 0);
     return [
       `**Exports — Despatch — ${ctx.despatches.length} record(s)** · qty **${num(qty)}**`,
       '',
-      ctx.despatches.slice(0, 8).map((r) => `• ${r.despatchNo || r.id || '—'} · ${r.despatchDate || r.date || '—'} · ${r.customerName || r.buyerName || '—'} · qty ${num(r.totalQty || r.quantity || 0)}`).join('\n') || '• No records yet.',
-    ].join('\n') + roleLine;
+      ctx.despatches.length
+        ? tbl(
+          ['Sno', 'Despatch No', 'Date', 'Customer', 'Qty'],
+          ctx.despatches.slice(0, 10).map((r, i) => [
+            i + 1, r.despatchNo || r.id || '—', r.despatchDate || r.date || '—',
+            r.customerName || r.buyerName || '—', num(r.totalQty || r.quantity || 0),
+          ]),
+        )
+        : '• No records yet.',
+      ctx.despatches.length > 10 ? `_…and ${ctx.despatches.length - 10} more. Ask **Generate despatch report** for the full list._` : '',
+    ].filter(Boolean).join('\n') + roleLine;
   }
 
-  /* 10 — requisition / purchase */
-  if (has('requisition', 'purchase order', 'purchase')) {
+  /* 10 — requisition / purchase (skipped for "generate report": full table in 12c) */
+  if (has('requisition', 'purchase order', 'purchase') && !has('generate', 'download report', 'export report')) {
     return [
       `**Purchase — Requisition — ${ctx.requisitions.length} record(s)**`,
       '',
-      ctx.requisitions.slice(0, 8).map((r) => `• ${r.reqNo || r.requisitionNo || r.id || '—'} · ${r.date || '—'} · ${r.department || '—'} · ${r.status || (r.approved ? 'Approved' : 'Pending')}`).join('\n') || '• No records yet.',
-    ].join('\n') + roleLine;
+      ctx.requisitions.length
+        ? tbl(
+          ['Sno', 'Req No', 'Date', 'Department', 'Status'],
+          ctx.requisitions.slice(0, 10).map((r, i) => [
+            i + 1, r.reqNo || r.requisitionNo || r.id || '—', r.date || '—',
+            r.department || '—', r.status || (r.approved ? 'Approved' : 'Pending'),
+          ]),
+        )
+        : '• No records yet.',
+      ctx.requisitions.length > 10 ? `_…and ${ctx.requisitions.length - 10} more. Ask **Generate requisition report** for the full list._` : '',
+    ].filter(Boolean).join('\n') + roleLine;
   }
 
-  /* 11 — product catalog */
+  /* 11 — product catalog: related summary + TABLE */
   if (has('product', 'catalog', 'a4 sheet', 'item list', 'product list')) {
     const prodAns = answerWhereProduct(raw, ctx);
     return [
       prodAns ? `${prodAns}\n` : '',
       `**Product catalog — ${ctx.products.length} item(s)**`,
-      ctx.products.slice(0, 12).map((p) => `• ${p.code} - ${p.name} · ${p.type} · ${p.uom}`).join('\n'),
+      '',
+      tbl(
+        ['Sno', 'Code', 'Name', 'Type', 'Uom'],
+        ctx.products.slice(0, 12).map((p, i) => [i + 1, p.code, p.name, p.type, p.uom]),
+      ),
       ctx.products.length > 12 ? `_…and ${ctx.products.length - 12} more._` : '',
       '',
       '_The Product Type / Product No / Uom dropdowns of the Indent screen come from this catalog._',
@@ -667,8 +737,136 @@ export function answerQuestion(question, session) {
     ].join('\n');
   }
 
-  /* 13 — summary / today */
-  if (has('summary', 'today', 'overview', 'dashboard', 'report')) {
+  /* 12b — REPORT GENERATOR (part 1: stock + indent full tables).
+     "generate … report" always lands here — before summary/products sections. */
+  if (has('generate stock', 'generate full stock', 'stock report', 'download stock', 'export stock')) {
+    const stamp = new Date().toLocaleString('en-GB');
+    const rows = [...ctx.stock].sort((a, b) => Number(b.qty || 0) - Number(a.qty || 0));
+    const qty = rows.reduce((s, r) => s + Number(r.qty || 0), 0);
+    const value = rows.reduce((s, r) => s + Number(r.qty || 0) * Number(r.rate || 0), 0);
+    return [
+      cap(`Stock report — ${rows.length} line(s) · generated ${stamp}`),
+      `_Total **${num(qty)}** qty · value **${money(value)}**_`,
+      '',
+      rows.length
+        ? tbl(
+          ['Sno', 'Store (Place)', 'Stock Type', 'Product No', 'Product Name', 'Qty', 'Uom', 'Rate', 'Value'],
+          rows.map((r, i) => [i + 1, r.store, r.stockType, r.productNo, r.productName, num(r.qty), r.uom, money(r.rate), money(Number(r.qty || 0) * Number(r.rate || 0))]),
+        )
+        : '• No stock lines.',
+      '',
+      '_Use the report buttons under this message: **⬇ CSV** downloads it (opens in Excel), **🖨 Print** prints it, **📋 Copy** copies it._' + roleLine,
+    ].filter(Boolean).join('\n');
+  }
+  if (has('generate indent', 'indent report', 'download indent', 'export indent')) {
+    const stamp = new Date().toLocaleString('en-GB');
+    return [
+      cap(`Indent report — ${ctx.indents.length} indent(s) · generated ${stamp}`),
+      '',
+      ctx.indents.length
+        ? tbl(
+          ['Sno', 'Indent No', 'Date', 'Type', 'Store', 'Indent By', 'Status', 'Items'],
+          ctx.indents.map((r, i) => [i + 1, r.indentNo || '—', r.date || r.indentDate || '—', r.type || '—', ((r.items || [])[0] || {}).store || '—', r.indentBy || '—', r.approved ? '✅ Approved' : '⏳ Pending', (r.items || []).length]),
+        )
+        : '• No indents yet.',
+      '',
+      '_Use **⬇ CSV / 🖨 Print / 📋 Copy** under this message to save the report._' + roleLine,
+    ].filter(Boolean).join('\n');
+  }
+
+  /* 12c — REPORT GENERATOR (part 2: bills / invoices / despatch / role / full ERP). */
+  if (has('generate bill', 'bill inward report', 'bill report')) {
+    const stamp = new Date().toLocaleString('en-GB');
+    const amt = ctx.bills.reduce((s, r) => s + Number(r.totalAmount || r.amount || r.netAmount || 0), 0);
+    return [
+      cap(`Bill Inward report — ${ctx.bills.length} record(s) · total ${money(amt)} · ${stamp}`),
+      '',
+      ctx.bills.length
+        ? tbl(
+          ['Sno', 'Bill No', 'Date', 'Supplier', 'Amount'],
+          ctx.bills.map((r, i) => [i + 1, r.billNo || r.invoiceNo || r.id || '—', r.billDate || r.date || '—', r.supplierName || r.supplier || '—', money(r.totalAmount || r.amount || r.netAmount || 0)]),
+        )
+        : '• No records yet.',
+      '',
+      '_Use **⬇ CSV / 🖨 Print / 📋 Copy** under this message to save the report._' + roleLine,
+    ].filter(Boolean).join('\n');
+  }
+  if (has('generate export', 'export invoice report', 'export report')) {
+    const stamp = new Date().toLocaleString('en-GB');
+    return [
+      cap(`Export Invoice report — ${ctx.expInvoices.length} record(s) · ${stamp}`),
+      '',
+      ctx.expInvoices.length
+        ? tbl(
+          ['Sno', 'Invoice No', 'Date', 'Buyer', 'Amount'],
+          ctx.expInvoices.map((r, i) => [i + 1, r.invoiceNo || r.id || '—', r.invoiceDate || r.date || '—', r.buyerName || r.customerName || '—', money(r.totalAmount || r.grandTotal || r.amount || 0)]),
+        )
+        : '• No records yet.',
+      '',
+      '_Use **⬇ CSV / 🖨 Print / 📋 Copy** under this message to save the report._' + roleLine,
+    ].filter(Boolean).join('\n');
+  }
+  if (has('generate despatch', 'generate dispatch', 'despatch report')) {
+    const stamp = new Date().toLocaleString('en-GB');
+    return [
+      cap(`Despatch report — ${ctx.despatches.length} record(s) · ${stamp}`),
+      '',
+      ctx.despatches.length
+        ? tbl(
+          ['Sno', 'Despatch No', 'Date', 'Customer', 'Qty'],
+          ctx.despatches.map((r, i) => [i + 1, r.despatchNo || r.id || '—', r.despatchDate || r.date || '—', r.customerName || r.buyerName || '—', num(r.totalQty || r.quantity || 0)]),
+        )
+        : '• No records yet.',
+      '',
+      '_Use **⬇ CSV / 🖨 Print / 📋 Copy** under this message to save the report._' + roleLine,
+    ].filter(Boolean).join('\n');
+  }
+  if (has('generate role', 'role rights report', 'rights report', 'generate rights')) {
+    const stamp = new Date().toLocaleString('en-GB');
+    const flat = ROLE_DOCUMENTS.filter((d) => !d.group);
+    const allowed = flat.filter((d) => canUseRole(ctx.role, d.key));
+    return [
+      cap(`Role rights report — ${ctx.role || '—'} · ${stamp}`),
+      '',
+      tbl(['Sno', 'Document', 'View', 'Add', 'Edit', 'Delete'],
+        allowed.map((d, i) => {
+          const r = rightsFor(ctx.rightsData, ctx.role, d.key);
+          return [i + 1, d.label, r.view ? '✅' : '❌', r.add ? '✅' : '❌', r.edit ? '✅' : '❌', r.delete ? '✅' : '❌'];
+        })),
+      '',
+      '_Use **⬇ CSV / 🖨 Print / 📋 Copy** under this message to save the report._' + roleLine,
+    ].join('\n');
+  }
+  if (has('generate full', 'full erp report', 'full report', 'download report', 'export report', 'generate report')) {
+    const stamp = new Date().toLocaleString('en-GB');
+    const stockQty = ctx.stock.reduce((s, r) => s + Number(r.qty || 0), 0);
+    const stockVal = ctx.stock.reduce((s, r) => s + Number(r.qty || 0) * Number(r.rate || 0), 0);
+    const billT = ctx.bills.reduce((s, r) => s + Number(r.totalAmount || r.amount || 0), 0);
+    const genT = ctx.genInvoices.reduce((s, r) => s + Number(r.totalAmount || r.grandTotal || r.amount || 0), 0);
+    const expT = ctx.expInvoices.reduce((s, r) => s + Number(r.totalAmount || r.grandTotal || r.amount || 0), 0);
+    const dspQ = ctx.despatches.reduce((s, r) => s + Number(r.totalQty || r.quantity || 0), 0);
+    return [
+      cap(`Full ERP report · generated ${stamp}`),
+      '',
+      tbl(
+        ['Sno', 'Module', 'Records', 'Key total'],
+        [
+          [1, 'Stock', ctx.stock.length, `${num(stockQty)} qty · ${money(stockVal)}`],
+          [2, 'Indents', ctx.indents.length, `${ctx.indents.filter((r) => !r.approved).length} pending`],
+          [3, 'Bill Inward', ctx.bills.length, money(billT)],
+          [4, 'General Invoice', ctx.genInvoices.length, money(genT)],
+          [5, 'Export Invoice', ctx.expInvoices.length, money(expT)],
+          [6, 'Despatch', ctx.despatches.length, `${num(dspQ)} qty`],
+          [7, 'Requisition', ctx.requisitions.length, `${ctx.requisitions.length} record(s)`],
+        ],
+      ),
+      '',
+      '_Ask **Generate stock report** (or indent / bill inward / export invoice / despatch / role rights) for the module-wise full table._' + roleLine,
+    ].join('\n');
+  }
+
+  /* 13 — summary / today (skipped for "generate report" asks: those get the FULL report in 12b/12c) */
+  if (has('summary', 'today', 'overview', 'dashboard', 'report') && !has('generate', 'download report', 'export report')) {
     const stockQty = ctx.stock.reduce((s, r) => s + Number(r.qty || 0), 0);
     const stockVal = ctx.stock.reduce((s, r) => s + Number(r.qty || 0) * Number(r.rate || 0), 0);
     const today = new Date().toISOString().slice(0, 10);
@@ -685,19 +883,18 @@ export function answerQuestion(question, session) {
     ].join('\n');
   }
 
-  /* 14 — what is blocked for my role */
+  /* 14 — what is blocked for my role: related summary + TABLE */
   if (has('blocked', 'not showing', 'hidden', 'cannot see', 'why not', 'nahi')) {
     return [
-      `**Role "${ctx.role || '—'}"**`,
+      `**Role "${ctx.role || '—'}"** — granted **${ctx.granted.length}** · blocked **${ctx.denied.length}**`,
       '',
+      ctx.denied.length ? cap('Blocked documents') : '',
       ctx.denied.length
-        ? `These documents are **blocked** for your role:\n${ctx.denied.slice(0, 20).map((d) => `• ${d.label}`).join('\n')}`
+        ? tbl(['Sno', 'Document'], ctx.denied.slice(0, 20).map((d, i) => [i + 1, d.label]))
         : 'Nothing is blocked — your role has access to every document.',
       '',
-      `Granted: **${ctx.granted.length}** document(s).`,
-      '',
       '_Note: the DOCUMENT role never sees Accounts / Shipment / Stock by design; Super Admin sees everything._' + roleLine,
-    ].join('\n');
+    ].filter(Boolean).join('\n');
   }
 
   /* 15 — fallback: still try the product match, else show the menu of topics */
